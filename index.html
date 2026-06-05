@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HSK Flashcards</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="app">
+
+  <!-- ======= SETUP SCREEN ======= -->
+  <div id="setup-screen" class="screen active">
+    <div class="app-header">
+      <div class="logo-badge">汉</div>
+      <div>
+        <div class="app-title">HSK Flashcards</div>
+        <div class="app-subtitle">Chinese vocabulary practice</div>
+      </div>
+    </div>
+
+    <div class="setup-card">
+
+      <!-- Level -->
+      <div class="setup-section">
+        <div class="section-label">HSK Level</div>
+        <div class="level-grid">
+          <button class="btn-level active" data-group="level" data-value="1">
+            <span class="level-name">HSK 1</span>
+            <span class="level-count">150 words</span>
+          </button>
+          <button class="btn-level" data-group="level" data-value="2">
+            <span class="level-name">HSK 2</span>
+            <span class="level-count">150 words</span>
+          </button>
+          <button class="btn-level" data-group="level" data-value="3">
+            <span class="level-name">HSK 3</span>
+            <span class="level-count">299 words</span>
+          </button>
+          <button class="btn-level" data-group="level" data-value="4">
+            <span class="level-name">HSK 4</span>
+            <span class="level-count">601 words</span>
+          </button>
+          <button class="btn-level" data-group="level" data-value="5">
+            <span class="level-name">HSK 5</span>
+            <span class="level-count">585 words</span>
+          </button>
+          <button class="btn-level" data-group="level" data-value="6">
+            <span class="level-name">HSK 6</span>
+            <span class="level-count">500 words</span>
+          </button>
+        </div>
+        <button class="btn-combo" data-group="level" data-value="combo">✦ Combo mode</button>
+        <div class="combo-panel" id="combo-panel">
+          <div class="combo-grid">
+            <label class="combo-item">
+              <input type="checkbox" class="combo-check" value="1">
+              <span class="check-box"></span>
+              <span class="combo-label">HSK 1 <small>150 words</small></span>
+            </label>
+            <label class="combo-item">
+              <input type="checkbox" class="combo-check" value="2">
+              <span class="check-box"></span>
+              <span class="combo-label">HSK 2 <small>150 words</small></span>
+            </label>
+            <label class="combo-item">
+              <input type="checkbox" class="combo-check" value="3">
+              <span class="check-box"></span>
+              <span class="combo-label">HSK 3 <small>299 words</small></span>
+            </label>
+            <label class="combo-item">
+              <input type="checkbox" class="combo-check" value="4">
+              <span class="check-box"></span>
+              <span class="combo-label">HSK 4 <small>601 words</small></span>
+            </label>
+            <label class="combo-item">
+              <input type="checkbox" class="combo-check" value="5">
+              <span class="check-box"></span>
+              <span class="combo-label">HSK 5 <small>585 words</small></span>
+            </label>
+            <label class="combo-item">
+              <input type="checkbox" class="combo-check" value="6">
+              <span class="check-box"></span>
+              <span class="combo-label">HSK 6 <small>500 words</small></span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Word selection -->
+      <div class="setup-section">
+        <div class="section-label">Word selection</div>
+        <div class="btn-group">
+          <button class="btn-opt active" data-group="order" data-value="random">Random</button>
+          <button class="btn-opt" data-group="order" data-value="asc">A→Z Pinyin</button>
+          <button class="btn-opt" data-group="order" data-value="desc">Z→A Pinyin</button>
+        </div>
+        <div class="shuffle-row" id="shuffle-row">
+          <div class="shuffle-inner">
+            <span class="shuffle-label-text">Shuffle presentation</span>
+            <label class="toggle-switch" aria-label="Shuffle presentation order">
+              <input type="checkbox" id="toggle-shuffle">
+              <span class="toggle-track"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Count -->
+      <div class="setup-section" id="count-section">
+        <div class="section-label">Words to review</div>
+        <div class="btn-group">
+          <button class="btn-opt" data-group="count" data-value="10">10</button>
+          <button class="btn-opt active" data-group="count" data-value="25">25</button>
+          <button class="btn-opt" data-group="count" data-value="50">50</button>
+          <button class="btn-opt" data-group="count" data-value="all">All</button>
+        </div>
+        <div class="count-custom">
+          <label class="count-label" for="custom-count">Custom amount</label>
+          <input
+            class="count-input"
+            type="number"
+            id="custom-count"
+            min="1"
+            max="9999"
+            inputmode="numeric"
+            placeholder="e.g. 40"
+            aria-describedby="custom-count-hint"
+          >
+          <p class="count-hint" id="custom-count-hint">Enter any number between 1 and 9,999</p>
+        </div>
+
+        <div class="range-row" id="range-row">
+          <div class="range-inner">
+            <div class="range-inputs">
+              <div class="range-field">
+                <label class="range-field-label" for="range-from">From word</label>
+                <input class="range-input" type="number" id="range-from"
+                  min="1" placeholder="e.g. 26" inputmode="numeric" aria-label="From word number">
+              </div>
+              <div class="range-arrow">→</div>
+              <div class="range-field">
+                <label class="range-field-label" for="range-to">To word</label>
+                <input class="range-input" type="number" id="range-to"
+                  min="1" placeholder="e.g. 50" inputmode="numeric" aria-label="To word number">
+              </div>
+            </div>
+            <p class="count-hint" id="range-hint">Fill both fields to override the count above.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Start -->
+      <div class="setup-section">
+        <button class="btn-start" id="btn-start">
+          Start reviewing
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ======= LOADING SCREEN ======= -->
+  <div id="loading-screen" class="screen">
+    <div class="spinner"></div>
+    <div class="loading-text">Loading vocabulary…</div>
+  </div>
+
+  <!-- ======= FLASHCARD SCREEN ======= -->
+  <div id="flashcard-screen" class="screen">
+    <div class="fc-topbar">
+      <button class="btn-back" id="btn-quit">← Back</button>
+      <div class="fc-counter">
+        <strong id="fc-current">1</strong> / <span id="fc-total">25</span>
+      </div>
+    </div>
+
+    <div class="progress-track">
+      <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+
+    <div class="card-scene">
+      <div class="flashcard" id="flashcard" role="button" tabindex="0" aria-label="Click to flip card">
+
+        <!-- Front -->
+        <div class="card-face card-front-face">
+          <div class="word-level-badge" id="word-level-front"></div>
+          <div class="card-status" id="card-status-front"></div>
+          <div class="hanzi" id="hanzi-front"></div>
+          <div class="front-hint">
+            <div class="hint-dot"></div>
+            Click to reveal
+          </div>
+        </div>
+
+        <!-- Back -->
+        <div class="card-face card-back-face">
+          <div class="word-level-badge" id="word-level-back"></div>
+          <div class="card-status" id="card-status-back"></div>
+          <div class="hanzi" id="hanzi-back"></div>
+          <div class="pinyin" id="pinyin-back"></div>
+          <div class="translation" id="translation-back"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="assess-row" id="assess-row">
+      <button class="btn-assess btn-review" id="btn-review">✗ Review again</button>
+      <button class="btn-assess btn-know"   id="btn-know">✓ Got it</button>
+    </div>
+
+    <div class="nav-row">
+      <button class="btn-nav" id="btn-prev">← Previous</button>
+      <button class="btn-nav" id="btn-next">Next →</button>
+    </div>
+
+    <div class="kbd-hint">
+      <kbd>Space</kbd> flip &nbsp;
+      <kbd>←</kbd> <kbd>→</kbd> navigate &nbsp;
+      <kbd>K</kbd> got it &nbsp;
+      <kbd>U</kbd> review again
+    </div>
+    <div class="touch-hint">
+      <span>← review again</span>
+      <span>tap to flip</span>
+      <span>got it →</span>
+    </div>
+  </div>
+
+  <!-- ======= RESULTS SCREEN ======= -->
+  <div id="results-screen" class="screen">
+    <div class="app-header" style="margin-bottom:20px">
+      <div class="logo-badge">汉</div>
+      <div>
+        <div class="app-title">Session complete</div>
+        <div class="app-subtitle" id="results-sub-header"></div>
+      </div>
+    </div>
+
+    <div class="results-card">
+      <div class="results-emoji" id="r-emoji">🎉</div>
+      <div class="results-title" id="r-title">Great work!</div>
+      <div class="results-sub"   id="r-sub"></div>
+
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div class="stat-num" id="r-total">0</div>
+          <div class="stat-lbl">Reviewed</div>
+        </div>
+        <div class="stat-box s-known">
+          <div class="stat-num" id="r-known">0</div>
+          <div class="stat-lbl">Got it</div>
+        </div>
+        <div class="stat-box s-review">
+          <div class="stat-num" id="r-review">0</div>
+          <div class="stat-lbl">To review</div>
+        </div>
+      </div>
+
+      <div class="score-bar">
+        <div class="score-fill" id="score-fill" style="width:0%"></div>
+      </div>
+
+      <div class="results-actions">
+        <button class="btn-primary"   id="btn-retry-unknown">🔄 Review missed words</button>
+        <button class="btn-primary"   id="btn-restart">↺ Restart this session</button>
+        <button class="btn-secondary" id="btn-new-config">← New configuration</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
