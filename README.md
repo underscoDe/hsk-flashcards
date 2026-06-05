@@ -2,7 +2,7 @@
 
 A clean, mobile-friendly flashcard app for practicing Chinese vocabulary across all 6 HSK levels.
 
-**Live:** [hsk.awounou.com](https://hsk-flashcards.awounou.com)
+**Live:** [hsk-flashcards.awounou.com](https://hsk-flashcards.awounou.com)
 
 ---
 
