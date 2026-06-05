@@ -102,8 +102,58 @@ function initKeyboard() {
   });
 }
 
+function initInstallBanner() {
+  const banner  = document.getElementById('install-banner');
+  const msg     = document.getElementById('install-banner-msg');
+  const btnInstall  = document.getElementById('install-btn-confirm');
+  const btnDismiss  = document.getElementById('install-btn-dismiss');
+
+  if (localStorage.getItem('install-dismissed')) return;
+
+  const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches
+    || navigator.standalone === true;
+
+  if (isStandalone) return;
+
+  let deferredPrompt = null;
+
+  if (isIos) {
+    msg.textContent = 'Tap Share then "Add to Home Screen" to install';
+    btnInstall.style.display = 'none';
+    banner.classList.add('visible');
+  } else {
+    window.addEventListener('beforeinstallprompt', e => {
+      e.preventDefault();
+      deferredPrompt = e;
+      banner.classList.add('visible');
+    });
+  }
+
+  btnInstall.addEventListener('click', async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    deferredPrompt = null;
+    banner.classList.remove('visible');
+    if (outcome === 'accepted') localStorage.setItem('install-dismissed', '1');
+  });
+
+  btnDismiss.addEventListener('click', () => {
+    banner.classList.remove('visible');
+    localStorage.setItem('install-dismissed', '1');
+  });
+
+  window.addEventListener('appinstalled', () => {
+    banner.classList.remove('visible');
+    localStorage.setItem('install-dismissed', '1');
+  });
+}
+
 function init() {
+  document.getElementById('footer-year').textContent = new Date().getFullYear();
   initSetup();
+  initInstallBanner();
   initFlashcard();
   initKeyboard();
 
