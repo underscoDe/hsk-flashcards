@@ -56,8 +56,9 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding: 40px 16px 80px;
+  padding: 40px 16px max(80px, calc(56px + env(safe-area-inset-bottom)));
   -webkit-font-smoothing: antialiased;
+  overscroll-behavior-y: contain;
 }
 
 .app {
@@ -590,6 +591,7 @@ body {
   transform-style: preserve-3d;
   transition: transform 0.52s cubic-bezier(0.4, 0, 0.2, 1);
   outline: none;
+  touch-action: pan-y;
 }
 .flashcard.flipped { transform: rotateY(180deg); }
 
@@ -772,7 +774,10 @@ body {
   display: none;
 }
 
-/* Touch devices: swap hints */
+.hint-text-touch   { display: none; }
+.hint-text-pointer { display: inline; }
+
+/* Touch devices: swap hints, enforce touch targets */
 @media (hover: none) and (pointer: coarse) {
   .kbd-hint { display: none; }
   .touch-hint {
@@ -783,6 +788,18 @@ body {
     color: var(--on-surface-muted);
     padding: 0 4px;
   }
+
+  .hint-text-touch   { display: inline; }
+  .hint-text-pointer { display: none; }
+
+  /* 44px minimum touch targets */
+  .btn-back,
+  .btn-opt,
+  .btn-combo,
+  .btn-level,
+  .btn-nav,
+  .btn-assess,
+  .combo-item { min-height: 44px; }
 }
 kbd {
   display: inline-block;
@@ -897,7 +914,7 @@ kbd {
   .hanzi { font-size: 78px; }
   .flashcard { height: 280px; }
   .setup-section { padding: 18px 18px; }
-  body { padding: 20px 12px 56px; }
+  body { padding: 20px 12px max(56px, calc(32px + env(safe-area-inset-bottom))); }
 }
 @media (max-width: 340px) {
   .btn-opt   { font-size: 11.5px; padding: 7px 8px; }
