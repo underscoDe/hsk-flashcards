@@ -164,8 +164,22 @@ function init() {
     loadAndStart();
   });
 
+  const quitDialog  = document.getElementById('quit-dialog');
+  const quitConfirm = document.getElementById('quit-confirm');
+  const quitCancel  = document.getElementById('quit-cancel');
+
   document.getElementById('btn-quit').addEventListener('click', () => {
-    if (confirm('Quit the current session?')) showScreen('setup-screen');
+    quitDialog.classList.add('visible');
+  });
+  quitCancel.addEventListener('click', () => {
+    quitDialog.classList.remove('visible');
+  });
+  quitConfirm.addEventListener('click', () => {
+    quitDialog.classList.remove('visible');
+    showScreen('setup-screen');
+  });
+  quitDialog.addEventListener('click', e => {
+    if (e.target === quitDialog) quitDialog.classList.remove('visible');
   });
 
   document.getElementById('btn-retry-unknown').addEventListener('click', () => {

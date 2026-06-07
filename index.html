@@ -316,6 +316,19 @@
   </div>
 
 </div>
+
+<!-- ======= QUIT DIALOG ======= -->
+<div class="dialog-backdrop" id="quit-dialog" aria-modal="true" role="dialog" aria-labelledby="quit-dialog-title">
+  <div class="dialog-card">
+    <p class="dialog-title" id="quit-dialog-title">Quit this session?</p>
+    <p class="dialog-body">Your progress won't be saved.</p>
+    <div class="dialog-actions">
+      <button class="dialog-btn-cancel" id="quit-cancel">Keep going</button>
+      <button class="dialog-btn-confirm" id="quit-confirm">Quit</button>
+    </div>
+  </div>
+</div>
+
 <script type="module" src="js/app.js"></script>
 <script>
   if ('serviceWorker' in navigator) {
