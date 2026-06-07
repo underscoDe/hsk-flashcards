@@ -1007,62 +1007,6 @@ kbd {
 }
 .dialog-btn-confirm:hover { filter: brightness(0.94); transform: translateY(-1px); }
 
-/* ============================
-   INSTALL BANNER
-   ============================ */
-.install-banner {
-  display: none;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  background: var(--primary-bg);
-  border-radius: var(--r);
-  padding: 11px 14px;
-  margin-bottom: 14px;
-  box-shadow: inset 0 0 0 1px rgba(0, 93, 167, 0.15);
-}
-.install-banner.visible { display: flex; }
-
-.install-banner-text {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 12.5px;
-  font-weight: 500;
-  color: var(--primary-d);
-  flex: 1;
-  min-width: 0;
-}
-.install-banner-icon { font-size: 14px; flex-shrink: 0; }
-
-.install-banner-actions {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-shrink: 0;
-}
-.install-btn-confirm {
-  padding: 5px 14px;
-  border-radius: var(--r-full);
-  border: none;
-  background: var(--primary);
-  color: #fff;
-  font-family: inherit;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.12s;
-}
-.install-btn-confirm:hover { background: var(--primary-d); }
-.install-btn-dismiss {
-  background: none;
-  border: none;
-  font-size: 12px;
-  color: var(--on-surface-muted);
-  cursor: pointer;
-  padding: 4px;
-  line-height: 1;
-}
 
 /* ============================
    FOOTER
