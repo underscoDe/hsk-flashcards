@@ -56,7 +56,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding: 40px 16px max(80px, calc(56px + env(safe-area-inset-bottom)));
+  padding: 24px 16px max(64px, calc(40px + env(safe-area-inset-bottom)));
   -webkit-font-smoothing: antialiased;
   overscroll-behavior-y: contain;
 }
@@ -84,7 +84,7 @@ body {
   display: flex;
   align-items: center;
   gap: 14px;
-  margin-bottom: 24px;
+  margin-bottom: 14px;
 }
 .logo-badge {
   font-family: 'Noto Sans SC', 'PingFang SC', sans-serif;
@@ -123,7 +123,7 @@ body {
 }
 
 .setup-section {
-  padding: 22px 24px;
+  padding: 16px 20px;
   border-bottom: 1px solid rgba(0,0,0,0.06);
 }
 .setup-section:last-child { border-bottom: none; }
@@ -537,7 +537,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
 }
 .btn-back {
   display: flex;
@@ -568,7 +568,7 @@ body {
   height: 3px;
   background: rgba(0,0,0,0.08);
   border-radius: var(--r-full);
-  margin-bottom: 20px;
+  margin-bottom: 12px;
   overflow: hidden;
 }
 .progress-fill {
@@ -581,7 +581,7 @@ body {
 /* ---- Flashcard — the hero, deep shadow ---- */
 .card-scene {
   perspective: 1400px;
-  margin-bottom: 13px;
+  margin-bottom: 8px;
   cursor: pointer;
 }
 .flashcard {
@@ -697,7 +697,7 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 8px;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   opacity: 0;
   transform: translateY(8px);
   transition: opacity 0.22s ease, transform 0.22s ease;
@@ -742,7 +742,7 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 8px;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 .btn-nav {
   padding: 11px;
@@ -924,7 +924,7 @@ kbd {
   .hanzi { font-size: 78px; }
   .flashcard { height: 280px; }
   .setup-section { padding: 18px 18px; }
-  body { padding: 20px 12px max(56px, calc(32px + env(safe-area-inset-bottom))); }
+  body { padding: 16px 12px max(48px, calc(28px + env(safe-area-inset-bottom))); }
 }
 /* ============================
    INSTALL BANNER
