@@ -122,6 +122,9 @@ export function readSetupConfig() {
   cfg.presentationShuffle = cfg.order !== 'random'
     && document.getElementById('toggle-shuffle').checked;
 
+  const cardModeBtn = document.querySelector('[data-group="card-mode"].active');
+  cfg.cardMode = cardModeBtn ? cardModeBtn.dataset.value : 'hanzi-first';
+
   // Range (only meaningful when ordered)
   const fromVal = parseInt(document.getElementById('range-from').value);
   const toVal   = parseInt(document.getElementById('range-to').value);

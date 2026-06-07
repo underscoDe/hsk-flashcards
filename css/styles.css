@@ -777,6 +777,16 @@ body {
 .hint-text-touch   { display: none; }
 .hint-text-pointer { display: inline; }
 
+/* ---- Card mode: pinyin-first ---- */
+.card-front-face .pinyin,
+.card-front-face .translation { display: none; }
+
+.flashcard.mode-pinyin-first .card-front-face .hanzi { display: none; }
+.flashcard.mode-pinyin-first .card-front-face .pinyin { display: block; margin: 14px 0 4px; }
+.flashcard.mode-pinyin-first .card-front-face .translation { display: block; }
+.flashcard.mode-pinyin-first .card-back-face .pinyin,
+.flashcard.mode-pinyin-first .card-back-face .translation { display: none; }
+
 /* Touch devices: swap hints, enforce touch targets */
 @media (hover: none) and (pointer: coarse) {
   .kbd-hint { display: none; }

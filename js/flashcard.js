@@ -1,4 +1,4 @@
-import { session } from './state.js';
+import { session, cfg } from './state.js';
 
 export function renderCard() {
   const word = session.words[session.currentIndex];
@@ -11,8 +11,14 @@ export function renderCard() {
 
   document.getElementById('hanzi-front').textContent       = word.hanzi;
   document.getElementById('hanzi-back').textContent        = word.hanzi;
+  document.getElementById('pinyin-front').textContent      = word.pinyin;
+  document.getElementById('translation-front').textContent = word.translation;
   document.getElementById('pinyin-back').textContent       = word.pinyin;
   document.getElementById('translation-back').textContent  = word.translation;
+
+  document.getElementById('flashcard').classList.toggle(
+    'mode-pinyin-first', cfg.cardMode === 'pinyin-first'
+  );
 
   updateStatusBadge(word.hanzi);
   updateLevelBadge(word.level);
