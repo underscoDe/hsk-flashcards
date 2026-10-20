@@ -1,0 +1,7 @@
+# Dev-only files: not part of the static site
+__tests__/
+coverage/
+test-results/
+playwright-report/
+playwright.config.js
+vitest.config.js

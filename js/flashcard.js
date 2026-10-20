@@ -150,9 +150,12 @@ export function initFlashcard() {
     document.querySelectorAll('.btn-listen, .kbd-listen').forEach(el => { el.hidden = !hasVoice; });
   });
   document.querySelectorAll('.btn-listen').forEach(btn => {
-    // Keep taps and keys on the button from flipping the card underneath
+    // Keep taps on the button, and the keys that press it, from flipping the card
+    // underneath; other keys (K, U, Z…) must still reach the shortcuts
     btn.addEventListener('click', e => { e.stopPropagation(); speakCurrentWord(); });
-    btn.addEventListener('keydown', e => e.stopPropagation());
+    btn.addEventListener('keydown', e => {
+      if (e.key === ' ' || e.key === 'Enter') e.stopPropagation();
+    });
   });
 
   // ---- Swipe gesture (mobile) ----

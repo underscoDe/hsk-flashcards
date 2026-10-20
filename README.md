@@ -51,6 +51,26 @@ Open `http://localhost:8080` (or the port shown).
 
 > **Note:** ES modules require a server — opening `index.html` directly via `file://` will fail due to CORS restrictions.
 
+## Tests
+
+The app itself needs no install; `npm` is only used for the test tools.
+
+```bash
+npm install
+npm test               # unit tests (Vitest): utils, spaced repetition, vocabulary data
+npm run test:coverage  # same, with coverage (80% minimum)
+npm run test:e2e       # browser tests (Playwright) against the real app
+npm run test:all       # both
+```
+
+- **Unit tests** (`__tests__/unit/`) cover the pure logic: Leitner boxes and due dates (with a fake clock),
+  tone detection, translation cleaning, and a check of all 5,000 words (unique ids, one syllable per
+  character, no raw dictionary notation).
+- **Browser tests** (`__tests__/e2e/`) drive the app like a user: sessions, undo, spaced repetition over
+  simulated days, remembered settings, theme, tone colors, pronunciation (with a fake voice) and offline mode.
+- They use the installed Google Chrome. Without it, run `npx playwright install chromium` and
+  `PW_CHANNEL=chromium npm run test:e2e`.
+
 ## Deployment (Vercel)
 
 The project is a static site with no build step.
