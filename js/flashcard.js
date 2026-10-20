@@ -1,6 +1,6 @@
 import { session, cfg } from './state.js';
-import { recordAnswer } from './progress.js';
-import { getTone } from './utils.js';
+import { recordAnswer, getEntry, restoreEntry } from './progress.js';
+import { getTone, showScreen } from './utils.js';
 import { initSpeech, speak } from './speech.js';
 
 export function renderCard() {
@@ -32,6 +32,7 @@ export function renderCard() {
   updateLevelBadge(session.showsLevel ? word.level : null);
 
   document.getElementById('btn-prev').disabled    = idx === 0;
+  document.getElementById('btn-undo').disabled    = session.history.length === 0;
   document.getElementById('btn-next').textContent = idx === tot - 1 ? 'Finish ✓' : 'Next →';
 
   setFlipped(false);
@@ -88,6 +89,17 @@ export function setFlipped(flipped) {
 export function markAndAdvance(verdict) {
   const word = session.words[session.currentIndex];
   const { id } = word;
+
+  // Snapshot before rating, so undo can put everything back exactly
+  session.history.push({
+    index:       session.currentIndex,
+    id,
+    wasKnown:    session.known.has(id),
+    wasUnknown:  session.unknown.has(id),
+    wasPromoted: session.promoted.has(id),
+    progress:    getEntry(id),
+  });
+
   if (verdict === 'known') {
     session.known.add(id);
     session.unknown.delete(id);
@@ -106,6 +118,28 @@ export function markAndAdvance(verdict) {
   } else {
     document.dispatchEvent(new CustomEvent('hsk:session-end'));
   }
+}
+
+/** Reverts the latest rating and shows that card again, answer side up. */
+export function undoLastRating() {
+  const last = session.history.pop();
+  if (!last) return;
+
+  const { id } = last;
+  setMembership(session.known,    id, last.wasKnown);
+  setMembership(session.unknown,  id, last.wasUnknown);
+  setMembership(session.promoted, id, last.wasPromoted);
+  restoreEntry(id, last.progress);
+
+  session.currentIndex = last.index;
+  showScreen('flashcard-screen'); // undo also works from the results screen
+  renderCard();
+  setFlipped(true);
+}
+
+function setMembership(set, id, isMember) {
+  if (isMember) set.add(id);
+  else set.delete(id);
 }
 
 export function initFlashcard() {
@@ -166,6 +200,7 @@ export function initFlashcard() {
     }
   });
 
+  document.getElementById('btn-undo').addEventListener('click', undoLastRating);
   document.getElementById('btn-know').addEventListener('click',   () => markAndAdvance('known'));
   document.getElementById('btn-review').addEventListener('click', () => markAndAdvance('unknown'));
 }

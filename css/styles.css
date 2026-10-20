@@ -675,7 +675,9 @@ body {
   box-shadow: var(--shadow-sm);
   transition: box-shadow 0.12s, color 0.12s, transform 0.12s;
 }
-.btn-back:hover { box-shadow: var(--shadow-md); color: var(--on-surface-variant); transform: translateY(-1px); }
+.btn-back:hover:not(:disabled) { box-shadow: var(--shadow-md); color: var(--on-surface-variant); transform: translateY(-1px); }
+.btn-back:disabled { opacity: 0.35; cursor: default; box-shadow: none; }
+.fc-topbar-actions { display: flex; gap: 8px; }
 
 .fc-counter {
   font-size: 13px;
@@ -1037,6 +1039,8 @@ kbd {
   color: var(--success);
   margin: -14px 0 22px;
 }
+
+.results-undo { display: block; margin: -12px auto 20px; }
 
 .results-actions { display: flex; flex-direction: column; gap: 8px; }
 

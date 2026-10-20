@@ -31,6 +31,7 @@ export const session = {
   known:        new Set(),
   unknown:      new Set(),
   promoted:     new Set(),  // ids that moved up a Leitner box this session
+  history:      [],         // ratings of this session, newest last, for undo
 };
 
 export const cache = {};

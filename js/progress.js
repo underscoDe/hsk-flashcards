@@ -30,6 +30,18 @@ export function recordAnswer(word, isKnown) {
   return true;
 }
 
+/** Copy of a word's saved state (undefined if never rated), for undo. */
+export function getEntry(id) {
+  return progress[id] ? { ...progress[id] } : undefined;
+}
+
+/** Puts back a state returned by getEntry. */
+export function restoreEntry(id, entry) {
+  if (entry) progress[id] = entry;
+  else delete progress[id];
+  saveProgress();
+}
+
 /** Ids and levels of words due for review now. */
 export function getDueEntries() {
   return Object.entries(progress)

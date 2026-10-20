@@ -1,7 +1,7 @@
 import { cfg, session, cache, DATA_URLS } from './state.js';
 import { rawToWords, sortWords, shuffle, showScreen } from './utils.js';
 import { initSetup, readSetupConfig, saveSetupState, renderProgressSummary } from './setup.js';
-import { initFlashcard, renderCard, setFlipped, markAndAdvance, speakCurrentWord } from './flashcard.js';
+import { initFlashcard, renderCard, setFlipped, markAndAdvance, speakCurrentWord, undoLastRating } from './flashcard.js';
 import { showResults } from './results.js';
 import { getDueEntries, resetProgress } from './progress.js';
 import { initTheme } from './theme.js';
@@ -22,6 +22,7 @@ async function startSession(getWords) {
     session.known        = new Set();
     session.unknown      = new Set();
     session.promoted     = new Set();
+    session.history      = [];
 
     showScreen('flashcard-screen');
     renderCard();
@@ -99,6 +100,9 @@ function initKeyboard() {
       case 'p': case 'P':
         speakCurrentWord();
         break;
+      case 'z': case 'Z':
+        undoLastRating();
+        break;
     }
   });
 }
@@ -152,6 +156,7 @@ function init() {
   });
 
   document.getElementById('btn-new-config').addEventListener('click', showSetup);
+  document.getElementById('btn-undo-results').addEventListener('click', undoLastRating);
 }
 
 /** Wires a confirmation dialog: `trigger` opens it, the confirm button runs `handleConfirm`. */

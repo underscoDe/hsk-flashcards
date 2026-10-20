@@ -14,7 +14,8 @@ A clean, mobile-friendly flashcard app for practicing Chinese vocabulary across 
 - **Word range** — study words 25–50 from a sorted list, for example
 - **Shuffle presentation** — pick words in order, review them in random order
 - **Mobile swipe gestures** — swipe right = got it, swipe left = review again
-- **Keyboard shortcuts** — `Space` flip, `← →` navigate, `K` got it, `U` review again, `P` listen
+- **Keyboard shortcuts** — `Space` flip, `← →` navigate, `K` got it, `U` review again, `P` listen, `Z` undo
+- **Undo** — revert the last ratings (button, `Z`, or from the results screen), progress included
 - **Pronunciation** — 🔊 button using the device's Chinese voice (hidden when none is installed)
 - **Tone colors** — pinyin and characters colored by tone on the back of the card
 - **Dark mode** — System / Light / Dark, follows the system setting by default

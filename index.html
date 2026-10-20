@@ -238,7 +238,10 @@
   <!-- ======= FLASHCARD SCREEN ======= -->
   <div id="flashcard-screen" class="screen">
     <div class="fc-topbar">
-      <button class="btn-back" id="btn-quit">← Back</button>
+      <div class="fc-topbar-actions">
+        <button class="btn-back" id="btn-quit">← Back</button>
+        <button class="btn-back" id="btn-undo" aria-label="Undo last rating" disabled>↶ Undo</button>
+      </div>
       <div class="fc-counter">
         <strong id="fc-current">1</strong> / <span id="fc-total">25</span>
       </div>
@@ -301,7 +304,8 @@
       <kbd>Space</kbd> flip &nbsp;
       <kbd>←</kbd> <kbd>→</kbd> navigate &nbsp;
       <kbd>K</kbd> got it &nbsp;
-      <kbd>U</kbd> review again
+      <kbd>U</kbd> review again &nbsp;
+      <kbd>Z</kbd> undo
       <span class="kbd-listen" hidden>&nbsp; <kbd>P</kbd> listen</span>
     </div>
     <div class="touch-hint">
@@ -345,6 +349,7 @@
         <div class="score-fill" id="score-fill" style="width:0%"></div>
       </div>
       <p class="results-promoted" id="r-promoted" hidden></p>
+      <button class="btn-link results-undo" id="btn-undo-results" hidden>↶ Undo last rating</button>
 
       <div class="results-actions">
         <button class="btn-primary"   id="btn-retry-unknown">🔄 Review missed words</button>

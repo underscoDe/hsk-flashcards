@@ -42,6 +42,8 @@ export function showResults() {
   promotedEl.textContent = `📈 ${promoted} word${promoted > 1 ? 's' : ''} moved to a longer review interval`;
   promotedEl.hidden = promoted === 0;
 
+  document.getElementById('btn-undo-results').hidden = session.history.length === 0;
+
   document.getElementById('btn-retry-unknown').style.display =
     known < total ? '' : 'none';
 
