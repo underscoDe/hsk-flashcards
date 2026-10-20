@@ -1,3 +1,5 @@
+import { readStorage, writeStorage } from './utils.js';
+
 // Spaced repetition (Leitner boxes), persisted in localStorage.
 // Each word id maps to { box, due, level }: `due` is the local midnight timestamp
 // from which the word should be reviewed again.
@@ -72,21 +74,11 @@ function dayStart(days) {
   return new Date(d.getFullYear(), d.getMonth(), d.getDate() + days).getTime();
 }
 
-// Storage can be unavailable (private mode, blocked site data): the app then
-// works as before, just without saving.
 function loadProgress() {
-  try {
-    const data = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    return data && typeof data === 'object' ? data : {};
-  } catch {
-    return {};
-  }
+  const data = readStorage(STORAGE_KEY);
+  return data && typeof data === 'object' ? data : {};
 }
 
 function saveProgress() {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
-  } catch (err) {
-    console.warn('Could not save progress', err);
-  }
+  writeStorage(STORAGE_KEY, progress);
 }

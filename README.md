@@ -14,7 +14,11 @@ A clean, mobile-friendly flashcard app for practicing Chinese vocabulary across 
 - **Word range** — study words 25–50 from a sorted list, for example
 - **Shuffle presentation** — pick words in order, review them in random order
 - **Mobile swipe gestures** — swipe right = got it, swipe left = review again
-- **Keyboard shortcuts** — `Space` flip, `← →` navigate, `K` got it, `U` review again
+- **Keyboard shortcuts** — `Space` flip, `← →` navigate, `K` got it, `U` review again, `P` listen
+- **Pronunciation** — 🔊 button using the device's Chinese voice (hidden when none is installed)
+- **Tone colors** — pinyin and characters colored by tone on the back of the card
+- **Dark mode** — System / Light / Dark, follows the system setting by default
+- **Remembers your settings** — level, card mode, order, count and range are restored on the next visit, with a one-click reset to defaults (progress is kept)
 - **Session results** — score, missed words, retry missed words only
 - **Spaced repetition** — progress saved on the device (Leitner boxes: 1, 2, 4, 8, 16 days), daily review of due words, mastered words per level
 - **Offline** — installable PWA, all levels available without a connection
@@ -69,6 +73,8 @@ js/
   setup.js          Setup screen interactions
   flashcard.js      Card rendering, flip, swipe, keyboard
   results.js        Results screen
+  speech.js         Pronunciation (Web Speech API)
+  theme.js          Light / dark theme preference
   progress.js       Spaced repetition (Leitner boxes) saved in localStorage
   utils.js          Data helpers (rawToWords, sortWords, shuffle)
 data/

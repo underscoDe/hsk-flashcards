@@ -1,5 +1,7 @@
 import { session, cfg } from './state.js';
 import { recordAnswer } from './progress.js';
+import { getTone } from './utils.js';
+import { initSpeech, speak } from './speech.js';
 
 export function renderCard() {
   const word = session.words[session.currentIndex];
@@ -10,11 +12,16 @@ export function renderCard() {
   document.getElementById('fc-total').textContent   = tot;
   document.getElementById('progress-fill').style.width = `${(idx / tot) * 100}%`;
 
-  document.getElementById('hanzi-front').textContent       = word.hanzi;
-  document.getElementById('hanzi-back').textContent        = word.hanzi;
-  document.getElementById('pinyin-front').textContent      = word.pinyin;
+  // One pinyin syllable per character (checked on all 5,000 words)
+  const syllables = word.pinyin.split(' ');
+  const tones     = syllables.map(getTone);
+
+  // Front hanzi stays uncolored so the tones aren't given away before flipping
+  document.getElementById('hanzi-front').textContent = word.hanzi;
+  renderWithTones(document.getElementById('hanzi-back'),   [...word.hanzi], tones, '');
+  renderWithTones(document.getElementById('pinyin-front'), syllables, tones, ' ');
+  renderWithTones(document.getElementById('pinyin-back'),  syllables, tones, ' ');
   document.getElementById('translation-front').textContent = word.translation;
-  document.getElementById('pinyin-back').textContent       = word.pinyin;
   document.getElementById('translation-back').textContent  = word.translation;
 
   document.getElementById('flashcard').classList.toggle(
@@ -28,6 +35,21 @@ export function renderCard() {
   document.getElementById('btn-next').textContent = idx === tot - 1 ? 'Finish ✓' : 'Next →';
 
   setFlipped(false);
+}
+
+/** Fills `el` with one span per unit, colored by tone (classes tone-1 … tone-5). */
+function renderWithTones(el, units, tones, separator) {
+  const nodes = units.flatMap((unit, i) => {
+    const span = document.createElement('span');
+    span.className   = `tone-${tones[i]}`;
+    span.textContent = unit;
+    return i > 0 && separator ? [separator, span] : [span];
+  });
+  el.replaceChildren(...nodes);
+}
+
+export function speakCurrentWord() {
+  speak(session.words[session.currentIndex].hanzi);
 }
 
 export function updateLevelBadge(level) {
@@ -88,6 +110,16 @@ export function markAndAdvance(verdict) {
 
 export function initFlashcard() {
   const card = document.getElementById('flashcard');
+
+  // ---- Pronunciation (only shown when the device has a Chinese voice) ----
+  initSpeech(hasVoice => {
+    document.querySelectorAll('.btn-listen, .kbd-listen').forEach(el => { el.hidden = !hasVoice; });
+  });
+  document.querySelectorAll('.btn-listen').forEach(btn => {
+    // Keep taps and keys on the button from flipping the card underneath
+    btn.addEventListener('click', e => { e.stopPropagation(); speakCurrentWord(); });
+    btn.addEventListener('keydown', e => e.stopPropagation());
+  });
 
   // ---- Swipe gesture (mobile) ----
   let touchStartX = 0;

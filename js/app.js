@@ -1,9 +1,10 @@
 import { cfg, session, cache, DATA_URLS } from './state.js';
 import { rawToWords, sortWords, shuffle, showScreen } from './utils.js';
-import { initSetup, readSetupConfig, renderProgressSummary } from './setup.js';
-import { initFlashcard, renderCard, setFlipped, markAndAdvance } from './flashcard.js';
+import { initSetup, readSetupConfig, saveSetupState, renderProgressSummary } from './setup.js';
+import { initFlashcard, renderCard, setFlipped, markAndAdvance, speakCurrentWord } from './flashcard.js';
 import { showResults } from './results.js';
 import { getDueEntries, resetProgress } from './progress.js';
+import { initTheme } from './theme.js';
 
 /** Shows the loading screen, then starts a session with the words from `getWords`. */
 async function startSession(getWords) {
@@ -95,6 +96,9 @@ function initKeyboard() {
       case 'u': case 'U':
         markAndAdvance('unknown');
         break;
+      case 'p': case 'P':
+        speakCurrentWord();
+        break;
     }
   });
 }
@@ -102,6 +106,7 @@ function initKeyboard() {
 
 function init() {
   document.getElementById('footer-year').textContent = new Date().getFullYear();
+  initTheme();
   initSetup();
   initFlashcard();
   initKeyboard();
@@ -111,6 +116,7 @@ function init() {
 
   document.getElementById('btn-start').addEventListener('click', () => {
     readSetupConfig();
+    saveSetupState();
     if (cfg.level === 'combo' && !cfg.comboLevels.length) {
       alert('Please select at least one level for Combo mode.');
       return;
@@ -121,6 +127,7 @@ function init() {
 
   document.getElementById('btn-review-today').addEventListener('click', () => {
     readSetupConfig(); // card mode still applies
+    saveSetupState();
     session.mode = 'review';
     startSession(selectDueWords);
   });

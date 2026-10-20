@@ -1,4 +1,6 @@
 import { cfg, LEVEL_COUNTS } from './state.js';
+import { readStorage, writeStorage } from './utils.js';
+import { getThemePreference, setThemePreference } from './theme.js';
 import { getDueEntries, getDaysUntilNextReview, getMasteredByLevel, hasProgress } from './progress.js';
 
 export function initSetup() {
@@ -28,7 +30,16 @@ export function initSetup() {
       if (group === 'level') {
         updateComboPanel(value);
       }
+      if (group === 'theme') {
+        setThemePreference(value);
+      }
     });
+  });
+
+  document.getElementById('btn-reset-settings').addEventListener('click', () => {
+    applySetupState(DEFAULT_SETUP);
+    saveSetupState();
+    selectOption('theme', 'system');
   });
 
   document.getElementById('custom-count').addEventListener('input', e => {
@@ -66,6 +77,69 @@ export function initSetup() {
 
   rangeFrom.addEventListener('input', updateRangeState);
   rangeTo.addEventListener('input',   updateRangeState);
+
+  markActive('theme', getThemePreference());
+  const saved = readStorage(SETTINGS_KEY);
+  if (saved && typeof saved === 'object') applySetupState(saved);
+}
+
+const SETTINGS_KEY = 'hsk-settings';
+
+// Must match the options marked active in index.html
+const DEFAULT_SETUP = {
+  level: '1', comboLevels: [], cardMode: 'hanzi-first', order: 'random', shuffle: false,
+  count: '25', customCount: '', rangeFrom: '', rangeTo: '',
+};
+
+/** Remembers the setup screen as it is, so the next visit starts from the same choices. */
+export function saveSetupState() {
+  const activeValue = group => document.querySelector(`[data-group="${group}"].active`)?.dataset.value ?? null;
+  writeStorage(SETTINGS_KEY, {
+    level:       activeValue('level'),
+    comboLevels: [...document.querySelectorAll('.combo-check:checked')].map(cb => cb.value),
+    cardMode:    activeValue('card-mode'),
+    order:       activeValue('order'),
+    shuffle:     document.getElementById('toggle-shuffle').checked,
+    count:       activeValue('count'),
+    customCount: document.getElementById('custom-count').value,
+    rangeFrom:   document.getElementById('range-from').value,
+    rangeTo:     document.getElementById('range-to').value,
+  });
+}
+
+// Replays a setup state through the regular click/input handlers, so the
+// dependent rows (combo panel, shuffle, range) show up exactly as if clicked.
+function applySetupState(state) {
+  const fill = (id, value) => {
+    if (typeof value !== 'string') return;
+    const input = document.getElementById(id);
+    input.value = value;
+    input.dispatchEvent(new Event('input'));
+  };
+
+  if (Array.isArray(state.comboLevels)) {
+    document.querySelectorAll('.combo-check').forEach(cb => { cb.checked = state.comboLevels.includes(cb.value); });
+  }
+  selectOption('level', state.level);
+  selectOption('card-mode', state.cardMode);
+  selectOption('order', state.order);
+  selectOption('count', state.count);
+  fill('custom-count', state.customCount);
+  fill('range-from', state.rangeFrom);
+  fill('range-to', state.rangeTo);
+  if (state.order !== 'random') document.getElementById('toggle-shuffle').checked = state.shuffle === true;
+}
+
+function selectOption(group, value) {
+  if (typeof value !== 'string') return;
+  document.querySelector(`[data-group="${group}"][data-value="${CSS.escape(value)}"]`)?.click();
+}
+
+// Highlights an option without running its click handler
+function markActive(group, value) {
+  document.querySelectorAll(`[data-group="${group}"]`).forEach(b => {
+    b.classList.toggle('active', b.dataset.value === value);
+  });
 }
 
 /** Refreshes the daily review block and the per-level mastery bars. */

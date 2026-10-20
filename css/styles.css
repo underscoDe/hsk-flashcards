@@ -22,6 +22,7 @@
   --primary-d:  #004483;
   --primary-l:  #dceaff;
   --primary-bg: #eef4fc;
+  --on-primary: #ffffff;
 
   /* ---- Semantic ---- */
   --error:    #ba1a1a;
@@ -29,6 +30,18 @@
   --error-on: #93000a;
   --success:  #166534;
   --success-l:#dcfce7;
+
+  /* ---- Neutral lines ---- */
+  --divider: rgba(0,0,0,0.06);
+  --track:   rgba(0,0,0,0.08);
+  --outline: rgba(0,0,0,0.15);
+
+  /* ---- Tone colors (pinyin + hanzi on the back of the card) ---- */
+  --tone-1: #d32f2f;  /* high level  — red */
+  --tone-2: #c76a00;  /* rising      — orange */
+  --tone-3: #2e7d32;  /* dipping     — green */
+  --tone-4: #1565c0;  /* falling     — blue */
+  --tone-5: #6b7280;  /* neutral     — gray */
 
   /* ---- Radii ---- */
   --r-sm:   4px;
@@ -47,6 +60,53 @@
   --shadow-blue: 0 4px 16px rgba(0, 93, 167, 0.30);
   /* Selection ring — modern "active" pattern */
   --ring:        0 0 0 2px var(--primary), 0 0 0 4px rgba(0, 93, 167, 0.14);
+}
+
+/* ---- Dark theme ----
+   data-theme is set on <html> before first paint (inline script in index.html),
+   from the user's choice or the system setting (js/theme.js). */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg:           #121419;
+  --surface:      #1c1f26;
+  --surface-low:  #23272f;
+  --surface-mid:  #2a2f38;
+
+  --on-surface:         #e7e9ed;
+  --on-surface-variant: #c4c8d0;
+  --on-surface-muted:   #8b919b;
+
+  /* Light blue with dark text, as white on a mid blue lacks contrast */
+  --primary:    #7cb8ff;
+  --primary-d:  #a3cdff;
+  --primary-l:  #1f3a5c;
+  --primary-bg: #17283c;
+  --on-primary: #0b1d33;
+
+  --error:    #ff8a80;
+  --error-l:  #4a1d1d;
+  --error-on: #ffb4ab;
+  --success:  #5ad08a;
+  --success-l:#173524;
+
+  --divider: rgba(255,255,255,0.07);
+  --track:   rgba(255,255,255,0.10);
+  --outline: rgba(255,255,255,0.22);
+
+  --tone-1: #ff7b7b;
+  --tone-2: #ffb35c;
+  --tone-3: #6fd98a;
+  --tone-4: #7cb8ff;
+  --tone-5: #9ca3af;
+
+  --shadow-xs:   0 1px 2px rgba(0,0,0,0.4);
+  --shadow-sm:   0 1px 3px rgba(0,0,0,0.4), 0 4px 12px rgba(0,0,0,0.3);
+  --shadow-md:   0 2px 6px rgba(0,0,0,0.4), 0 10px 28px rgba(0,0,0,0.35);
+  --shadow-lg:   0 4px 8px rgba(0,0,0,0.4), 0 20px 48px rgba(0,0,0,0.45);
+  --shadow-card: 0 2px 4px rgba(0,0,0,0.35), 0 12px 32px rgba(0,0,0,0.35), 0 32px 72px rgba(0,0,0,0.3);
+  --shadow-blue: 0 4px 16px rgba(124, 184, 255, 0.18);
+  --ring:        0 0 0 2px var(--primary), 0 0 0 4px rgba(124, 184, 255, 0.18);
 }
 
 body {
@@ -125,7 +185,7 @@ body {
 
 .setup-section {
   padding: 16px 20px;
-  border-bottom: 1px solid rgba(0,0,0,0.06);
+  border-bottom: 1px solid var(--divider);
 }
 .setup-section:last-child { border-bottom: none; }
 /* Softer internal dividers than outline borders */
@@ -191,7 +251,7 @@ body {
   width: 70%;
   height: 3px;
   margin: 8px auto 0;
-  background: rgba(0,0,0,0.08);
+  background: var(--track);
   border-radius: var(--r-full);
   overflow: hidden;
 }
@@ -222,7 +282,7 @@ body {
   border-radius: var(--r-full);
   border: none;
   background: var(--primary);
-  color: #fff;
+  color: var(--on-primary);
   font-family: inherit;
   font-size: 13px;
   font-weight: 600;
@@ -262,7 +322,7 @@ body {
 .btn-combo:hover { background: var(--surface); box-shadow: var(--shadow-sm); color: var(--on-surface-variant); }
 .btn-combo.active {
   background: var(--primary);
-  color: #fff;
+  color: var(--on-primary);
   box-shadow: var(--shadow-blue);
 }
 
@@ -306,7 +366,7 @@ body {
   width: 16px;
   height: 16px;
   border-radius: var(--r-sm);
-  border: 1.5px solid rgba(0,0,0,0.15);
+  border: 1.5px solid var(--outline);
   flex-shrink: 0;
   background: var(--surface);
   transition: all 0.12s;
@@ -321,8 +381,8 @@ body {
   position: absolute;
   width: 8px;
   height: 5px;
-  border-left: 1.5px solid #fff;
-  border-bottom: 1.5px solid #fff;
+  border-left: 1.5px solid var(--on-primary);
+  border-bottom: 1.5px solid var(--on-primary);
   top: 3px;
   left: 3px;
   transform: rotate(-45deg);
@@ -369,7 +429,7 @@ body {
 .btn-opt:hover { background: var(--surface); box-shadow: var(--shadow-sm); color: var(--on-surface-variant); }
 .btn-opt.active {
   background: var(--primary);
-  color: #fff;
+  color: var(--on-primary);
   box-shadow: var(--shadow-blue);
 }
 
@@ -417,7 +477,7 @@ body {
   width: 100%;
   height: 100%;
   border-radius: var(--r-full);
-  background: rgba(0,0,0,0.15);
+  background: var(--outline);
   transition: background 0.18s;
   position: relative;
 }
@@ -440,7 +500,7 @@ body {
 .count-custom {
   margin-top: 14px;
   padding-top: 14px;
-  border-top: 1px solid rgba(0,0,0,0.06);
+  border-top: 1px solid var(--divider);
 }
 .count-label {
   display: block;
@@ -458,7 +518,7 @@ body {
   border-radius: var(--r);
   border: none;
   background: var(--surface-low);
-  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08);
+  box-shadow: inset 0 0 0 1px var(--track);
   font-family: inherit;
   font-size: 14px;
   color: var(--on-surface);
@@ -498,7 +558,7 @@ body {
 }
 .range-inner {
   padding-top: 14px;
-  border-top: 1px solid rgba(0,0,0,0.06);
+  border-top: 1px solid var(--divider);
   margin-top: 14px;
 }
 .range-inputs {
@@ -523,7 +583,7 @@ body {
   border-radius: var(--r);
   border: none;
   background: var(--surface-low);
-  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08);
+  box-shadow: inset 0 0 0 1px var(--track);
   font-family: inherit;
   font-size: 14px;
   color: var(--on-surface);
@@ -554,7 +614,7 @@ body {
   border-radius: var(--r);
   border: none;
   background: var(--primary);
-  color: #fff;
+  color: var(--on-primary);
   font-family: inherit;
   font-size: 14px;
   font-weight: 600;
@@ -581,7 +641,7 @@ body {
 .spinner {
   width: 32px;
   height: 32px;
-  border: 2.5px solid rgba(0,0,0,0.08);
+  border: 2.5px solid var(--track);
   border-top-color: var(--primary);
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
@@ -626,7 +686,7 @@ body {
 
 .progress-track {
   height: 3px;
-  background: rgba(0,0,0,0.08);
+  background: var(--track);
   border-radius: var(--r-full);
   margin-bottom: 12px;
   overflow: hidden;
@@ -728,7 +788,7 @@ body {
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: rgba(0,0,0,0.15);
+  background: var(--outline);
   animation: pulse 2s ease-in-out infinite;
 }
 @keyframes pulse {
@@ -751,6 +811,34 @@ body {
   line-height: 1.65;
   max-width: 270px;
 }
+
+/* Tone colors */
+.tone-1 { color: var(--tone-1); }
+.tone-2 { color: var(--tone-2); }
+.tone-3 { color: var(--tone-3); }
+.tone-4 { color: var(--tone-4); }
+.tone-5 { color: var(--tone-5); }
+
+/* Listen button (bottom-right of each card face) */
+.btn-listen {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: var(--r-full);
+  background: var(--surface-low);
+  color: var(--primary);
+  cursor: pointer;
+  box-shadow: var(--shadow-xs);
+  transition: background 0.12s, transform 0.12s;
+}
+.btn-listen:hover  { background: var(--primary-bg); }
+.btn-listen:active { transform: scale(0.94); }
 
 /* ---- Assess + Nav rows ---- */
 .assess-row {
@@ -931,7 +1019,7 @@ kbd {
 
 .score-bar {
   height: 4px;
-  background: rgba(0,0,0,0.08);
+  background: var(--track);
   border-radius: var(--r-full);
   overflow: hidden;
   margin-bottom: 26px;
@@ -958,7 +1046,7 @@ kbd {
   border-radius: var(--r);
   border: none;
   background: var(--primary);
-  color: #fff;
+  color: var(--on-primary);
   font-family: inherit;
   font-size: 13.5px;
   font-weight: 600;

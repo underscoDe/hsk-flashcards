@@ -5,7 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>HSK Flashcards</title>
   <meta name="description" content="Practice Chinese vocabulary for all 6 HSK levels with clean, mobile-friendly flashcards.">
+  <meta name="color-scheme" content="light dark">
   <meta name="theme-color" content="#005da7">
+  <script>
+    // Theme before first paint, so dark mode never flashes white (kept in sync with js/theme.js)
+    (function () {
+      var preference;
+      try { preference = JSON.parse(localStorage.getItem('hsk-theme')); } catch (e) {}
+      var isDark = preference === 'dark'
+        || (preference !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+      document.documentElement.dataset.theme = isDark ? 'dark' : 'light';
+    })();
+  </script>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="HSK">
@@ -199,6 +210,17 @@
         </button>
       </div>
 
+      <!-- Preferences -->
+      <div class="setup-section">
+        <div class="section-label">Theme</div>
+        <div class="btn-group">
+          <button class="btn-opt active" data-group="theme" data-value="system">System</button>
+          <button class="btn-opt" data-group="theme" data-value="light">Light</button>
+          <button class="btn-opt" data-group="theme" data-value="dark">Dark</button>
+        </div>
+        <button class="btn-link" id="btn-reset-settings">Reset settings to default</button>
+      </div>
+
     </div>
 
     <p class="site-footer">
@@ -236,6 +258,11 @@
           <div class="hanzi" id="hanzi-front"></div>
           <div class="pinyin" id="pinyin-front"></div>
           <div class="translation" id="translation-front"></div>
+          <button class="btn-listen" type="button" aria-label="Listen to pronunciation" hidden>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/>
+            </svg>
+          </button>
           <div class="front-hint">
             <div class="hint-dot"></div>
             <span class="hint-text-pointer">Click to reveal</span>
@@ -250,6 +277,11 @@
           <div class="hanzi" id="hanzi-back"></div>
           <div class="pinyin" id="pinyin-back"></div>
           <div class="translation" id="translation-back"></div>
+          <button class="btn-listen" type="button" aria-label="Listen to pronunciation" hidden>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/>
+            </svg>
+          </button>
         </div>
 
       </div>
@@ -270,6 +302,7 @@
       <kbd>←</kbd> <kbd>→</kbd> navigate &nbsp;
       <kbd>K</kbd> got it &nbsp;
       <kbd>U</kbd> review again
+      <span class="kbd-listen" hidden>&nbsp; <kbd>P</kbd> listen</span>
     </div>
     <div class="touch-hint">
       <span>← review again</span>

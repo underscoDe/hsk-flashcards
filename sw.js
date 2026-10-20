@@ -1,4 +1,4 @@
-const VERSION = 'v4'; // bump on every data update (scripts/update-vocab.sh)
+const VERSION = 'v6'; // bump on every data update (scripts/update-vocab.sh)
 const STATIC_CACHE = `hsk-static-${VERSION}`;
 const DATA_CACHE   = `hsk-data-${VERSION}`;
 
@@ -11,7 +11,9 @@ const STATIC_ASSETS = [
   '/js/progress.js',
   '/js/results.js',
   '/js/setup.js',
+  '/js/speech.js',
   '/js/state.js',
+  '/js/theme.js',
   '/js/utils.js',
   '/manifest.json',
 ];
