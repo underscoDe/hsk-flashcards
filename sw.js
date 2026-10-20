@@ -1,4 +1,4 @@
-const VERSION = 'v2';
+const VERSION = 'v3'; // bump on every data update (scripts/update-vocab.sh)
 const STATIC_CACHE = `hsk-static-${VERSION}`;
 const DATA_CACHE   = `hsk-data-${VERSION}`;
 
@@ -15,14 +15,21 @@ const STATIC_ASSETS = [
   '/manifest.json',
 ];
 
-// Install: pre-cache shell assets
-self.addEventListener('install', e => {
-  e.waitUntil(
-    // cache: 'reload' bypasses the HTTP cache so we never pre-cache stale files
-    caches.open(STATIC_CACHE).then(c =>
-      c.addAll(STATIC_ASSETS.map(url => new Request(url, { cache: 'reload' })))
-    )
+const DATA_ASSETS = [1, 2, 3, 4, 5, 6].map(level => `/data/hsk-level-${level}.json`);
+
+// cache: 'reload' bypasses the HTTP cache so we never pre-cache stale files
+function precache(cacheName, urls) {
+  return caches.open(cacheName).then(c =>
+    c.addAll(urls.map(url => new Request(url, { cache: 'reload' })))
   );
+}
+
+// Install: pre-cache shell assets and every level, so the app works fully offline
+self.addEventListener('install', e => {
+  e.waitUntil(Promise.all([
+    precache(STATIC_CACHE, STATIC_ASSETS),
+    precache(DATA_CACHE, DATA_ASSETS),
+  ]));
   self.skipWaiting();
 });
 
@@ -44,8 +51,8 @@ self.addEventListener('fetch', e => {
   const { request } = e;
   const url = new URL(request.url);
 
-  // Vocabulary JSON from GitHub — cache-first, fall back to network
-  if (url.hostname === 'raw.githubusercontent.com') {
+  // Vocabulary JSON — cache-first; only changes when VERSION is bumped
+  if (url.origin === self.location.origin && url.pathname.startsWith('/data/')) {
     e.respondWith(
       caches.open(DATA_CACHE).then(async cache => {
         const cached = await cache.match(request);

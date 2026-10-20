@@ -1,10 +1,10 @@
 export const DATA_URLS = {
-  '1': 'https://raw.githubusercontent.com/gigacool/hanyu-shuiping-kaoshi/master/json/hsk-level-1.json',
-  '2': 'https://raw.githubusercontent.com/gigacool/hanyu-shuiping-kaoshi/master/json/hsk-level-2.json',
-  '3': 'https://raw.githubusercontent.com/gigacool/hanyu-shuiping-kaoshi/master/json/hsk-level-3.json',
-  '4': 'https://raw.githubusercontent.com/gigacool/hanyu-shuiping-kaoshi/master/json/hsk-level-4.json',
-  '5': 'https://raw.githubusercontent.com/gigacool/hanyu-shuiping-kaoshi/master/json/hsk-level-5.json',
-  '6': 'https://raw.githubusercontent.com/gigacool/hanyu-shuiping-kaoshi/master/json/hsk-level-6.json',
+  '1': '/data/hsk-level-1.json',
+  '2': '/data/hsk-level-2.json',
+  '3': '/data/hsk-level-3.json',
+  '4': '/data/hsk-level-4.json',
+  '5': '/data/hsk-level-5.json',
+  '6': '/data/hsk-level-6.json',
 };
 
 export const LEVEL_COUNTS = {
