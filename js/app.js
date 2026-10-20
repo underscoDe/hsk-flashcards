@@ -28,8 +28,8 @@ async function startSession(getWords) {
     renderCard();
   } catch (err) {
     console.error(err);
-    alert('Could not load vocabulary data. Please check your internet connection.');
     showSetup();
+    showMessage('Couldn’t load the words', 'Please check your internet connection and try again.');
   }
 }
 
@@ -122,7 +122,7 @@ function init() {
     readSetupConfig();
     saveSetupState();
     if (cfg.level === 'combo' && !cfg.comboLevels.length) {
-      alert('Please select at least one level for Combo mode.');
+      document.getElementById('combo-hint').hidden = false;
       return;
     }
     session.mode = 'standard';
@@ -157,6 +157,20 @@ function init() {
 
   document.getElementById('btn-new-config').addEventListener('click', showSetup);
   document.getElementById('btn-undo-results').addEventListener('click', undoLastRating);
+
+  const messageDialog = document.getElementById('message-dialog');
+  const closeMessage  = () => messageDialog.classList.remove('visible');
+  document.getElementById('message-dialog-ok').addEventListener('click', closeMessage);
+  messageDialog.addEventListener('click', e => { if (e.target === messageDialog) closeMessage(); });
+}
+
+/** Shows an information dialog with a single OK button. */
+function showMessage(title, body) {
+  const dialog = document.getElementById('message-dialog');
+  document.getElementById('message-dialog-title').textContent = title;
+  document.getElementById('message-dialog-body').textContent  = body;
+  dialog.classList.add('visible');
+  document.getElementById('message-dialog-ok').focus();
 }
 
 /** Wires a confirmation dialog: `trigger` opens it, the confirm button runs `handleConfirm`. */

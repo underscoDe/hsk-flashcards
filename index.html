@@ -125,6 +125,7 @@
               <span class="combo-label">HSK 6 <small>2500 words</small></span>
             </label>
           </div>
+          <p class="count-hint combo-hint" id="combo-hint" role="alert" hidden>Select at least one level.</p>
         </div>
       </div>
 
@@ -381,6 +382,17 @@
     <div class="dialog-actions">
       <button class="dialog-btn-cancel">Cancel</button>
       <button class="dialog-btn-confirm">Reset</button>
+    </div>
+  </div>
+</div>
+
+<!-- ======= MESSAGE DIALOG (errors) ======= -->
+<div class="dialog-backdrop" id="message-dialog" aria-modal="true" role="alertdialog" aria-labelledby="message-dialog-title" aria-describedby="message-dialog-body">
+  <div class="dialog-card">
+    <p class="dialog-title" id="message-dialog-title"></p>
+    <p class="dialog-body" id="message-dialog-body"></p>
+    <div class="dialog-actions dialog-actions-single">
+      <button class="dialog-btn-cancel" id="message-dialog-ok">OK</button>
     </div>
   </div>
 </div>

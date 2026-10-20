@@ -42,6 +42,11 @@ export function initSetup() {
     selectOption('theme', 'system');
   });
 
+  // The "select at least one level" hint goes away as soon as a level is ticked
+  document.querySelectorAll('.combo-check').forEach(cb => {
+    cb.addEventListener('change', () => { document.getElementById('combo-hint').hidden = true; });
+  });
+
   document.getElementById('custom-count').addEventListener('input', e => {
     if (e.target.value) {
       document.querySelectorAll('[data-group="count"]').forEach(b => b.classList.remove('active'));
@@ -203,6 +208,7 @@ function updateRangeRow(order) {
 
 function updateComboPanel(level) {
   const panel = document.getElementById('combo-panel');
+  document.getElementById('combo-hint').hidden = true;
   if (level === 'combo') {
     panel.classList.add('visible');
     const anyChecked = [...document.querySelectorAll('.combo-check')].some(cb => cb.checked);

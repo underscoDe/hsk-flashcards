@@ -21,17 +21,49 @@ export function rawToWords(data, level = null) {
     id:          entry.id,     // unique across levels; hanzi alone isn't (了 le/liǎo)
     hanzi:       entry.hanzi,
     pinyin:      entry.pinyin || '',
-    translation: cleanTranslations(entry.translations),
+    translation: TRANSLATION_FIXES[entry.id] ?? cleanTranslations(entry.translations),
     level,
   }));
 }
 
 function cleanTranslations(arr) {
   if (!arr || !arr.length) return '—';
-  // Filter CC-CEDICT classifier notes (CL:...), "(Tw)" variants, "also written..."
-  const clean = arr.filter(t => !/^CL:|^also written|^\(Tw\)/.test(t));
-  return (clean.length ? clean : arr).slice(0, 3).join(', ');
+  const clean = arr.filter(t => !NOT_A_TRANSLATION.test(t));
+  return (clean.length ? clean : arr).slice(0, 3).map(simplifyReferences).join(', ');
 }
+
+// CC-CEDICT notation → plain text: drops a trailing classifier note, keeps the
+// simplified form, puts the pinyin in parentheses (個|个[gè] → 个 (gè)) and
+// unbrackets pronunciation notes (also pr. [shuí] → also pr. shuí)
+function simplifyReferences(text) {
+  return text
+    .replace(/\s*CL:.*$/, '')
+    .replace(/\s*\(Taiwan pr\.\s*\)/, '') // empty in the source data
+    .replace(/[\u3400-\u9fff]+\|([\u3400-\u9fff]+)/g, '$1')
+    .replace(/([\u3400-\u9fff]+)\[([^\]]+)\]/g, '$1 ($2)')
+    .replace(/\[([^\]]+)\]/g, '$1');
+}
+
+// CC-CEDICT entries that aren't meanings: classifier notes (the source split
+// "CL:個|个[gè],位[wèi]" on commas, hence bare 位[wèi] items), Taiwan-only
+// forms (HSK follows mainland usage) and cross-references ("also written…",
+// "variant of…", "see…")
+const NOT_A_TRANSLATION =
+  /^CL:|^also written|^\(Tw\)|^Taiwan pr|^(old )?variant of |^see (also )?|^[\u3400-\u9fff|]+(\[[^\]]+\])?$/;
+
+// Words whose source entry only holds a cross-reference ("variant of…"), by id
+const TRANSLATION_FIXES = {
+  32:   'classifier for people and objects in general, individual',      // 个
+  140:  'how?, what?, why?',                                              // 怎么
+  387:  'relation, relationship, connection',                             // 关系
+  1614: 'lane, alley',                                                    // 胡同
+  2047: 'to rise, to go up, to promote, liter',                           // 升
+  2640: 'unique, unconventional, novel',                                  // 别致
+  3709: 'long-winded, wordy, troublesome',                                // 啰唆
+  3753: 'to fill the air, to spread everywhere, to pervade',              // 弥漫
+  4257: 'to pull out, to fish out (from a pocket), to dig',               // 掏
+  4897: 'as everyone knows, as is well known',                            // 众所周知
+};
 
 const TONE_MARKS = {
   1: 'āēīōūǖ',

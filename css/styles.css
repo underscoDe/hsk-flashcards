@@ -334,6 +334,7 @@ body {
   transition: max-height 0.28s ease, opacity 0.22s ease;
 }
 .combo-panel.visible { max-height: 300px; opacity: 1; }
+.combo-hint { color: var(--error); }
 
 .combo-grid {
   display: grid;
@@ -1138,6 +1139,7 @@ kbd {
   grid-template-columns: 1fr 1fr;
   gap: 8px;
 }
+.dialog-actions-single { grid-template-columns: 1fr; }
 .dialog-btn-cancel {
   padding: 11px;
   border-radius: var(--r);
