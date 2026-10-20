@@ -8,7 +8,7 @@ A clean, mobile-friendly flashcard app for practicing Chinese vocabulary across 
 
 ## Features
 
-- **All 6 HSK levels** — 150 to 601 words per level (2,385 words total)
+- **All 6 HSK levels** — 150 to 2,500 words per level (5,000 words total)
 - **Combo mode** — mix multiple levels in a single session
 - **Flexible word selection** — random, A→Z or Z→A by pinyin
 - **Word range** — study words 25–50 from a sorted list, for example

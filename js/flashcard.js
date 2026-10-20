@@ -20,7 +20,7 @@ export function renderCard() {
     'mode-pinyin-first', cfg.cardMode === 'pinyin-first'
   );
 
-  updateStatusBadge(word.hanzi);
+  updateStatusBadge(word.id);
   updateLevelBadge(word.level);
 
   document.getElementById('btn-prev').disabled    = idx === 0;
@@ -41,15 +41,15 @@ export function updateLevelBadge(level) {
   }
 }
 
-export function updateStatusBadge(hanzi) {
+export function updateStatusBadge(id) {
   const els = [
     document.getElementById('card-status-front'),
     document.getElementById('card-status-back'),
   ];
 
-  if (session.known.has(hanzi)) {
+  if (session.known.has(id)) {
     els.forEach(el => { el.textContent = '✓ Got it'; el.className = 'card-status known-badge'; });
-  } else if (session.unknown.has(hanzi)) {
+  } else if (session.unknown.has(id)) {
     els.forEach(el => { el.textContent = '✗ Review'; el.className = 'card-status unknown-badge'; });
   } else {
     els.forEach(el => { el.textContent = ''; el.className = 'card-status'; });
@@ -63,15 +63,15 @@ export function setFlipped(flipped) {
 }
 
 export function markAndAdvance(verdict) {
-  const hanzi = session.words[session.currentIndex].hanzi;
+  const id = session.words[session.currentIndex].id;
   if (verdict === 'known') {
-    session.known.add(hanzi);
-    session.unknown.delete(hanzi);
+    session.known.add(id);
+    session.unknown.delete(id);
   } else {
-    session.unknown.add(hanzi);
-    session.known.delete(hanzi);
+    session.unknown.add(id);
+    session.known.delete(id);
   }
-  updateStatusBadge(hanzi);
+  updateStatusBadge(id);
 
   if (session.currentIndex < session.words.length - 1) {
     session.currentIndex++;

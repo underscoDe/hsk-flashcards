@@ -18,6 +18,7 @@ export function sortWords(words, order) {
 // New format: array of { id, hanzi, pinyin, translations[] }
 export function rawToWords(data, level = null) {
   return data.map(entry => ({
+    id:          entry.id,     // unique across levels; hanzi alone isn't (了 le/liǎo)
     hanzi:       entry.hanzi,
     pinyin:      entry.pinyin || '',
     translation: cleanTranslations(entry.translations),

@@ -8,7 +8,7 @@ export const DATA_URLS = {
 };
 
 export const LEVEL_COUNTS = {
-  '1': 150, '2': 150, '3': 299, '4': 601, '5': 585, '6': 500,
+  '1': 150, '2': 150, '3': 299, '4': 601, '5': 1300, '6': 2500,
 };
 
 export const cfg = {

@@ -1,4 +1,4 @@
-const VERSION = 'v1';
+const VERSION = 'v2';
 const STATIC_CACHE = `hsk-static-${VERSION}`;
 const DATA_CACHE   = `hsk-data-${VERSION}`;
 
@@ -18,7 +18,10 @@ const STATIC_ASSETS = [
 // Install: pre-cache shell assets
 self.addEventListener('install', e => {
   e.waitUntil(
-    caches.open(STATIC_CACHE).then(c => c.addAll(STATIC_ASSETS))
+    // cache: 'reload' bypasses the HTTP cache so we never pre-cache stale files
+    caches.open(STATIC_CACHE).then(c =>
+      c.addAll(STATIC_ASSETS.map(url => new Request(url, { cache: 'reload' })))
+    )
   );
   self.skipWaiting();
 });
@@ -48,7 +51,7 @@ self.addEventListener('fetch', e => {
         const cached = await cache.match(request);
         if (cached) return cached;
         const response = await fetch(request);
-        cache.put(request, response.clone());
+        if (response.ok) cache.put(request, response.clone());
         return response;
       })
     );
@@ -58,8 +61,17 @@ self.addEventListener('fetch', e => {
   // Google Fonts — network-first (skip caching to avoid CORS issues)
   if (url.hostname.includes('fonts.')) return;
 
-  // Shell assets — cache-first
+  // Shell assets — network-first so updates reach users, cache as offline fallback
+  if (request.method !== 'GET' || url.origin !== self.location.origin) return;
   e.respondWith(
-    caches.match(request).then(cached => cached || fetch(request))
+    fetch(request, { cache: 'no-cache' })
+      .then(response => {
+        if (response.ok) {
+          const copy = response.clone();
+          caches.open(STATIC_CACHE).then(c => c.put(request, copy));
+        }
+        return response;
+      })
+      .catch(() => caches.match(request))
   );
 });

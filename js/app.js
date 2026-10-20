@@ -135,12 +135,15 @@ function init() {
   });
 
   document.getElementById('btn-retry-unknown').addEventListener('click', () => {
-    const unknownWords = session.words.filter(w => session.unknown.has(w.hanzi));
-    loadAndStart(sortWords(unknownWords, cfg.order));
+    // Unrated (skipped) words count as "to review" in the results, so include them
+    const missedWords = session.words.filter(w => !session.known.has(w.id));
+    loadAndStart(sortWords(missedWords, cfg.order));
   });
 
+  // Replay the same words; reshuffle only if the session was shuffled
   document.getElementById('btn-restart').addEventListener('click', () => {
-    loadAndStart();
+    const isShuffled = cfg.order === 'random' || cfg.presentationShuffle;
+    loadAndStart(isShuffled ? shuffle(session.words) : session.words);
   });
 
   document.getElementById('btn-new-config').addEventListener('click', () => {

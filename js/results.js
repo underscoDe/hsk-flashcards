@@ -37,7 +37,7 @@ export function showResults() {
     `${total} word${total > 1 ? 's' : ''} reviewed — ${label}`;
 
   document.getElementById('btn-retry-unknown').style.display =
-    session.unknown.size > 0 ? '' : 'none';
+    known < total ? '' : 'none';
 
   showScreen('results-screen');
 }
