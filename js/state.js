@@ -23,11 +23,14 @@ export const cfg = {
 };
 
 export const session = {
+  mode:         'standard', // 'standard' | 'review' (words due today)
   words:        [],
   currentIndex: 0,
   isFlipped:    false,
+  showsLevel:   false,      // level badge on cards when words span several levels
   known:        new Set(),
   unknown:      new Set(),
+  promoted:     new Set(),  // ids that moved up a Leitner box this session
 };
 
 export const cache = {};

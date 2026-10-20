@@ -35,6 +35,16 @@
 
     <div class="setup-card">
 
+      <!-- Daily review (shown once at least one word has been rated) -->
+      <div class="setup-section review-section" id="review-section" hidden>
+        <div class="section-label">Spaced repetition</div>
+        <div class="review-row">
+          <p class="review-text" id="review-text"></p>
+          <button class="btn-review-today" id="btn-review-today">Review now</button>
+        </div>
+        <button class="btn-link" id="btn-reset-progress">Reset progress</button>
+      </div>
+
       <!-- Level -->
       <div class="setup-section">
         <div class="section-label">HSK Level</div>
@@ -42,26 +52,32 @@
           <button class="btn-level active" data-group="level" data-value="1">
             <span class="level-name">HSK 1</span>
             <span class="level-count">150 words</span>
+            <span class="level-progress" hidden><span class="level-progress-fill"></span></span>
           </button>
           <button class="btn-level" data-group="level" data-value="2">
             <span class="level-name">HSK 2</span>
             <span class="level-count">150 words</span>
+            <span class="level-progress" hidden><span class="level-progress-fill"></span></span>
           </button>
           <button class="btn-level" data-group="level" data-value="3">
             <span class="level-name">HSK 3</span>
             <span class="level-count">299 words</span>
+            <span class="level-progress" hidden><span class="level-progress-fill"></span></span>
           </button>
           <button class="btn-level" data-group="level" data-value="4">
             <span class="level-name">HSK 4</span>
             <span class="level-count">601 words</span>
+            <span class="level-progress" hidden><span class="level-progress-fill"></span></span>
           </button>
           <button class="btn-level" data-group="level" data-value="5">
             <span class="level-name">HSK 5</span>
             <span class="level-count">1300 words</span>
+            <span class="level-progress" hidden><span class="level-progress-fill"></span></span>
           </button>
           <button class="btn-level" data-group="level" data-value="6">
             <span class="level-name">HSK 6</span>
             <span class="level-count">2500 words</span>
+            <span class="level-progress" hidden><span class="level-progress-fill"></span></span>
           </button>
         </div>
         <button class="btn-combo" data-group="level" data-value="combo">⊕ Combo mode</button>
@@ -295,6 +311,7 @@
       <div class="score-bar">
         <div class="score-fill" id="score-fill" style="width:0%"></div>
       </div>
+      <p class="results-promoted" id="r-promoted" hidden></p>
 
       <div class="results-actions">
         <button class="btn-primary"   id="btn-retry-unknown">🔄 Review missed words</button>
@@ -310,10 +327,22 @@
 <div class="dialog-backdrop" id="quit-dialog" aria-modal="true" role="dialog" aria-labelledby="quit-dialog-title">
   <div class="dialog-card">
     <p class="dialog-title" id="quit-dialog-title">Quit this session?</p>
-    <p class="dialog-body">Your progress won't be saved.</p>
+    <p class="dialog-body">Cards you've already rated are saved.</p>
     <div class="dialog-actions">
       <button class="dialog-btn-cancel" id="quit-cancel">Keep going</button>
       <button class="dialog-btn-confirm" id="quit-confirm">Quit</button>
+    </div>
+  </div>
+</div>
+
+<!-- ======= RESET PROGRESS DIALOG ======= -->
+<div class="dialog-backdrop" id="reset-dialog" aria-modal="true" role="dialog" aria-labelledby="reset-dialog-title">
+  <div class="dialog-card">
+    <p class="dialog-title" id="reset-dialog-title">Reset all progress?</p>
+    <p class="dialog-body">Every word goes back to new. This can't be undone.</p>
+    <div class="dialog-actions">
+      <button class="dialog-btn-cancel">Cancel</button>
+      <button class="dialog-btn-confirm">Reset</button>
     </div>
   </div>
 </div>

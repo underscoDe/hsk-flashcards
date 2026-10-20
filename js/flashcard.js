@@ -1,4 +1,5 @@
 import { session, cfg } from './state.js';
+import { recordAnswer } from './progress.js';
 
 export function renderCard() {
   const word = session.words[session.currentIndex];
@@ -21,7 +22,7 @@ export function renderCard() {
   );
 
   updateStatusBadge(word.id);
-  updateLevelBadge(word.level);
+  updateLevelBadge(session.showsLevel ? word.level : null);
 
   document.getElementById('btn-prev').disabled    = idx === 0;
   document.getElementById('btn-next').textContent = idx === tot - 1 ? 'Finish ✓' : 'Next →';
@@ -63,13 +64,17 @@ export function setFlipped(flipped) {
 }
 
 export function markAndAdvance(verdict) {
-  const id = session.words[session.currentIndex].id;
+  const word = session.words[session.currentIndex];
+  const { id } = word;
   if (verdict === 'known') {
     session.known.add(id);
     session.unknown.delete(id);
+    if (recordAnswer(word, true)) session.promoted.add(id);
   } else {
     session.unknown.add(id);
     session.known.delete(id);
+    session.promoted.delete(id);
+    recordAnswer(word, false);
   }
   updateStatusBadge(id);
 

@@ -2,6 +2,7 @@ import { session, cfg } from './state.js';
 import { showScreen } from './utils.js';
 
 function levelLabel() {
+  if (session.mode === 'review') return 'Daily review';
   if (cfg.level === 'combo') {
     return `Combo — HSK ${cfg.comboLevels.join(' + ')}`;
   }
@@ -35,6 +36,11 @@ export function showResults() {
   document.getElementById('r-title').textContent = title;
   document.getElementById('r-sub').textContent =
     `${total} word${total > 1 ? 's' : ''} reviewed — ${label}`;
+
+  const promoted = session.promoted.size;
+  const promotedEl = document.getElementById('r-promoted');
+  promotedEl.textContent = `📈 ${promoted} word${promoted > 1 ? 's' : ''} moved to a longer review interval`;
+  promotedEl.hidden = promoted === 0;
 
   document.getElementById('btn-retry-unknown').style.display =
     known < total ? '' : 'none';

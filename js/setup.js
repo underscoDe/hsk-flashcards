@@ -1,4 +1,5 @@
-import { cfg } from './state.js';
+import { cfg, LEVEL_COUNTS } from './state.js';
+import { getDueEntries, getDaysUntilNextReview, getMasteredByLevel, hasProgress } from './progress.js';
 
 export function initSetup() {
   document.querySelectorAll('button[data-group]').forEach(btn => {
@@ -65,6 +66,41 @@ export function initSetup() {
 
   rangeFrom.addEventListener('input', updateRangeState);
   rangeTo.addEventListener('input',   updateRangeState);
+}
+
+/** Refreshes the daily review block and the per-level mastery bars. */
+export function renderProgressSummary() {
+  renderDailyReview();
+  renderLevelProgress();
+}
+
+function renderDailyReview() {
+  const section = document.getElementById('review-section');
+  section.hidden = !hasProgress();
+  if (section.hidden) return;
+
+  const dueCount = getDueEntries().length;
+  document.getElementById('btn-review-today').hidden = dueCount === 0;
+  document.getElementById('review-text').textContent = dueCount > 0
+    ? `${dueCount} word${dueCount > 1 ? 's' : ''} to review today`
+    : nextReviewText(getDaysUntilNextReview());
+}
+
+function renderLevelProgress() {
+  const mastered = getMasteredByLevel();
+  document.querySelectorAll('.btn-level').forEach(btn => {
+    const level = btn.dataset.value;
+    const total = LEVEL_COUNTS[level];
+    const count = mastered[level] ?? 0;
+    btn.querySelector('.level-count').textContent = count ? `${count}/${total} mastered` : `${total} words`;
+    btn.querySelector('.level-progress').hidden = count === 0;
+    btn.querySelector('.level-progress-fill').style.width = `${(count / total) * 100}%`;
+  });
+}
+
+function nextReviewText(days) {
+  if (days === 1) return '✓ All caught up — next review tomorrow';
+  return `✓ All caught up — next review in ${days} days`;
 }
 
 function updateShuffleRow(order) {
