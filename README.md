@@ -70,6 +70,8 @@ npm run test:all       # both
   simulated days, remembered settings, theme, tone colors, pronunciation (with a fake voice) and offline mode.
 - They use the installed Google Chrome. Without it, run `npx playwright install chromium` and
   `PW_CHANNEL=chromium npm run test:e2e`.
+- GitHub Actions (`.github/workflows/tests.yml`) runs both suites on every push to `main` and every pull
+  request. Traces of failed browser tests are attached to the run.
 
 ## Deployment (Vercel)
 
