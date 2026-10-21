@@ -34,6 +34,7 @@ export function renderCard() {
 
   updateStatusBadge(word.id);
   updateLevelBadge(session.showsLevel ? word.level : null);
+  updateSessionPanel();
 
   document.getElementById('btn-prev').disabled    = idx === 0;
   document.getElementById('btn-undo').disabled    = session.history.length === 0;
@@ -51,6 +52,14 @@ function renderWithTones(el, units, tones, separator) {
     return i > 0 && separator ? [separator, span] : [span];
   });
   el.replaceChildren(...nodes);
+}
+
+/** Desktop side panel: how many words were rated each way so far. */
+function updateSessionPanel() {
+  const { known, unknown, words } = session;
+  document.getElementById('sp-known').textContent  = known.size;
+  document.getElementById('sp-review').textContent = unknown.size;
+  document.getElementById('sp-left').textContent   = words.length - known.size - unknown.size;
 }
 
 /** Empties the answer field of the typing mode and gets it ready for the new card. */

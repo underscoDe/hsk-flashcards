@@ -17,7 +17,8 @@ export default defineConfig({
     {
       name: 'chrome',
       // Uses the installed Google Chrome; set PW_CHANNEL=chromium after `npx playwright install chromium` otherwise
-      use: { ...devices['Desktop Chrome'], channel: process.env.PW_CHANNEL ?? 'chrome' },
+      // Phone-sized by default (the main target); desktop.spec.js sets a desktop viewport
+      use: { ...devices['Desktop Chrome'], channel: process.env.PW_CHANNEL ?? 'chrome', viewport: { width: 412, height: 915 } },
     },
   ],
   // Same static server as local development; the app has no build step

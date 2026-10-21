@@ -76,6 +76,16 @@ function showSetup() {
   showScreen('setup-screen');
 }
 
+function openSettings() {
+  if (isShown('settings-screen')) return;
+  showScreen('settings-screen');
+  openView(showSetup);
+}
+
+function isShown(screenId) {
+  return document.getElementById(screenId).classList.contains('active');
+}
+
 /** Session screens are one view: the system back button asks before quitting a session. */
 function openSessionView() {
   openView(showSetup, handleSessionBack);
@@ -83,8 +93,6 @@ function openSessionView() {
 
 function handleSessionBack() {
   const quitDialog = document.getElementById('quit-dialog');
-  const isShown = id => document.getElementById(id).classList.contains('active');
-
   if (quitDialog.classList.contains('visible')) quitDialog.classList.remove('visible');
   else if (isShown('flashcard-screen')) quitDialog.classList.add('visible');
   else if (isShown('results-screen')) closeView();
@@ -154,11 +162,12 @@ function init() {
     startSession(selectDueWords);
   });
 
-  document.getElementById('btn-open-settings').addEventListener('click', () => {
-    showScreen('settings-screen');
-    openView(showSetup);
-  });
+  document.getElementById('btn-open-settings').addEventListener('click', openSettings);
   document.getElementById('btn-close-settings').addEventListener('click', closeView);
+  document.getElementById('nav-settings').addEventListener('click', openSettings);
+  document.getElementById('nav-home').addEventListener('click', () => {
+    if (isShown('settings-screen')) closeView();
+  });
 
   initDialog('quit-dialog', document.getElementById('btn-quit'), closeView);
   initDialog('reset-dialog', document.getElementById('btn-reset-progress'), () => {

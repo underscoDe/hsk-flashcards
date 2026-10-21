@@ -14,6 +14,7 @@ A clean, mobile-friendly flashcard app for practicing Chinese vocabulary across 
 - **Word range** — study words 25–50 from a sorted list, for example
 - **Shuffle presentation** — pick words in order, review them in random order
 - **Typing mode** — type the pinyin with tones (`nǐ hǎo` or `ni3 hao3`); the check suggests the rating, which you can still change
+- **Phone and desktop layouts** — on phones, session options in a bottom sheet and settings on their own page (the back button closes them and asks before quitting a session); on desktop, a top navigation, options shown inline and a session side panel with progress and shortcuts
 - **Mobile swipe gestures** — swipe right = got it, swipe left = review again
 - **Keyboard shortcuts** — `Space` flip, `← →` navigate, `K` got it, `U` review again, `P` listen, `Z` undo
 - **Undo** — revert the last ratings (button, `Z`, or from the results screen), progress included

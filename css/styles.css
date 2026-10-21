@@ -1440,3 +1440,144 @@ body:has(.sheet[open]) { overflow: hidden; }
   .btn-level { padding: 10px 6px; }
   .level-name { font-size: 12px; }
 }
+
+/* ============================
+   DESKTOP (≥ 1024px)
+   Top navigation, two-column home, session side panel
+   ============================ */
+.site-nav,
+.session-panel { display: none; }
+
+/* Session side panel */
+.session-stats,
+.session-keys {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.session-keys { margin-bottom: 0; }
+.session-stats div,
+.session-keys div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+}
+.session-stats dt { color: var(--on-surface-variant); }
+.session-stats dd { font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.session-stats .s-known dd  { color: var(--success); }
+.session-stats .s-review dd { color: var(--error); }
+.session-keys dd { color: var(--on-surface-muted); text-align: right; }
+.session-keys .kbd-type-mode { display: none; }
+#flashcard-screen:has(.mode-type-pinyin) .session-keys .kbd-type-mode { display: flex; }
+
+@media (min-width: 1024px) {
+  .app { max-width: 1040px; }
+
+  /* ---- Top navigation: home and settings only, sessions stay distraction-free ---- */
+  body:has(#setup-screen.active, #settings-screen.active) .site-nav { display: flex; }
+  .site-nav {
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--divider);
+  }
+  .site-nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-right: auto;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .site-nav-brand .logo-badge { width: 36px; height: 36px; font-size: 18px; border-radius: var(--r-md); }
+  .site-nav-link {
+    padding: 8px 16px;
+    border: none;
+    border-radius: var(--r-full);
+    background: none;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--on-surface-muted);
+    cursor: pointer;
+    transition: background 0.12s, color 0.12s;
+  }
+  .site-nav-link:hover { background: var(--surface-mid); color: var(--on-surface); }
+  body:has(#setup-screen.active) #nav-home,
+  body:has(#settings-screen.active) #nav-settings { background: var(--primary-bg); color: var(--primary); }
+
+  /* ---- Home: levels on the left, session options shown inline on the right ---- */
+  #setup-screen.active {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas:
+      "review review"
+      "levels options"
+      "levels start";
+    gap: 0 24px;
+    align-items: start;
+  }
+  #setup-screen .app-header,
+  .options-row { display: none; }
+  .review-card { grid-area: review; margin-bottom: 24px; }
+  #setup-screen .setup-card { grid-area: levels; }
+  .btn-level { padding: 24px 8px; }
+  .level-name { font-size: 15px; }
+  .level-count { font-size: 11.5px; }
+  .start-bar {
+    grid-area: start;
+    position: static;
+    margin: 0;
+    padding: 16px 0 0;
+    background: none;
+  }
+  /* The sheet becomes a plain panel: never opened as a modal on desktop */
+  .sheet {
+    grid-area: options;
+    display: block;
+    position: static;
+    width: auto;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    border-radius: var(--r-md);
+    box-shadow: var(--shadow-md);
+    overflow: visible;
+  }
+  .sheet-header { display: none; }
+  .sheet-body { overflow: visible; padding-bottom: 0; }
+
+  /* ---- Settings and results: centered, readable width ---- */
+  #settings-screen,
+  #results-screen { max-width: 600px; margin: 0 auto; }
+  #settings-screen .btn-back { display: none; } /* the top navigation replaces it */
+
+  /* ---- Session: bigger card, progress and shortcuts on the side ---- */
+  #flashcard-screen.active {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 260px;
+    gap: 0 24px;
+    align-items: start;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .session-panel {
+    display: block;
+    grid-column: 2;
+    grid-row: 1 / span 9;
+    position: sticky;
+    top: 24px;
+    padding: 20px;
+    border-radius: var(--r-md);
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
+  }
+  .flashcard { height: 420px; }
+  .hanzi { font-size: 128px; }
+  .translation { max-width: 440px; }
+  #flashcard-screen .kbd-hint { display: none; }
+}

@@ -34,6 +34,16 @@
 <body>
 <div class="app">
 
+  <!-- Desktop navigation; phones use the settings button in the home header -->
+  <nav class="site-nav" aria-label="Main">
+    <div class="site-nav-brand">
+      <span class="logo-badge">汉</span>
+      HSK Flashcards
+    </div>
+    <button class="site-nav-link" id="nav-home">Home</button>
+    <button class="site-nav-link" id="nav-settings">Settings</button>
+  </nav>
+
   <!-- ======= SETUP SCREEN ======= -->
   <div id="setup-screen" class="screen active">
     <div class="app-header">
@@ -376,6 +386,26 @@
       <span>tap to flip</span>
       <span>got it →</span>
     </div>
+
+    <!-- Desktop only: session progress and every shortcut, always in view -->
+    <aside class="session-panel" aria-label="Session progress">
+      <div class="section-label">This session</div>
+      <dl class="session-stats">
+        <div class="s-known"><dt>✓ Got it</dt><dd id="sp-known">0</dd></div>
+        <div class="s-review"><dt>✗ Review again</dt><dd id="sp-review">0</dd></div>
+        <div><dt>Not rated yet</dt><dd id="sp-left">0</dd></div>
+      </dl>
+      <div class="section-label">Keyboard</div>
+      <dl class="session-keys">
+        <div><dt><kbd>Space</kbd></dt><dd>Flip the card</dd></div>
+        <div class="kbd-type-mode"><dt><kbd>Enter</kbd></dt><dd>Check your answer</dd></div>
+        <div><dt><kbd>K</kbd></dt><dd>Got it</dd></div>
+        <div><dt><kbd>U</kbd></dt><dd>Review again</dd></div>
+        <div><dt><kbd>←</kbd> <kbd>→</kbd></dt><dd>Previous / next</dd></div>
+        <div><dt><kbd>Z</kbd></dt><dd>Undo</dd></div>
+        <div class="kbd-listen" hidden><dt><kbd>P</kbd></dt><dd>Listen</dd></div>
+      </dl>
+    </aside>
   </div>
 
   <!-- ======= RESULTS SCREEN ======= -->
