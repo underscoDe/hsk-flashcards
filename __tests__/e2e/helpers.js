@@ -59,3 +59,9 @@ export async function quitSession(page) {
 export function readProgress(page) {
   return page.evaluate(() => JSON.parse(localStorage.getItem('hsk-progress') ?? '{}'));
 }
+
+/** Opens the guide from the home header. */
+export async function openGuide(page) {
+  await page.locator('#btn-open-guide').click();
+  await expect(page.locator('#guide-screen')).toBeVisible();
+}

@@ -114,6 +114,42 @@ export function checkPinyin(answer, pinyin) {
   return hasRightTones ? 'correct' : 'tones';
 }
 
+/** Lowercase text without accents, for searching: "nǐ hǎo" and "ni hao" fold the same. */
+export function foldForSearch(text) {
+  return text.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase();
+}
+
+/**
+ * Where folded `terms` appear in `text`, ignoring case and accents, as sorted and
+ * merged [start, end) ranges of the original text (for highlighting).
+ */
+export function findMatches(text, terms) {
+  // Fold one character at a time, remembering where each folded character came from
+  let folded = '';
+  const origins = [];
+  for (let i = 0; i < text.length; i++) {
+    const unit = foldForSearch(text[i]);
+    folded += unit;
+    origins.push(...Array(unit.length).fill(i));
+  }
+
+  const ranges = terms.filter(Boolean).flatMap(term => {
+    const found = [];
+    for (let at = folded.indexOf(term); at !== -1; at = folded.indexOf(term, at + term.length)) {
+      found.push([origins[at], origins[at + term.length - 1] + 1]);
+    }
+    return found;
+  });
+
+  return ranges
+    .sort((a, b) => a[0] - b[0])
+    .reduce((merged, [start, end]) => {
+      const last = merged.at(-1);
+      if (last && start <= last[1]) return [...merged.slice(0, -1), [last[0], Math.max(last[1], end)]];
+      return [...merged, [start, end]];
+    }, []);
+}
+
 // Storage can be unavailable (private mode, blocked site data): reads fall back
 // to null and failed writes are only logged, so the app keeps working.
 export function readStorage(key) {

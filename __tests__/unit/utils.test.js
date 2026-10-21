@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { checkPinyin, getTone, rawToWords, readStorage, shuffle, sortWords, writeStorage } from '../../js/utils.js';
+import { checkPinyin, findMatches, foldForSearch, getTone, rawToWords, readStorage, shuffle, sortWords, writeStorage } from '../../js/utils.js';
 
 describe('shuffle', () => {
   it('keeps the same elements without mutating the input', () => {
@@ -76,6 +76,30 @@ describe('checkPinyin', () => {
     ['lu4', 'lǜ'],           // u is not ü
   ])('rejects %s for %s', (answer, pinyin) => {
     expect(checkPinyin(answer, pinyin)).toBe('wrong');
+  });
+});
+
+describe('foldForSearch', () => {
+  it('drops case and accents, keeps characters', () => {
+    expect(foldForSearch('Nǐ hǎo 你好')).toBe('ni hao 你好');
+    expect(foldForSearch('lǜ')).toBe('lu');
+  });
+});
+
+describe('findMatches', () => {
+  it('finds each term, ignoring accents, as ranges of the original text', () => {
+    const text = 'Write nǐ hǎo or ni3 hao3';
+    expect(findMatches(text, ['ni', 'hao']).map(([start, end]) => text.slice(start, end)))
+      .toEqual(['nǐ', 'hǎo', 'ni', 'hao']);
+  });
+
+  it('merges overlapping matches', () => {
+    expect(findMatches('review', ['rev', 'view'])).toEqual([[0, 6]]);
+  });
+
+  it('returns nothing without a match or a term', () => {
+    expect(findMatches('tones', ['xyz'])).toEqual([]);
+    expect(findMatches('tones', [''])).toEqual([]);
   });
 });
 

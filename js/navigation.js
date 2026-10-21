@@ -1,4 +1,4 @@
-// The system back button (Android, browser) closes the settings page, the
+// The system back button (Android, browser) closes the settings and guide pages, the
 // options sheet and sessions instead of leaving the app: opening one adds a
 // history entry, and going back through it runs that view's close handler.
 const views = [];

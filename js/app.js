@@ -6,6 +6,7 @@ import { showResults } from './results.js';
 import { getDueEntries, resetProgress } from './progress.js';
 import { initTheme } from './theme.js';
 import { initNavigation, openView, closeView } from './navigation.js';
+import { initGuide, resetGuide } from './guide.js';
 
 /** Shows the loading screen, then starts a session with the words from `getWords`. */
 async function startSession(getWords) {
@@ -76,10 +77,26 @@ function showSetup() {
   showScreen('setup-screen');
 }
 
+// Pages over the home screen: switching between them (desktop navigation)
+// replaces the page, so back still returns home in one step
+const PAGES = ['settings-screen', 'guide-screen'];
+
+function openPage(screenId) {
+  if (isShown(screenId)) return;
+  const isOnPage = PAGES.some(isShown);
+  showScreen(screenId);
+  if (!isOnPage) openView(showSetup);
+}
+
 function openSettings() {
-  if (isShown('settings-screen')) return;
-  showScreen('settings-screen');
-  openView(showSetup);
+  openPage('settings-screen');
+}
+
+function openGuide() {
+  if (isShown('guide-screen')) return;
+  resetGuide();
+  openPage('guide-screen');
+  window.scrollTo(0, 0);
 }
 
 function isShown(screenId) {
@@ -137,6 +154,7 @@ function init() {
   initNavigation();
   initSetup();
   initFlashcard();
+  initGuide();
   initKeyboard();
   renderProgressSummary();
 
@@ -165,8 +183,11 @@ function init() {
   document.getElementById('btn-open-settings').addEventListener('click', openSettings);
   document.getElementById('btn-close-settings').addEventListener('click', closeView);
   document.getElementById('nav-settings').addEventListener('click', openSettings);
+  document.getElementById('btn-open-guide').addEventListener('click', openGuide);
+  document.getElementById('btn-close-guide').addEventListener('click', closeView);
+  document.getElementById('nav-guide').addEventListener('click', openGuide);
   document.getElementById('nav-home').addEventListener('click', () => {
-    if (isShown('settings-screen')) closeView();
+    if (PAGES.some(isShown)) closeView();
   });
 
   initDialog('quit-dialog', document.getElementById('btn-quit'), closeView);

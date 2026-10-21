@@ -1,0 +1,83 @@
+import { foldForSearch, findMatches } from './utils.js';
+
+// The guide is plain HTML (index.html). Searching keeps the topics that contain
+// every typed word, opens them and highlights the words; accents don't matter.
+
+let topics = [];
+
+export function initGuide() {
+  const input = document.getElementById('guide-search');
+  topics = [...document.querySelectorAll('.guide-item')].map(el => ({
+    el,
+    text: foldForSearch(el.textContent),
+  }));
+
+  input.addEventListener('input', () => search(input.value));
+
+  // Section links scroll instead of using #anchors, which would add history entries
+  document.querySelectorAll('.guide-toc-link').forEach(link => {
+    link.addEventListener('click', () => {
+      document.getElementById(link.dataset.target).scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  // "/" jumps to the search field, as on many help sites
+  document.addEventListener('keydown', e => {
+    if (e.key !== '/' || !document.getElementById('guide-screen').classList.contains('active')) return;
+    if (e.target.tagName === 'INPUT') return;
+    e.preventDefault();
+    input.focus();
+  });
+}
+
+/** Empties the search and closes every topic, for a fresh guide each time it opens. */
+export function resetGuide() {
+  document.getElementById('guide-search').value = '';
+  search('');
+}
+
+function search(query) {
+  const terms = foldForSearch(query).split(/\s+/).filter(Boolean);
+  const isSearching = terms.length > 0;
+
+  const found = topics.filter(({ el, text }) => {
+    clearHighlights(el);
+    const isMatch = terms.every(term => text.includes(term));
+    el.hidden = !isMatch;
+    el.open   = isSearching && isMatch;
+    if (isSearching && isMatch) highlight(el, terms);
+    return isMatch;
+  }).length;
+
+  document.querySelectorAll('.guide-section').forEach(section => {
+    section.hidden = !section.querySelector('.guide-item:not([hidden])');
+  });
+  document.getElementById('guide-screen').classList.toggle('is-searching', isSearching);
+  document.getElementById('guide-empty').hidden = !isSearching || found > 0;
+  document.getElementById('guide-status').textContent =
+    isSearching && found ? `${found} topic${found > 1 ? 's' : ''} found` : '';
+}
+
+/** Wraps the matching parts of every text in `el` in <mark>. */
+function highlight(el, terms) {
+  const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+  const nodes  = [];
+  while (walker.nextNode()) nodes.push(walker.currentNode);
+
+  nodes.forEach(node => {
+    const ranges = findMatches(node.data, terms);
+    if (!ranges.length) return;
+
+    const parts = ranges.flatMap(([start, end], i) => {
+      const mark = document.createElement('mark');
+      mark.textContent = node.data.slice(start, end);
+      return [node.data.slice(i ? ranges[i - 1][1] : 0, start), mark];
+    });
+    node.replaceWith(...parts, node.data.slice(ranges.at(-1)[1]));
+  });
+}
+
+function clearHighlights(el) {
+  el.querySelectorAll('mark').forEach(mark => mark.replaceWith(mark.textContent));
+  el.normalize(); // merge the text back, so later searches see whole words
+}

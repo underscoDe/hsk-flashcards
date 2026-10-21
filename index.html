@@ -34,13 +34,14 @@
 <body>
 <div class="app">
 
-  <!-- Desktop navigation; phones use the settings button in the home header -->
+  <!-- Desktop navigation; phones use the guide and settings buttons in the home header -->
   <nav class="site-nav" aria-label="Main">
     <div class="site-nav-brand">
       <span class="logo-badge">汉</span>
       HSK Flashcards
     </div>
     <button class="site-nav-link" id="nav-home">Home</button>
+    <button class="site-nav-link" id="nav-guide">Guide</button>
     <button class="site-nav-link" id="nav-settings">Settings</button>
   </nav>
 
@@ -52,6 +53,11 @@
         <div class="app-title">HSK Flashcards</div>
         <div class="app-subtitle">Chinese vocabulary practice</div>
       </div>
+      <button class="btn-icon" id="btn-open-guide" aria-label="Guide">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/>
+        </svg>
+      </button>
       <button class="btn-icon" id="btn-open-settings" aria-label="Settings">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
@@ -290,6 +296,367 @@
           Your progress stays on this device.</p>
         <p>© <span id="footer-year"></span>
           <a href="https://www.linkedin.com/in/arsene-awounou/" target="_blank" rel="noopener">Arsène Awounou</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======= GUIDE SCREEN ======= -->
+  <!-- Plain HTML so it works offline; js/guide.js filters and highlights it -->
+  <div id="guide-screen" class="screen">
+    <div class="page-header">
+      <button class="btn-back" id="btn-close-guide">← Back</button>
+      <h1 class="page-title">Guide</h1>
+    </div>
+
+    <div class="guide-search">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>
+      </svg>
+      <input class="guide-search-input" id="guide-search" type="search" placeholder="Search the guide"
+             aria-label="Search the guide" aria-describedby="guide-status"
+             autocomplete="off" spellcheck="false" enterkeyhint="search">
+    </div>
+    <p class="guide-status" id="guide-status" role="status"></p>
+
+    <div class="guide-layout">
+      <nav class="guide-toc" aria-label="Guide topics">
+        <button class="guide-toc-link" data-target="guide-start">Getting started</button>
+        <button class="guide-toc-link" data-target="guide-words">Choosing words</button>
+        <button class="guide-toc-link" data-target="guide-modes">Card modes</button>
+        <button class="guide-toc-link" data-target="guide-session">During a session</button>
+        <button class="guide-toc-link" data-target="guide-progress">Progress and reviews</button>
+        <button class="guide-toc-link" data-target="guide-data">Settings and data</button>
+      </nav>
+
+      <div class="guide-content">
+        <section class="guide-section" id="guide-start">
+          <h2 class="guide-section-title">Getting started</h2>
+          <div class="guide-card">
+            <details class="guide-item">
+              <summary>What is HSK Flashcards?</summary>
+              <div class="guide-answer">
+                <p>A free flashcard app to learn the 5,000 words of the six HSK levels (the official Chinese proficiency test, HSK 2.0 lists).
+                  Each card shows a word in characters (hanzi), its reading (pinyin) and its English meaning.</p>
+                <p>The app remembers which words you know and brings them back just before you would forget them,
+                  so a few minutes a day is enough to make steady progress.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Start your first session</summary>
+              <div class="guide-answer">
+                <ol>
+                  <li>On the home screen, pick a <strong>level</strong>. HSK 1 is the place to start if you are new to Chinese.</li>
+                  <li>Optionally, open <strong>Session options</strong> to choose the card mode, the order and the number of words. On a computer, they are shown next to the levels.</li>
+                  <li>Press <strong>Start reviewing</strong>.</li>
+                  <li>Try to recall the word, then tap the card to see the answer.</li>
+                  <li>Be honest: press <strong>✓ Got it</strong> if you knew it, <strong>✗ Review again</strong> if you didn’t.</li>
+                </ol>
+                <p>At the end, the results screen shows your score. Words you rated come back on their own in the daily review.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Install the app on your phone or computer</summary>
+              <div class="guide-answer">
+                <p>Installed, the app opens full screen like any other app and works without an internet connection.</p>
+                <ul>
+                  <li><strong>Android (Chrome):</strong> open the ⋮ menu, then <em>Add to Home screen</em> or <em>Install app</em>.</li>
+                  <li><strong>iPhone and iPad (Safari):</strong> tap the Share button, then <em>Add to Home Screen</em>.</li>
+                  <li><strong>Computer (Chrome, Edge):</strong> click the install icon at the right of the address bar.</li>
+                </ul>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Move around the app</summary>
+              <div class="guide-answer">
+                <p>On a phone, the buttons at the top of the home screen open this guide and the settings.
+                  On a computer, use the navigation bar at the top.</p>
+                <p>The back button of your phone or browser closes the session options, the settings and this guide.
+                  During a session, it asks before quitting, so you never lose a session by accident.</p>
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <section class="guide-section" id="guide-words">
+          <h2 class="guide-section-title">Choosing words</h2>
+          <div class="guide-card">
+            <details class="guide-item">
+              <summary>HSK levels</summary>
+              <div class="guide-answer">
+                <p>Each level adds new words to the previous ones: HSK 1 and 2 have 150 words each, HSK 3 has 299,
+                  HSK 4 has 601, HSK 5 has 1,300 and HSK 6 has 2,500.</p>
+                <p>Once you have mastered words in a level, its tile shows how many, with a progress bar.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Combo mode: mix several levels</summary>
+              <div class="guide-answer">
+                <p>Press <strong>⊕ Combo mode</strong> under the levels and tick the levels to mix, for example HSK 1 + 2.
+                  Each card then shows its level in a small badge. Press Combo mode again to go back to a single level.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Word order: random, A→Z or Z→A</summary>
+              <div class="guide-answer">
+                <p><strong>Random</strong> picks words anywhere in the level, a new mix each time.
+                  <strong>A→Z Pinyin</strong> and <strong>Z→A Pinyin</strong> follow the alphabetical order of the pinyin,
+                  so you can go through a level from start to end.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Shuffle presentation</summary>
+              <div class="guide-answer">
+                <p>With A→Z or Z→A, the words are picked in order but you can still see them in a random order:
+                  turn on <strong>Shuffle presentation</strong>. For example, the first 25 words of HSK 3, shuffled,
+                  so you can’t guess a word from the one before.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Number of words per session</summary>
+              <div class="guide-answer">
+                <p>Choose 10, 25, 50 or all the words of the level, or type any number from 1 to 9,999 in
+                  <strong>Custom amount</strong>. If the level has fewer words, the session simply uses them all.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Study a range of words (for example 26 to 50)</summary>
+              <div class="guide-answer">
+                <p>With A→Z or Z→A, fill <strong>From word</strong> and <strong>To word</strong> to study an exact slice of the list.
+                  This is handy to learn a level in batches: words 1–25 today, 26–50 tomorrow, and so on.
+                  The range replaces the number of words chosen above.</p>
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <section class="guide-section" id="guide-modes">
+          <h2 class="guide-section-title">Card modes</h2>
+          <div class="guide-card">
+            <details class="guide-item">
+              <summary>Hanzi → Pinyin</summary>
+              <div class="guide-answer">
+                <p>The card shows the characters only. Recall how the word is read and what it means, then flip the card to check.
+                  This is the default mode, and the best one to learn to read.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Pinyin → Hanzi</summary>
+              <div class="guide-answer">
+                <p>The card shows the pinyin and the meaning. Recall the characters, then flip the card to check.
+                  Use it to practice writing: trace the characters with your finger or on paper before flipping.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Type pinyin</summary>
+              <div class="guide-answer">
+                <p>The card shows the characters and the meaning (some words share the same characters). Type the pinyin,
+                  then press <kbd>Enter</kbd> or <strong>Check</strong>. The card flips and tells you how you did:</p>
+                <ul>
+                  <li><strong>✓ Correct</strong>: <strong>Got it</strong> is suggested.</li>
+                  <li><strong>✗ Right syllables, wrong tones</strong> or <strong>✗ Not quite</strong>: <strong>Review again</strong> is suggested.</li>
+                </ul>
+                <p>Press <kbd>Enter</kbd> again to accept the suggestion and move on, or pick the other button,
+                  for example after a typo.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>How to type pinyin and tones</summary>
+              <div class="guide-answer">
+                <p>Tones are required. Write them with tone marks or with a number after each syllable:</p>
+                <ul>
+                  <li><strong>nǐ hǎo</strong> or <strong>ni3 hao3</strong> are both right.</li>
+                  <li>For the neutral tone, write nothing, <strong>5</strong> or <strong>0</strong>: <strong>ma</strong>, <strong>ma5</strong>.</li>
+                  <li>Type <strong>ü</strong> as <strong>v</strong> or <strong>u:</strong>, for example <strong>lv4</strong> for lǜ.</li>
+                  <li>Spaces, apostrophes, hyphens and capital letters don’t matter: <strong>Xi3huan5</strong> is fine.</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <section class="guide-section" id="guide-session">
+          <h2 class="guide-section-title">During a session</h2>
+          <div class="guide-card">
+            <details class="guide-item">
+              <summary>Flip and rate a card</summary>
+              <div class="guide-answer">
+                <p>Tap or click the card to flip it. Once the answer shows, rate yourself:
+                  <strong>✓ Got it</strong> if you knew the word, <strong>✗ Review again</strong> if not.
+                  Rating moves you to the next card.</p>
+                <p>The counter at the top shows where you are. On a computer, the panel at the right also counts
+                  the words rated each way.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Swipe gestures on a phone</summary>
+              <div class="guide-answer">
+                <p>Swipe the card <strong>right</strong> for Got it, <strong>left</strong> for Review again. A simple tap flips it.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Keyboard shortcuts</summary>
+              <div class="guide-answer">
+                <dl class="guide-keys">
+                  <div><dt><kbd>Space</kbd></dt><dd>Flip the card</dd></div>
+                  <div><dt><kbd>K</kbd></dt><dd>Got it</dd></div>
+                  <div><dt><kbd>U</kbd></dt><dd>Review again</dd></div>
+                  <div><dt><kbd>←</kbd> <kbd>→</kbd></dt><dd>Previous / next card</dd></div>
+                  <div><dt><kbd>Z</kbd></dt><dd>Undo the last rating</dd></div>
+                  <div><dt><kbd>P</kbd></dt><dd>Listen to the word</dd></div>
+                  <div><dt><kbd>Enter</kbd></dt><dd>Check your answer (typing mode)</dd></div>
+                </dl>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Skip a card or go back</summary>
+              <div class="guide-answer">
+                <p><strong>← Previous</strong> and <strong>Next →</strong> move between cards without rating them.
+                  Skipped words are not saved to your progress, and they count as “to review” in the results.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Undo a rating</summary>
+              <div class="guide-answer">
+                <p>Pressed the wrong button? <strong>↶ Undo</strong> (or <kbd>Z</kbd>) brings back the previous card,
+                  answer side up, and cancels its rating, progress included. You can undo several times in a row,
+                  even from the results screen.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Listen to the pronunciation</summary>
+              <div class="guide-answer">
+                <p>The 🔊 button on the card reads the word aloud, also offline. It uses the Chinese voice of your device,
+                  so it only appears when one is installed. To get one, add Chinese (Mandarin) to the text-to-speech or
+                  language settings of your phone or computer, then reload the app.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Tone colors</summary>
+              <div class="guide-answer">
+                <p>On the answer side, each syllable and its character are colored by tone, to help you remember them:</p>
+                <ul class="guide-tones">
+                  <li><span class="tone-1">mā</span> 1st tone, high and flat: red</li>
+                  <li><span class="tone-2">má</span> 2nd tone, rising: orange</li>
+                  <li><span class="tone-3">mǎ</span> 3rd tone, dipping: green</li>
+                  <li><span class="tone-4">mà</span> 4th tone, falling: blue</li>
+                  <li><span class="tone-5">ma</span> neutral tone: gray</li>
+                </ul>
+                <p>The characters on the front stay uncolored, so the tones aren’t given away.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Quit a session</summary>
+              <div class="guide-answer">
+                <p>Press <strong>← Back</strong> at the top left and confirm. The cards you already rated are saved.</p>
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <section class="guide-section" id="guide-progress">
+          <h2 class="guide-section-title">Progress and reviews</h2>
+          <div class="guide-card">
+            <details class="guide-item">
+              <summary>How spaced repetition works</summary>
+              <div class="guide-answer">
+                <p>Each word you rate gets a review date. When you know a word on its review day, the wait before
+                  the next review grows: <strong>1, 2, 4, 8, then 16 days</strong>. When you don’t, the word starts over
+                  and comes back the same day.</p>
+                <p>This way, you spend your time on the words you find hard, and easy words come back just often enough
+                  not to be forgotten. This method is known as the Leitner system.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>The daily review</summary>
+              <div class="guide-answer">
+                <p>Once you have rated a word, a card at the top of the home screen tells you how many words are due today.
+                  Press <strong>Review now</strong> to go through them, in random order and from every level at once.
+                  The card mode chosen in the session options still applies.</p>
+                <p>When nothing is due, the card tells you when the next review is.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Why didn’t a word move up?</summary>
+              <div class="guide-answer">
+                <p>Knowing a word before its review day doesn’t move it up: the spacing is what makes words stick.
+                  It keeps its current review date. “Review again”, on the other hand, always counts.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Mastered words</summary>
+              <div class="guide-answer">
+                <p>A word is mastered once its wait reaches 8 days, that is after you knew it 4 times, each time on its review day.
+                  The level tiles on the home screen show how many words of each level you have mastered.
+                  If you forget a mastered word later, it starts over.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>The results screen</summary>
+              <div class="guide-answer">
+                <p>At the end of a session, you see your score and how many words moved to a longer wait. From there:</p>
+                <ul>
+                  <li><strong>Review missed words</strong> starts a session with the words you didn’t get, skipped ones included.</li>
+                  <li><strong>Restart this session</strong> replays the same words.</li>
+                  <li><strong>New configuration</strong> goes back to the home screen.</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <section class="guide-section" id="guide-data">
+          <h2 class="guide-section-title">Settings and data</h2>
+          <div class="guide-card">
+            <details class="guide-item">
+              <summary>Dark mode</summary>
+              <div class="guide-answer">
+                <p>In <strong>Settings</strong>, choose <strong>Light</strong>, <strong>Dark</strong>, or <strong>System</strong>
+                  to follow your device, which is the default.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Your choices are remembered</summary>
+              <div class="guide-answer">
+                <p>The level and the session options are kept for your next visit.
+                  <strong>Reset settings</strong> in Settings puts them and the theme back to their defaults, without touching your progress.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Where is my progress saved?</summary>
+              <div class="guide-answer">
+                <p>Only on this device, in this browser: there is no account and nothing is sent anywhere.
+                  This also means that your progress is not shared between your phone and your computer, or between two browsers,
+                  and that clearing the browser’s data for this site erases it.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Start over from zero</summary>
+              <div class="guide-answer">
+                <p><strong>Reset progress</strong> in Settings forgets every rating: all words become new again.
+                  This can’t be undone.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Use the app offline</summary>
+              <div class="guide-answer">
+                <p>After your first visit, the app and all six levels are saved on your device, so everything works
+                  without an internet connection, installed or not. Updates download on their own when you are back online.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Where do the words come from?</summary>
+              <div class="guide-answer">
+                <p>The word lists are the official HSK 2.0 lists, and the meanings come from the free CC-CEDICT dictionary,
+                  through the open-source hanyu-shuiping-kaoshi project. A word can have several meanings: the card shows up to three.</p>
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <div class="guide-empty" id="guide-empty" hidden>
+          <p class="guide-empty-title">No results</p>
+          <p>Try other words, like “tones”, “review” or “offline”.</p>
+        </div>
       </div>
     </div>
   </div>

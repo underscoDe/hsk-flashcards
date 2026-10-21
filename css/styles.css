@@ -189,8 +189,9 @@ body {
   transition: box-shadow 0.12s, color 0.12s;
 }
 .btn-icon:hover { box-shadow: var(--shadow-md); color: var(--primary); }
+.btn-icon + .btn-icon { margin-left: 8px; }
 
-/* Header of secondary pages (settings) */
+/* Header of secondary pages (settings, guide) */
 .page-header {
   display: flex;
   align-items: center;
@@ -1332,6 +1333,161 @@ body:has(.sheet[open]) { overflow: hidden; }
 .settings-row:disabled:hover .settings-row-title { color: inherit; }
 
 /* ============================
+   GUIDE
+   ============================ */
+.guide-search {
+  position: sticky;
+  top: 8px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 48px;
+  padding: 0 18px;
+  border-radius: var(--r-full);
+  background: var(--surface);
+  color: var(--on-surface-muted);
+  /* The outer ring in the page color hides the topics scrolling under the field */
+  box-shadow: 0 0 0 8px var(--bg), var(--shadow-sm);
+  transition: box-shadow 0.12s;
+}
+.guide-search:focus-within { box-shadow: 0 0 0 8px var(--bg), var(--ring); }
+.guide-search-input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: none;
+  outline: none;
+  font-family: inherit;
+  font-size: 16px; /* no zoom on focus in iOS Safari */
+  color: var(--on-surface);
+}
+.guide-search-input::placeholder { color: var(--on-surface-muted); }
+.guide-status {
+  margin: 14px 4px 0;
+  font-size: 12px;
+  color: var(--on-surface-muted);
+}
+.guide-status:empty { display: none; }
+
+.guide-toc {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 4px 2px 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.guide-toc::-webkit-scrollbar { display: none; }
+.guide-toc-link {
+  flex-shrink: 0;
+  padding: 7px 14px;
+  border: none;
+  border-radius: var(--r-full);
+  background: var(--surface);
+  box-shadow: var(--shadow-xs);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--on-surface-variant);
+  cursor: pointer;
+  transition: color 0.12s, background 0.12s;
+}
+.guide-toc-link:hover { color: var(--primary); }
+.is-searching .guide-toc { display: none; }
+
+.guide-section {
+  margin-top: 20px;
+  scroll-margin-top: 72px; /* below the sticky search field */
+}
+.guide-section-title {
+  margin: 0 4px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--on-surface-muted);
+}
+.guide-card {
+  background: var(--surface);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-md);
+}
+.guide-item + .guide-item { border-top: 1px solid var(--divider); }
+.guide-item summary {
+  position: relative;
+  display: block; /* not flex: search highlights would split the title */
+  padding: 14px 48px 14px 20px;
+  list-style: none;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--on-surface);
+  cursor: pointer;
+  transition: color 0.12s;
+}
+.guide-item summary::-webkit-details-marker { display: none; }
+.guide-item summary::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 22px;
+  width: 7px;
+  height: 7px;
+  border-right: 2px solid var(--on-surface-muted);
+  border-bottom: 2px solid var(--on-surface-muted);
+  transform: translateY(-70%) rotate(45deg);
+  transition: transform 0.18s ease;
+}
+.guide-item[open] summary::after { transform: translateY(-30%) rotate(-135deg); }
+.guide-item summary:hover { color: var(--primary); }
+.guide-item summary:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; border-radius: var(--r-md); }
+.guide-answer {
+  padding: 0 20px 18px;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--on-surface-variant);
+  animation: fadeIn 0.18s ease;
+}
+.guide-answer > * + * { margin-top: 10px; }
+.guide-answer ul,
+.guide-answer ol { padding-left: 20px; }
+.guide-answer li + li { margin-top: 4px; }
+.guide-answer strong { font-weight: 600; color: var(--on-surface); }
+.guide-answer mark,
+.guide-item summary mark {
+  padding: 0 1px;
+  border-radius: 3px;
+  background: var(--primary-l);
+  color: inherit;
+}
+.guide-keys { display: grid; gap: 8px; }
+.guide-keys div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.guide-keys dd { text-align: right; }
+.guide-answer .guide-tones { padding: 0; list-style: none; }
+.guide-tones span {
+  display: inline-block;
+  min-width: 36px;
+  font-weight: 700;
+}
+.guide-empty {
+  padding: 40px 20px;
+  text-align: center;
+  font-size: 13.5px;
+  color: var(--on-surface-muted);
+}
+.guide-empty-title {
+  margin-bottom: 4px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--on-surface);
+}
+
+/* ============================
    RESPONSIVE
    ============================ */
 @media (max-width: 400px) {
@@ -1475,8 +1631,8 @@ body:has(.sheet[open]) { overflow: hidden; }
 @media (min-width: 1024px) {
   .app { max-width: 1040px; }
 
-  /* ---- Top navigation: home and settings only, sessions stay distraction-free ---- */
-  body:has(#setup-screen.active, #settings-screen.active) .site-nav { display: flex; }
+  /* ---- Top navigation: not in sessions, which stay distraction-free ---- */
+  body:has(#setup-screen.active, #settings-screen.active, #guide-screen.active) .site-nav { display: flex; }
   .site-nav {
     align-items: center;
     gap: 4px;
@@ -1508,6 +1664,7 @@ body:has(.sheet[open]) { overflow: hidden; }
   }
   .site-nav-link:hover { background: var(--surface-mid); color: var(--on-surface); }
   body:has(#setup-screen.active) #nav-home,
+  body:has(#guide-screen.active) #nav-guide,
   body:has(#settings-screen.active) #nav-settings { background: var(--primary-bg); color: var(--primary); }
 
   /* ---- Home: levels on the left, session options shown inline on the right ---- */
@@ -1554,7 +1711,36 @@ body:has(.sheet[open]) { overflow: hidden; }
   /* ---- Settings and results: centered, readable width ---- */
   #settings-screen,
   #results-screen { max-width: 600px; margin: 0 auto; }
-  #settings-screen .btn-back { display: none; } /* the top navigation replaces it */
+  #settings-screen .btn-back,
+  #guide-screen .btn-back { display: none; } /* the top navigation replaces it */
+
+  /* ---- Guide: topics on the side ---- */
+  #guide-screen { max-width: 880px; margin: 0 auto; }
+  .guide-layout {
+    display: grid;
+    grid-template-columns: 200px minmax(0, 1fr);
+    gap: 32px;
+    align-items: start;
+  }
+  .guide-toc {
+    position: sticky;
+    top: 80px;
+    flex-direction: column;
+    gap: 2px;
+    margin-top: 20px;
+    padding: 0;
+    overflow: visible;
+  }
+  .guide-toc-link {
+    padding: 8px 12px;
+    border-radius: var(--r);
+    background: none;
+    box-shadow: none;
+    font-size: 13.5px;
+    text-align: left;
+  }
+  .guide-toc-link:hover { background: var(--surface-mid); }
+  .is-searching .guide-toc { display: flex; visibility: hidden; } /* keeps the layout still */
 
   /* ---- Session: bigger card, progress and shortcuts on the side ---- */
   #flashcard-screen.active {
