@@ -1,6 +1,7 @@
 import { cfg, LEVEL_COUNTS } from './state.js';
 import { readStorage, writeStorage } from './utils.js';
 import { getThemePreference, setThemePreference } from './theme.js';
+import { getSoundPreference, setSoundPreference, playSound } from './sound.js';
 import { getDueEntries, getDaysUntilNextReview, getMasteredByLevel, hasProgress } from './progress.js';
 import { initSheet } from './sheet.js';
 import { statsLinkText } from './stats.js';
@@ -35,6 +36,10 @@ export function initSetup() {
       if (group === 'theme') {
         setThemePreference(value);
       }
+      if (group === 'sound') {
+        setSoundPreference(value);
+        playSound('known'); // a sample, silent when turned off
+      }
     });
   });
 
@@ -42,6 +47,8 @@ export function initSetup() {
     applySetupState(DEFAULT_SETUP);
     saveSetupState();
     selectOption('theme', 'system');
+    markActive('sound', 'on');
+    setSoundPreference('on');
     renderOptionsSummary();
   });
 
@@ -91,6 +98,7 @@ export function initSetup() {
   rangeTo.addEventListener('input',   updateRangeState);
 
   markActive('theme', getThemePreference());
+  markActive('sound', getSoundPreference());
   const saved = readStorage(SETTINGS_KEY);
   if (saved && typeof saved === 'object') applySetupState(saved);
   renderOptionsSummary();

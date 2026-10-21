@@ -1,8 +1,9 @@
 import { session, cfg } from './state.js';
-import { recordAnswer, getEntry, restoreEntry } from './progress.js';
+import { recordAnswer, getEntry, restoreEntry, MASTERED_BOX } from './progress.js';
 import { recordActivity, removeActivity } from './activity.js';
 import { getTone, checkPinyin, showScreen } from './utils.js';
 import { initSpeech, speak } from './speech.js';
+import { playSound } from './sound.js';
 
 export function renderCard() {
   const word = session.words[session.currentIndex];
@@ -92,6 +93,7 @@ function checkAnswer() {
   input.readOnly = true;
   input.classList.add(isCorrect ? 'is-correct' : 'is-wrong');
   document.getElementById('answer-feedback').textContent = ANSWER_FEEDBACK[result];
+  playSound(isCorrect ? 'correct' : 'wrong');
   setFlipped(true);
 
   // Enter now confirms the suggestion; the other button stays one click away (typos)
@@ -131,6 +133,12 @@ export function updateStatusBadge(id) {
   }
 }
 
+/** Flips the card when the user asks to, with its sound. */
+export function toggleFlip() {
+  setFlipped(!session.isFlipped);
+  playSound('flip');
+}
+
 export function setFlipped(flipped) {
   session.isFlipped = flipped;
   document.getElementById('flashcard').classList.toggle('flipped', flipped);
@@ -157,11 +165,14 @@ export function markAndAdvance(verdict) {
     session.known.add(id);
     session.unknown.delete(id);
     if (recordAnswer(word, true)) session.promoted.add(id);
+    const isNewlyMastered = getEntry(id).box >= MASTERED_BOX && !(entry?.box >= MASTERED_BOX);
+    playSound(isNewlyMastered ? 'mastered' : 'known');
   } else {
     session.unknown.add(id);
     session.known.delete(id);
     session.promoted.delete(id);
     recordAnswer(word, false);
+    playSound('unknown');
   }
   updateStatusBadge(id);
 
@@ -184,6 +195,7 @@ export function undoLastRating() {
   setMembership(session.promoted, id, last.wasPromoted);
   restoreEntry(id, last.progress);
   removeActivity(last.day, last.progress === undefined);
+  playSound('undo');
 
   session.currentIndex = last.index;
   showScreen('flashcard-screen'); // undo also works from the results screen
@@ -238,10 +250,10 @@ export function initFlashcard() {
   // ---- Tap / click (flip) — guard against post-swipe click ----
   card.addEventListener('click', () => {
     if (swipeConsumed) return;
-    setFlipped(!session.isFlipped);
+    toggleFlip();
   });
   card.addEventListener('keydown', e => {
-    if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); setFlipped(!session.isFlipped); }
+    if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggleFlip(); }
   });
 
   document.getElementById('btn-prev').addEventListener('click', () => {

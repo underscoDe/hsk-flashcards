@@ -1,19 +1,21 @@
 import { cfg, session, cache, DATA_URLS } from './state.js';
 import { rawToWords, sortWords, shuffle, showScreen } from './utils.js';
 import { initSetup, readSetupConfig, saveSetupState, renderProgressSummary } from './setup.js';
-import { initFlashcard, renderCard, setFlipped, markAndAdvance, speakCurrentWord, undoLastRating } from './flashcard.js';
+import { initFlashcard, renderCard, toggleFlip, markAndAdvance, speakCurrentWord, undoLastRating } from './flashcard.js';
 import { showResults } from './results.js';
 import { getDueEntries, resetProgress } from './progress.js';
 import { resetActivity } from './activity.js';
 import { createBackup, parseBackup, restoreBackup } from './backup.js';
 import { renderStats } from './stats.js';
 import { initTheme } from './theme.js';
+import { preloadSounds } from './sound.js';
 import { initNavigation, openView, closeView } from './navigation.js';
 import { initGuide, resetGuide, showGuideTopic } from './guide.js';
 
 /** Shows the loading screen, then starts a session with the words from `getWords`. */
 async function startSession(getWords) {
   showScreen('loading-screen');
+  preloadSounds();
 
   try {
     const words = await getWords();
@@ -184,7 +186,7 @@ function initKeyboard() {
     switch (e.key) {
       case ' ':
         e.preventDefault();
-        setFlipped(!session.isFlipped);
+        toggleFlip();
         break;
       case 'ArrowLeft':
         document.getElementById('btn-prev').click();

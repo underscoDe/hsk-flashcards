@@ -83,7 +83,7 @@ test('a file that is not a backup is refused', async ({ page }) => {
 
 test('the "?" next to Data opens the backup topic of the guide', async ({ page }) => {
   await openSettings(page);
-  await page.locator('#settings-screen .btn-help').click();
+  await page.locator('#settings-screen .btn-help[data-guide="guide-topic-backup"]').click();
 
   await expect(page.locator('#guide-screen')).toBeVisible();
   await expect(page.locator('#guide-topic-backup')).toHaveAttribute('open', '');

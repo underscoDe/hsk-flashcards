@@ -1,4 +1,4 @@
-const VERSION = 'v10'; // bump on every data update (scripts/update-vocab.sh)
+const VERSION = 'v11'; // bump on every data update (scripts/update-vocab.sh)
 const STATIC_CACHE = `hsk-static-${VERSION}`;
 const DATA_CACHE   = `hsk-data-${VERSION}`;
 
@@ -16,12 +16,14 @@ const STATIC_ASSETS = [
   '/js/results.js',
   '/js/setup.js',
   '/js/sheet.js',
+  '/js/sound.js',
   '/js/speech.js',
   '/js/stats.js',
   '/js/state.js',
   '/js/theme.js',
   '/js/utils.js',
   '/manifest.json',
+  ...['flip', 'known', 'unknown', 'correct', 'wrong', 'mastered', 'undo', 'great', 'finish'].map(name => `/sounds/${name}.mp3`),
 ];
 
 const DATA_ASSETS = [1, 2, 3, 4, 5, 6].map(level => `/data/hsk-level-${level}.json`);

@@ -1,5 +1,6 @@
 import { session, cfg } from './state.js';
 import { showScreen } from './utils.js';
+import { playSound } from './sound.js';
 
 function levelLabel() {
   if (session.mode === 'review') return 'Daily review';
@@ -25,6 +26,8 @@ export function showResults() {
 
   document.getElementById('score-fill').style.width = '0%';
   setTimeout(() => { document.getElementById('score-fill').style.width = `${pct}%`; }, 80);
+  // After the last card's own sound
+  setTimeout(() => playSound(pct >= 70 ? 'great' : 'finish'), 300);
 
   let emoji, title;
   if (pct >= 90)      { emoji = '🏆'; title = 'Perfect, excellent work!'; }

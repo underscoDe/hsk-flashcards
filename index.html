@@ -291,6 +291,16 @@
       </div>
 
       <div class="setup-section">
+        <div class="section-label">Sounds and vibration
+          <button class="btn-help" data-guide="guide-topic-sound" aria-label="About sounds and vibration">?</button>
+        </div>
+        <div class="btn-group">
+          <button class="btn-opt active" data-group="sound" data-value="on">On</button>
+          <button class="btn-opt" data-group="sound" data-value="off">Off</button>
+        </div>
+      </div>
+
+      <div class="setup-section">
         <div class="section-label">Data
           <button class="btn-help" data-guide="guide-topic-backup" aria-label="About backups">?</button>
         </div>
@@ -305,7 +315,7 @@
         <input type="file" id="import-file" accept=".json,application/json" hidden>
         <button class="settings-row" id="btn-reset-settings">
           <span class="settings-row-title">Reset settings</span>
-          <span class="settings-row-desc">Session options and theme back to defaults. Progress is kept.</span>
+          <span class="settings-row-desc">Session options, theme and sounds back to defaults. Progress is kept.</span>
         </button>
         <button class="settings-row settings-row-danger" id="btn-reset-progress">
           <span class="settings-row-title">Reset progress</span>
@@ -317,6 +327,7 @@
         <div class="section-label">About</div>
         <p>The 5,000 words of the HSK 2.0 lists, with meanings from CC-CEDICT, via
           <a href="https://github.com/gigacool/hanyu-shuiping-kaoshi" target="_blank" rel="noopener">hanyu-shuiping-kaoshi</a> (MIT).
+          Sounds by <a href="https://kenney.nl" target="_blank" rel="noopener">Kenney</a> (CC0).
           Your progress stays on this device.</p>
         <p>© <span id="footer-year"></span>
           <a href="https://www.linkedin.com/in/arsene-awounou/" target="_blank" rel="noopener">Arsène Awounou</a></p>
@@ -704,11 +715,19 @@
                   to follow your device, which is the default.</p>
               </div>
             </details>
+            <details class="guide-item" id="guide-topic-sound">
+              <summary>Sounds and vibration</summary>
+              <div class="guide-answer">
+                <p>Short sounds play when you flip a card, rate a word, master one or finish a session.
+                  On Android, the phone also vibrates a little. Turn both off in <strong>Settings</strong> under <strong>Sounds and vibration</strong>.</p>
+                <p>On an iPhone, the sounds follow the silent switch, and vibration isn’t available to web apps.</p>
+              </div>
+            </details>
             <details class="guide-item">
               <summary>Your choices are remembered</summary>
               <div class="guide-answer">
                 <p>The level and the session options are kept for your next visit.
-                  <strong>Reset settings</strong> in Settings puts them and the theme back to their defaults, without touching your progress.</p>
+                  <strong>Reset settings</strong> in Settings puts them, the theme and the sounds back to their defaults, without touching your progress.</p>
               </div>
             </details>
             <details class="guide-item">
