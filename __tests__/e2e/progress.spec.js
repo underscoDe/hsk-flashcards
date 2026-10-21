@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { quitSession, rate, rateAllKnown, readProgress, startSession } from './helpers.js';
+import { openSettings, quitSession, rate, rateAllKnown, readProgress, startSession } from './helpers.js';
 
 const DAY_0 = new Date(2026, 9, 21, 10, 0);
 const day = n => new Date(2026, 9, 21 + n, 10, 0);
@@ -72,6 +72,7 @@ test('reset progress asks for confirmation', async ({ page }) => {
   await rate(page, 'known');
   await quitSession(page);
 
+  await openSettings(page);
   await page.locator('#btn-reset-progress').click();
   await page.locator('#reset-dialog .dialog-btn-cancel').click();
   expect(Object.keys(await readProgress(page))).toHaveLength(1);
@@ -79,5 +80,7 @@ test('reset progress asks for confirmation', async ({ page }) => {
   await page.locator('#btn-reset-progress').click();
   await page.locator('#reset-dialog .dialog-btn-confirm').click();
   expect(await readProgress(page)).toEqual({});
+  await expect(page.locator('#btn-reset-progress')).toBeDisabled(); // nothing left to reset
+  await page.locator('#btn-close-settings').click();
   await expect(page.locator('#review-section')).toBeHidden();
 });

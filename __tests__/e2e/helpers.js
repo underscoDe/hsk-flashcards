@@ -5,11 +5,34 @@ export function option(page, group, value) {
   return page.locator(`[data-group="${group}"][data-value="${value}"]`);
 }
 
+/** Opens the session options sheet (card mode, order, count, range). */
+export async function openOptions(page) {
+  await page.locator('#btn-open-options').click();
+  await expect(page.locator('#options-sheet')).toBeVisible();
+}
+
+export async function closeOptions(page) {
+  await page.locator('#btn-close-options').click();
+  await expect(page.locator('#options-sheet')).toBeHidden();
+}
+
+/** Picks session options in the sheet, e.g. setOptions(page, { 'card-mode': 'type-pinyin' }). */
+export async function setOptions(page, choices) {
+  await openOptions(page);
+  for (const [group, value] of Object.entries(choices)) await option(page, group, value).click();
+  await closeOptions(page);
+}
+
+/** Opens the settings page (theme, resets). */
+export async function openSettings(page) {
+  await page.locator('#btn-open-settings').click();
+  await expect(page.locator('#settings-screen')).toBeVisible();
+}
+
 /** Starts a session from the setup screen; A→Z by default so the words are predictable. */
 export async function startSession(page, { level = '1', order = 'asc', count = '10' } = {}) {
   await option(page, 'level', level).click();
-  await option(page, 'order', order).click();
-  await option(page, 'count', count).click();
+  await setOptions(page, { order, count });
   await page.locator('#btn-start').click();
   await expect(page.locator('#flashcard-screen')).toBeVisible();
 }

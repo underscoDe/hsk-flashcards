@@ -2,6 +2,7 @@ import { cfg, LEVEL_COUNTS } from './state.js';
 import { readStorage, writeStorage } from './utils.js';
 import { getThemePreference, setThemePreference } from './theme.js';
 import { getDueEntries, getDaysUntilNextReview, getMasteredByLevel, hasProgress } from './progress.js';
+import { initSheet } from './sheet.js';
 
 export function initSetup() {
   document.querySelectorAll('button[data-group]').forEach(btn => {
@@ -40,7 +41,12 @@ export function initSetup() {
     applySetupState(DEFAULT_SETUP);
     saveSetupState();
     selectOption('theme', 'system');
+    renderOptionsSummary();
   });
+
+  const sheet = document.getElementById('options-sheet');
+  initSheet(sheet, document.getElementById('btn-open-options'), document.getElementById('btn-close-options'));
+  sheet.addEventListener('close', renderOptionsSummary);
 
   // The "select at least one level" hint goes away as soon as a level is ticked
   document.querySelectorAll('.combo-check').forEach(cb => {
@@ -86,6 +92,28 @@ export function initSetup() {
   markActive('theme', getThemePreference());
   const saved = readStorage(SETTINGS_KEY);
   if (saved && typeof saved === 'object') applySetupState(saved);
+  renderOptionsSummary();
+}
+
+const CARD_MODE_LABELS = {
+  'hanzi-first':  'Hanzi → Pinyin',
+  'pinyin-first': 'Pinyin → Hanzi',
+  'type-pinyin':  'Type pinyin',
+};
+const ORDER_LABELS = { random: 'Random', asc: 'A→Z', desc: 'Z→A' };
+
+/** One line under "Session options", e.g. "Type pinyin · A→Z · 25 words". */
+function renderOptionsSummary() {
+  readSetupConfig();
+  const { cardMode, order, presentationShuffle, rangeFrom, rangeTo, count } = cfg;
+  const words = rangeFrom && rangeTo && rangeFrom <= rangeTo ? `Words ${rangeFrom}–${rangeTo}`
+    : isFinite(count) ? `${count} words`
+    : 'All words';
+  document.getElementById('options-summary').textContent = [
+    CARD_MODE_LABELS[cardMode],
+    ORDER_LABELS[order] + (presentationShuffle ? ', shuffled' : ''),
+    words,
+  ].join(' · ');
 }
 
 const SETTINGS_KEY = 'hsk-settings';
@@ -156,6 +184,7 @@ export function renderProgressSummary() {
 function renderDailyReview() {
   const section = document.getElementById('review-section');
   section.hidden = !hasProgress();
+  document.getElementById('btn-reset-progress').disabled = section.hidden;
   if (section.hidden) return;
 
   const dueCount = getDueEntries().length;

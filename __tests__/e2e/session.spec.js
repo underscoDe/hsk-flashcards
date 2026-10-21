@@ -113,3 +113,32 @@ test('combo sessions show the level badge on each card', async ({ page }) => {
   await page.locator('#btn-start').click();
   await expect(page.locator('#word-level-front')).toHaveText(/^HSK [12]$/);
 });
+
+test.describe('system back button', () => {
+  test('asks before quitting a session, and a second back closes the question', async ({ page }) => {
+    await startSession(page);
+    await rate(page, 'known');
+
+    await page.goBack();
+    await expect(page.locator('#quit-dialog')).toHaveClass(/visible/);
+    await expect(page.locator('#flashcard-screen')).toBeVisible();
+    await page.goBack();
+    await expect(page.locator('#quit-dialog')).not.toHaveClass(/visible/);
+    await expect(page.locator('#fc-current')).toHaveText('2');
+
+    await page.goBack();
+    await page.locator('#quit-confirm').click();
+    await expect(page.locator('#setup-screen')).toBeVisible();
+    expect(await page.evaluate(() => history.state)).toBeNull(); // no stale entry left
+  });
+
+  test('goes from the results back to the home screen', async ({ page }) => {
+    await startSession(page);
+    for (let i = 0; i < 10; i++) await page.keyboard.press('k');
+    await expect(page.locator('#results-screen')).toBeVisible();
+
+    await page.goBack();
+    await expect(page.locator('#setup-screen')).toBeVisible();
+    expect(await page.evaluate(() => history.state)).toBeNull();
+  });
+});

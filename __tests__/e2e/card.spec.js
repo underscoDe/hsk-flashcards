@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { option, startSession } from './helpers.js';
+import { option, setOptions, startSession } from './helpers.js';
 
 test('tones color the pinyin and the back of the card, not the front', async ({ page }) => {
   await page.goto('/');
@@ -15,7 +15,7 @@ test('tones color the pinyin and the back of the card, not the front', async ({ 
 
 test('pinyin-first mode shows pinyin and meaning on the front', async ({ page }) => {
   await page.goto('/');
-  await option(page, 'card-mode', 'pinyin-first').click();
+  await setOptions(page, { 'card-mode': 'pinyin-first' });
   await startSession(page);
   await expect(page.locator('#pinyin-front')).toBeVisible();
   await expect(page.locator('#translation-front')).toBeVisible();

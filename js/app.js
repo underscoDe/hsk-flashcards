@@ -5,6 +5,7 @@ import { initFlashcard, renderCard, setFlipped, markAndAdvance, speakCurrentWord
 import { showResults } from './results.js';
 import { getDueEntries, resetProgress } from './progress.js';
 import { initTheme } from './theme.js';
+import { initNavigation, openView, closeView } from './navigation.js';
 
 /** Shows the loading screen, then starts a session with the words from `getWords`. */
 async function startSession(getWords) {
@@ -13,7 +14,7 @@ async function startSession(getWords) {
   try {
     const words = await getWords();
     // e.g. due ids that no longer exist after a vocabulary update
-    if (!words.length) return showSetup();
+    if (!words.length) return closeView();
 
     session.words        = words;
     session.currentIndex = 0;
@@ -28,7 +29,7 @@ async function startSession(getWords) {
     renderCard();
   } catch (err) {
     console.error(err);
-    showSetup();
+    closeView();
     showMessage('Couldn’t load the words', 'Please check your internet connection and try again.');
   }
 }
@@ -75,6 +76,20 @@ function showSetup() {
   showScreen('setup-screen');
 }
 
+/** Session screens are one view: the system back button asks before quitting a session. */
+function openSessionView() {
+  openView(showSetup, handleSessionBack);
+}
+
+function handleSessionBack() {
+  const quitDialog = document.getElementById('quit-dialog');
+  const isShown = id => document.getElementById(id).classList.contains('active');
+
+  if (quitDialog.classList.contains('visible')) quitDialog.classList.remove('visible');
+  else if (isShown('flashcard-screen')) quitDialog.classList.add('visible');
+  else if (isShown('results-screen')) closeView();
+}
+
 function initKeyboard() {
   document.addEventListener('keydown', e => {
     if (!document.getElementById('flashcard-screen').classList.contains('active')) return;
@@ -111,6 +126,7 @@ function initKeyboard() {
 function init() {
   document.getElementById('footer-year').textContent = new Date().getFullYear();
   initTheme();
+  initNavigation();
   initSetup();
   initFlashcard();
   initKeyboard();
@@ -126,6 +142,7 @@ function init() {
       return;
     }
     session.mode = 'standard';
+    openSessionView();
     startSession(selectConfiguredWords);
   });
 
@@ -133,10 +150,17 @@ function init() {
     readSetupConfig(); // card mode still applies
     saveSetupState();
     session.mode = 'review';
+    openSessionView();
     startSession(selectDueWords);
   });
 
-  initDialog('quit-dialog', document.getElementById('btn-quit'), showSetup);
+  document.getElementById('btn-open-settings').addEventListener('click', () => {
+    showScreen('settings-screen');
+    openView(showSetup);
+  });
+  document.getElementById('btn-close-settings').addEventListener('click', closeView);
+
+  initDialog('quit-dialog', document.getElementById('btn-quit'), closeView);
   initDialog('reset-dialog', document.getElementById('btn-reset-progress'), () => {
     resetProgress();
     renderProgressSummary();
@@ -155,7 +179,7 @@ function init() {
     startSession(() => isShuffled ? shuffle(words) : words);
   });
 
-  document.getElementById('btn-new-config').addEventListener('click', showSetup);
+  document.getElementById('btn-new-config').addEventListener('click', closeView);
   document.getElementById('btn-undo-results').addEventListener('click', undoLastRating);
 
   const messageDialog = document.getElementById('message-dialog');

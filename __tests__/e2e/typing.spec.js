@@ -1,9 +1,9 @@
 import { expect, test } from '@playwright/test';
-import { option, readProgress, startSession } from './helpers.js';
+import { readProgress, setOptions, startSession } from './helpers.js';
 
 test.beforeEach(async ({ page }) => {
   await page.goto('/');
-  await option(page, 'card-mode', 'type-pinyin').click();
+  await setOptions(page, { 'card-mode': 'type-pinyin' });
   await startSession(page); // HSK 1, A→Z: 爱 ài comes first
 });
 
@@ -62,7 +62,7 @@ test('the answer field only shows in typing mode', async ({ page }) => {
   await expect(page.locator('#answer-form')).toBeVisible();
   await page.locator('#btn-quit').click();
   await page.locator('#quit-confirm').click();
-  await option(page, 'card-mode', 'hanzi-first').click();
+  await setOptions(page, { 'card-mode': 'hanzi-first' });
   await page.locator('#btn-start').click();
   await expect(page.locator('#answer-form')).toBeHidden();
 });

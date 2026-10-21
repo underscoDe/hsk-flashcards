@@ -172,6 +172,36 @@ body {
   color: var(--on-surface-muted);
   margin-top: 2px;
 }
+.btn-icon {
+  margin-left: auto;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border: none;
+  border-radius: var(--r-full);
+  background: var(--surface);
+  color: var(--on-surface-variant);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: box-shadow 0.12s, color 0.12s;
+}
+.btn-icon:hover { box-shadow: var(--shadow-md); color: var(--primary); }
+
+/* Header of secondary pages (settings) */
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.page-title {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
 
 /* ============================
    SETUP CARD
@@ -264,13 +294,18 @@ body {
 }
 
 /* ---- Daily review (spaced repetition) ---- */
-.review-section { background: var(--primary-bg); border-radius: var(--r-md) var(--r-md) 0 0; }
-.review-row {
+.review-card {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+  margin-bottom: 12px;
+  padding: 16px 20px;
+  border-radius: var(--r-md);
+  background: var(--primary-bg);
+  box-shadow: var(--shadow-sm);
 }
+.review-card[hidden] { display: none; }
 .review-text {
   font-size: 14px;
   font-weight: 600;
@@ -1127,6 +1162,176 @@ kbd {
 .btn-secondary:hover { box-shadow: var(--shadow-sm); transform: translateY(-1px); }
 
 /* ============================
+   HOME: OPTIONS ROW + START BAR
+   ============================ */
+.options-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 20px;
+  border: none;
+  border-top: 1px solid var(--divider);
+  border-radius: 0 0 var(--r-md) var(--r-md);
+  background: none;
+  font-family: inherit;
+  text-align: left;
+  color: var(--on-surface-muted);
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.options-row:hover { background: var(--surface-low); }
+.options-row .section-label { display: block; margin-bottom: 4px; }
+.options-summary {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--on-surface);
+}
+
+/* Start stays reachable at the bottom of the screen */
+.start-bar {
+  position: sticky;
+  bottom: 0;
+  margin: 0 -16px;
+  padding: 16px 16px max(16px, env(safe-area-inset-bottom));
+  background: linear-gradient(to bottom, transparent, var(--bg) 40%);
+}
+
+/* ============================
+   BOTTOM SHEET (session options)
+   ============================ */
+.sheet {
+  width: 100%;
+  max-width: 480px;
+  max-height: 88vh;
+  max-height: 88dvh;
+  margin: auto auto 0;
+  padding: 0;
+  border: none;
+  border-radius: var(--r-xl) var(--r-xl) 0 0;
+  background: var(--surface);
+  color: var(--on-surface);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  transition: transform 0.2s ease;
+}
+.sheet[open] { display: flex; flex-direction: column; animation: sheetUp 0.26s cubic-bezier(0.2, 0.9, 0.3, 1); }
+.sheet.dragging { transition: none; }
+.sheet::backdrop {
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+@keyframes sheetUp {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+body:has(.sheet[open]) { overflow: hidden; }
+
+.sheet-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 20px 12px;
+  border-bottom: 1px solid var(--divider);
+  touch-action: none; /* the swipe-down gesture */
+}
+.sheet-handle {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  width: 36px;
+  height: 4px;
+  margin-left: -18px;
+  border-radius: var(--r-full);
+  background: var(--outline);
+}
+.sheet-title { font-size: 16px; font-weight: 700; letter-spacing: -0.02em; }
+.btn-sheet-done {
+  padding: 8px 16px;
+  border: none;
+  border-radius: var(--r-full);
+  background: var(--primary);
+  color: var(--on-primary);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.sheet-body {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Card mode choices: full-width rows with a short explanation */
+.choice-list { display: grid; gap: 8px; }
+.btn-choice {
+  display: block;
+  width: 100%;
+  padding: 12px 14px;
+  border: none;
+  border-radius: var(--r);
+  background: var(--surface-low);
+  box-shadow: var(--shadow-xs);
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.12s, box-shadow 0.12s;
+}
+.btn-choice:hover { background: var(--surface-mid); }
+.btn-choice.active { background: var(--primary-bg); box-shadow: inset 0 0 0 2px var(--primary); }
+.choice-title {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--on-surface);
+}
+.btn-choice.active .choice-title { color: var(--primary); }
+.choice-desc {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--on-surface-muted);
+}
+
+/* ============================
+   SETTINGS
+   ============================ */
+.settings-row {
+  display: block;
+  width: 100%;
+  padding: 12px 0;
+  border: none;
+  border-top: 1px solid var(--divider);
+  background: none;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.section-label + .settings-row { border-top: none; padding-top: 0; }
+.settings-row-title {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--on-surface);
+}
+.settings-row-desc {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--on-surface-muted);
+}
+.settings-row:hover .settings-row-title { color: var(--primary); }
+.settings-row-danger .settings-row-title,
+.settings-row-danger:hover .settings-row-title { color: var(--error); }
+.settings-row:disabled { opacity: 0.4; cursor: default; }
+.settings-row:disabled:hover .settings-row-title { color: inherit; }
+
+/* ============================
    RESPONSIVE
    ============================ */
 @media (max-width: 400px) {
@@ -1221,22 +1426,14 @@ kbd {
 /* ============================
    FOOTER
    ============================ */
-.site-footer {
-  text-align: center;
-  font-size: 11px;
-  color: var(--on-surface-muted);
-  margin-top: 14px;
-  opacity: 0.55;
+.about p {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--on-surface-variant);
 }
-.site-footer a {
-  color: inherit;
-  text-decoration: none;
-  transition: color 0.15s, opacity 0.15s;
-}
-.site-footer a:hover {
-  color: var(--primary);
-  opacity: 1;
-}
+.about p + p { margin-top: 8px; color: var(--on-surface-muted); }
+.about a { color: var(--primary); text-decoration: none; }
+.about a:hover { text-decoration: underline; }
 
 @media (max-width: 340px) {
   .btn-opt   { font-size: 11.5px; padding: 7px 8px; }

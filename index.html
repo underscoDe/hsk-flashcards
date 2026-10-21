@@ -42,19 +42,20 @@
         <div class="app-title">HSK Flashcards</div>
         <div class="app-subtitle">Chinese vocabulary practice</div>
       </div>
+      <button class="btn-icon" id="btn-open-settings" aria-label="Settings">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Daily review (shown once at least one word has been rated) -->
+    <div class="review-card" id="review-section" hidden>
+      <p class="review-text" id="review-text"></p>
+      <button class="btn-review-today" id="btn-review-today">Review now</button>
     </div>
 
     <div class="setup-card">
-
-      <!-- Daily review (shown once at least one word has been rated) -->
-      <div class="setup-section review-section" id="review-section" hidden>
-        <div class="section-label">Spaced repetition</div>
-        <div class="review-row">
-          <p class="review-text" id="review-text"></p>
-          <button class="btn-review-today" id="btn-review-today">Review now</button>
-        </div>
-        <button class="btn-link" id="btn-reset-progress">Reset progress</button>
-      </div>
 
       <!-- Level -->
       <div class="setup-section">
@@ -129,90 +130,128 @@
         </div>
       </div>
 
-      <!-- Card mode -->
-      <div class="setup-section">
-        <div class="section-label">Card mode</div>
-        <div class="btn-group">
-          <button class="btn-opt active" data-group="card-mode" data-value="hanzi-first">Hanzi → Pinyin</button>
-          <button class="btn-opt" data-group="card-mode" data-value="pinyin-first">Pinyin → Hanzi</button>
-          <button class="btn-opt" data-group="card-mode" data-value="type-pinyin">Type pinyin</button>
-        </div>
-      </div>
+      <button class="options-row" id="btn-open-options" aria-haspopup="dialog">
+        <span>
+          <span class="section-label">Session options</span>
+          <span class="options-summary" id="options-summary"></span>
+        </span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="m9 18 6-6-6-6"/>
+        </svg>
+      </button>
 
-      <!-- Word selection -->
-      <div class="setup-section">
-        <div class="section-label">Word selection</div>
-        <div class="btn-group">
-          <button class="btn-opt active" data-group="order" data-value="random">Random</button>
-          <button class="btn-opt" data-group="order" data-value="asc">A→Z Pinyin</button>
-          <button class="btn-opt" data-group="order" data-value="desc">Z→A Pinyin</button>
-        </div>
-        <div class="shuffle-row" id="shuffle-row">
-          <div class="shuffle-inner">
-            <span class="shuffle-label-text">Shuffle presentation</span>
-            <label class="toggle-switch" aria-label="Shuffle presentation order">
-              <input type="checkbox" id="toggle-shuffle">
-              <span class="toggle-track"></span>
-            </label>
+    </div>
+
+    <div class="start-bar">
+      <button class="btn-start" id="btn-start">
+        Start reviewing
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Session options: a bottom sheet, so the home screen stays short -->
+    <dialog class="sheet" id="options-sheet" aria-labelledby="options-sheet-title">
+      <div class="sheet-header">
+        <div class="sheet-handle" aria-hidden="true"></div>
+        <h2 class="sheet-title" id="options-sheet-title">Session options</h2>
+        <button class="btn-sheet-done" id="btn-close-options">Done</button>
+      </div>
+      <div class="sheet-body">
+        <!-- Card mode -->
+        <div class="setup-section">
+          <div class="section-label">Card mode</div>
+          <div class="choice-list">
+            <button class="btn-choice active" data-group="card-mode" data-value="hanzi-first">
+              <span class="choice-title">Hanzi → Pinyin</span>
+              <span class="choice-desc">See the characters, recall the reading</span>
+            </button>
+            <button class="btn-choice" data-group="card-mode" data-value="pinyin-first">
+              <span class="choice-title">Pinyin → Hanzi</span>
+              <span class="choice-desc">See the reading and meaning, recall the characters</span>
+            </button>
+            <button class="btn-choice" data-group="card-mode" data-value="type-pinyin">
+              <span class="choice-title">Type pinyin</span>
+              <span class="choice-desc">Type the reading with tones, checked for you</span>
+            </button>
           </div>
         </div>
-      </div>
 
-      <!-- Count -->
-      <div class="setup-section" id="count-section">
-        <div class="section-label">Words to review</div>
-        <div class="btn-group">
-          <button class="btn-opt" data-group="count" data-value="10">10</button>
-          <button class="btn-opt active" data-group="count" data-value="25">25</button>
-          <button class="btn-opt" data-group="count" data-value="50">50</button>
-          <button class="btn-opt" data-group="count" data-value="all">All</button>
-        </div>
-        <div class="count-custom">
-          <label class="count-label" for="custom-count">Custom amount</label>
-          <input
-            class="count-input"
-            type="number"
-            id="custom-count"
-            min="1"
-            max="9999"
-            inputmode="numeric"
-            placeholder="e.g. 40"
-            aria-describedby="custom-count-hint"
-          >
-          <p class="count-hint" id="custom-count-hint">Enter any number between 1 and 9,999</p>
-        </div>
-
-        <div class="range-row" id="range-row">
-          <div class="range-inner">
-            <div class="range-inputs">
-              <div class="range-field">
-                <label class="range-field-label" for="range-from">From word</label>
-                <input class="range-input" type="number" id="range-from"
-                  min="1" placeholder="e.g. 26" inputmode="numeric" aria-label="From word number">
-              </div>
-              <div class="range-arrow">→</div>
-              <div class="range-field">
-                <label class="range-field-label" for="range-to">To word</label>
-                <input class="range-input" type="number" id="range-to"
-                  min="1" placeholder="e.g. 50" inputmode="numeric" aria-label="To word number">
-              </div>
+        <!-- Word selection -->
+        <div class="setup-section">
+          <div class="section-label">Word selection</div>
+          <div class="btn-group">
+            <button class="btn-opt active" data-group="order" data-value="random">Random</button>
+            <button class="btn-opt" data-group="order" data-value="asc">A→Z Pinyin</button>
+            <button class="btn-opt" data-group="order" data-value="desc">Z→A Pinyin</button>
+          </div>
+          <div class="shuffle-row" id="shuffle-row">
+            <div class="shuffle-inner">
+              <span class="shuffle-label-text">Shuffle presentation</span>
+              <label class="toggle-switch" aria-label="Shuffle presentation order">
+                <input type="checkbox" id="toggle-shuffle">
+                <span class="toggle-track"></span>
+              </label>
             </div>
-            <p class="count-hint" id="range-hint">Fill both fields to override the count above.</p>
+          </div>
+        </div>
+
+        <!-- Count -->
+        <div class="setup-section" id="count-section">
+          <div class="section-label">Words to review</div>
+          <div class="btn-group">
+            <button class="btn-opt" data-group="count" data-value="10">10</button>
+            <button class="btn-opt active" data-group="count" data-value="25">25</button>
+            <button class="btn-opt" data-group="count" data-value="50">50</button>
+            <button class="btn-opt" data-group="count" data-value="all">All</button>
+          </div>
+          <div class="count-custom">
+            <label class="count-label" for="custom-count">Custom amount</label>
+            <input
+              class="count-input"
+              type="number"
+              id="custom-count"
+              min="1"
+              max="9999"
+              inputmode="numeric"
+              placeholder="e.g. 40"
+              aria-describedby="custom-count-hint"
+            >
+            <p class="count-hint" id="custom-count-hint">Enter any number between 1 and 9,999</p>
+          </div>
+
+          <div class="range-row" id="range-row">
+            <div class="range-inner">
+              <div class="range-inputs">
+                <div class="range-field">
+                  <label class="range-field-label" for="range-from">From word</label>
+                  <input class="range-input" type="number" id="range-from"
+                    min="1" placeholder="e.g. 26" inputmode="numeric" aria-label="From word number">
+                </div>
+                <div class="range-arrow">→</div>
+                <div class="range-field">
+                  <label class="range-field-label" for="range-to">To word</label>
+                  <input class="range-input" type="number" id="range-to"
+                    min="1" placeholder="e.g. 50" inputmode="numeric" aria-label="To word number">
+                </div>
+              </div>
+              <p class="count-hint" id="range-hint">Fill both fields to override the count above.</p>
+            </div>
           </div>
         </div>
       </div>
+    </dialog>
+  </div>
 
-      <!-- Start -->
-      <div class="setup-section">
-        <button class="btn-start" id="btn-start">
-          Start reviewing
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M5 12h14M12 5l7 7-7 7"/>
-          </svg>
-        </button>
-      </div>
+  <!-- ======= SETTINGS SCREEN ======= -->
+  <div id="settings-screen" class="screen">
+    <div class="page-header">
+      <button class="btn-back" id="btn-close-settings">← Back</button>
+      <h1 class="page-title">Settings</h1>
+    </div>
 
-      <!-- Preferences -->
+    <div class="setup-card">
       <div class="setup-section">
         <div class="section-label">Theme</div>
         <div class="btn-group">
@@ -220,15 +259,29 @@
           <button class="btn-opt" data-group="theme" data-value="light">Light</button>
           <button class="btn-opt" data-group="theme" data-value="dark">Dark</button>
         </div>
-        <button class="btn-link" id="btn-reset-settings">Reset settings to default</button>
       </div>
 
-    </div>
+      <div class="setup-section">
+        <div class="section-label">Data</div>
+        <button class="settings-row" id="btn-reset-settings">
+          <span class="settings-row-title">Reset settings</span>
+          <span class="settings-row-desc">Session options and theme back to defaults. Progress is kept.</span>
+        </button>
+        <button class="settings-row settings-row-danger" id="btn-reset-progress">
+          <span class="settings-row-title">Reset progress</span>
+          <span class="settings-row-desc">Forget which words you know. This can’t be undone.</span>
+        </button>
+      </div>
 
-    <p class="site-footer">
-      © <span id="footer-year"></span>
-      <a href="https://www.linkedin.com/in/arsene-awounou/" target="_blank" rel="noopener">by <strong>Arsène Awounou</strong></a>
-    </p>
+      <div class="setup-section about">
+        <div class="section-label">About</div>
+        <p>The 5,000 words of the HSK 2.0 lists, with meanings from CC-CEDICT, via
+          <a href="https://github.com/gigacool/hanyu-shuiping-kaoshi" target="_blank" rel="noopener">hanyu-shuiping-kaoshi</a> (MIT).
+          Your progress stays on this device.</p>
+        <p>© <span id="footer-year"></span>
+          <a href="https://www.linkedin.com/in/arsene-awounou/" target="_blank" rel="noopener">Arsène Awounou</a></p>
+      </div>
+    </div>
   </div>
 
   <!-- ======= LOADING SCREEN ======= -->
