@@ -5,14 +5,14 @@ test.use({ serviceWorkers: 'allow' });
 
 test('after one online visit, every level works offline', async ({ page, context }) => {
   await page.goto('/');
-  // Wait until the service worker has pre-cached the app and all six levels, and controls the page
+  // Wait until the service worker has pre-cached the app and all six levels (English and French meanings), and controls the page
   await page.evaluate(() => navigator.serviceWorker.ready);
   await expect.poll(() => page.evaluate(() => !!navigator.serviceWorker.controller)).toBe(true);
   await expect.poll(() => page.evaluate(async () => {
     const keys = await caches.keys();
     const data = keys.find(k => k.startsWith('hsk-data-'));
     return data ? (await (await caches.open(data)).keys()).length : 0;
-  })).toBe(6);
+  })).toBe(12);
 
   await context.setOffline(true);
   // Proves the network is really cut for the service worker too: an uncached file fails

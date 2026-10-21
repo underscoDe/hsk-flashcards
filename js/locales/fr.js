@@ -74,7 +74,8 @@ export const FR = {
   'settings.resetProgress':     'Réinitialiser la progression',
   'settings.resetProgressDesc': 'Oublie les mots que vous connaissez et efface vos stats. Impossible à annuler.',
   'settings.about':             'À propos',
-  'about.words':                'Les 5 000 mots des listes HSK 2.0, avec leur sens en anglais tiré de CC-CEDICT, via',
+  'about.words':                'Les 5 000 mots des listes HSK 2.0, avec les sens anglais de CC-CEDICT, via',
+  'about.french':               'Sens français tirés de',
   'about.sounds':               'Sons de',
   'about.local':                'Votre progression reste sur cet appareil.',
 

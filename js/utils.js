@@ -15,13 +15,15 @@ export function sortWords(words, order) {
   }
 }
 
-// New format: array of { id, hanzi, pinyin, translations[] }
-export function rawToWords(data, level = null) {
+// New format: array of { id, hanzi, pinyin, translations[] }. `frenchMeanings`
+// ({ id: [meanings] }) replaces the English meanings, word by word when it has them.
+export function rawToWords(data, level = null, frenchMeanings = {}) {
   return data.map(entry => ({
     id:          entry.id,     // unique across levels; hanzi alone isn't (了 le/liǎo)
     hanzi:       entry.hanzi,
     pinyin:      entry.pinyin || '',
-    translation: TRANSLATION_FIXES[entry.id] ?? cleanTranslations(entry.translations),
+    translation: frenchMeanings[entry.id]?.slice(0, 3).join(', ')
+      ?? TRANSLATION_FIXES[entry.id] ?? cleanTranslations(entry.translations),
     level,
   }));
 }

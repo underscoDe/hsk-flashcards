@@ -1,0 +1,804 @@
+{
+ "151": [
+  "(particule de suggestion ou de demande)",
+  "… d’accord ?",
+  "… pas vrai ?"
+ ],
+ "152": [
+  "blanc",
+  "clair",
+  "pur",
+  "en vain"
+ ],
+ "153": [
+  "cent",
+  "nombreux",
+  "beaucoup de",
+  "centaine"
+ ],
+ "154": [
+  "aider",
+  "assister"
+ ],
+ "155": [
+  "presse (écrite)",
+  "journal",
+  "gazette"
+ ],
+ "156": [
+  "par rapport à",
+  "en comparaison avec",
+  "rapport",
+  "que",
+  "à",
+  "comparer",
+  "rivaliser avec",
+  "considérer comme"
+ ],
+ "157": [
+  "ne pas...",
+  "défense de",
+  "partir",
+  "autre",
+  "différence",
+  "différent"
+ ],
+ "158": [
+  "long",
+  "longueur",
+  "durable"
+ ],
+ "159": [
+  "chanter (une chanson)"
+ ],
+ "160": [
+  "sortir",
+  "dépasser",
+  "délivrer",
+  "forger (caractère, talent...)",
+  "produire",
+  "paraître",
+  "surgir",
+  "(classificateur pour les pièces de théâtre, les opéras)"
+ ],
+ "161": [
+  "porter (un vêtement)",
+  "mettre",
+  "traverser"
+ ],
+ "162": [
+  "bateau",
+  "navire",
+  "jonque",
+  "barque"
+ ],
+ "163": [
+  "fois",
+  "(classificateur pour les événements)",
+  "ordre",
+  "second",
+  "de mauvaise qualité",
+  "inférieur"
+ ],
+ "164": [
+  "(à partir) de",
+  "depuis",
+  "jamais",
+  "suivre",
+  "obéir à",
+  "s'engager dans",
+  "se joindre à",
+  "secondaire",
+  "accessoire"
+ ],
+ "165": [
+  "erreur",
+  "faute",
+  "se tromper",
+  "erroné",
+  "mauvais"
+ ],
+ "166": [
+  "jouer au basket"
+ ],
+ "167": [
+  "tous",
+  "tout le monde",
+  "chacun",
+  "grand maitre",
+  "autorité"
+ ],
+ "168": [
+  "mais",
+  "cependant",
+  "alors que"
+ ],
+ "169": [
+  "jusqu'à",
+  "arriver",
+  "parvenir",
+  "atteindre",
+  "aller à"
+ ],
+ "170": [
+  "(particule du complément de manière ou de degré)"
+ ],
+ "171": [
+  "avoir besoin",
+  "nécessiter",
+  "devoir",
+  "falloir",
+  "être sûr de"
+ ],
+ "172": [
+  "frère cadet",
+  "petit frère"
+ ],
+ "173": [
+  "premier",
+  "premièrement",
+  "numéro un"
+ ],
+ "174": [
+  "comprendre",
+  "savoir"
+ ],
+ "175": [
+  "salle",
+  "pièce (d'un appartement, d'une maison)",
+  "chambre"
+ ],
+ "176": [
+  "extraordinaire",
+  "exceptionnel",
+  "très",
+  "extrêmement"
+ ],
+ "177": [
+  "serveur",
+  "garçon"
+ ],
+ "178": [
+  "haut",
+  "élevé",
+  "grand",
+  "supérieur"
+ ],
+ "179": [
+  "dire",
+  "faire savoir",
+  "raconter"
+ ],
+ "180": [
+  "frère ainé",
+  "grand frère"
+ ],
+ "181": [
+  "pour",
+  "donner",
+  "offrir",
+  "accorder",
+  "laisser",
+  "permettre"
+ ],
+ "182": [
+  "autobus",
+  "bus"
+ ],
+ "183": [
+  "kilo",
+  "kilogramme"
+ ],
+ "184": [
+  "société",
+  "compagnie",
+  "firme"
+ ],
+ "185": [
+  "cher",
+  "couteux",
+  "précieux",
+  "votre honorable... (politesse)"
+ ],
+ "186": [
+  "encore",
+  "encore plus",
+  "plutôt",
+  "de plus",
+  "également"
+ ],
+ "187": [
+  "enfant"
+ ],
+ "188": [
+  "bon (à manger)",
+  "agréable (au gout)",
+  "savoureux",
+  "succulent",
+  "délicieux",
+  "goûteux"
+ ],
+ "189": [
+  "numéro",
+  "nombre",
+  "jour du mois",
+  "marque",
+  "signe",
+  "cor (instrument)",
+  "corne (instrument)",
+  "trompette"
+ ],
+ "190": [
+  "noir",
+  "sombre",
+  "secret"
+ ],
+ "191": [
+  "rouge",
+  "succès",
+  "vogue",
+  "dividende",
+  "gratification"
+ ],
+ "192": [
+  "bienvenue",
+  "souhaiter la bienvenue à qqn",
+  "accueillir favorablement qch"
+ ],
+ "193": [
+  "retourner",
+  "regagner",
+  "rétablir",
+  "rendre",
+  "rembourser"
+ ],
+ "194": [
+  "réponse",
+  "répondre",
+  "répliquer"
+ ],
+ "195": [
+  "aéroport"
+ ],
+ "196": [
+  "oeuf (de poule)",
+  "coco"
+ ],
+ "197": [
+  "(classificateur des vêtements, affaires, événements)",
+  "pièce",
+  "article"
+ ],
+ "198": [
+  "(salle de) classe"
+ ],
+ "199": [
+  "grande soeur"
+ ],
+ "200": [
+  "présenter",
+  "introduire",
+  "recommander",
+  "suggérer",
+  "faire savoir",
+  "faire part de",
+  "recommandation",
+  "présentation",
+  "proposition",
+  "précepte",
+  "discipline"
+ ],
+ "201": [
+  "entrer",
+  "progresser",
+  "présenter",
+  "recommander"
+ ],
+ "202": [
+  "proche",
+  "approximativement",
+  "intime"
+ ],
+ "203": [
+  "déjà",
+  "aussitôt",
+  "immédiatement",
+  "alors",
+  "même si",
+  "entreprendre",
+  "accomplir",
+  "s'approcher de",
+  "en fonction de"
+ ],
+ "204": [
+  "sentir que",
+  "trouver que",
+  "penser (que)",
+  "éprouver"
+ ],
+ "205": [
+  "café"
+ ],
+ "206": [
+  "commencement",
+  "début",
+  "commencer",
+  "débuter"
+ ],
+ "207": [
+  "examen",
+  "épreuve"
+ ],
+ "208": [
+  "possible",
+  "probable",
+  "peut-être",
+  "probablement"
+ ],
+ "209": [
+  "pouvoir (faire qch)",
+  "être capable de",
+  "être permis",
+  "être possible",
+  "passable",
+  "acceptable",
+  "suffisant",
+  "assez bien"
+ ],
+ "210": [
+  "leçon",
+  "cours",
+  "classe (éducation)"
+ ],
+ "211": [
+  "rapide",
+  "vite",
+  "rapidement",
+  "se hâter",
+  "accélérer",
+  "bientôt",
+  "prompt"
+ ],
+ "212": [
+  "heureux",
+  "joyeux"
+ ],
+ "213": [
+  "fatigué",
+  "las"
+ ],
+ "214": [
+  "distant de",
+  "quitter",
+  "se séparer",
+  "(un des huit trigrammes)"
+ ],
+ "215": [
+  "deux",
+  "les deux",
+  "liang (unité de poids)"
+ ],
+ "216": [
+  "chemin",
+  "route",
+  "trajet",
+  "distance",
+  "moyen",
+  "issue",
+  "ligne",
+  "(classificateur pour les lignes d'autobus)"
+ ],
+ "217": [
+  "voyager",
+  "voyage",
+  "tourisme"
+ ],
+ "218": [
+  "vendre"
+ ],
+ "219": [
+  "lent",
+  "lentement"
+ ],
+ "220": [
+  "se presser",
+  "occupé",
+  "affairé",
+  "tenir occupé"
+ ],
+ "221": [
+  "chaque",
+  "chacun",
+  "tous"
+ ],
+ "222": [
+  "plus jeune soeur",
+  "petite soeur",
+  "jeune fille"
+ ],
+ "223": [
+  "porte",
+  "entrée",
+  "voie",
+  "moyen",
+  "famille (classification)",
+  "école de pensée",
+  "classe",
+  "catégorie",
+  "(classificateur pour les branches du savoir, les domaines de la connaissance, les sciences, les techniques)"
+ ],
+ "224": [
+  "homme (masculin)"
+ ],
+ "225": [
+  "vous (respectueux : 2e personne du singulier)"
+ ],
+ "226": [
+  "lait (de vache)"
+ ],
+ "227": [
+  "femme (n.f)"
+ ],
+ "228": [
+  "latéral",
+  "côté",
+  "sur le côté",
+  "à côté",
+  "tout près"
+ ],
+ "229": [
+  "courir",
+  "faire du jogging"
+ ],
+ "230": [
+  "bon marché",
+  "pas cher",
+  "avantage",
+  "gain"
+ ],
+ "231": [
+  "ticket",
+  "billet",
+  "bulletin de vote"
+ ],
+ "232": [
+  "femme (partenaire)",
+  "épouse"
+ ],
+ "233": [
+  "se lever",
+  "se réveiller",
+  "réveil",
+  "sortir du lit"
+ ],
+ "234": [
+  "mille",
+  "un grand nombre de"
+ ],
+ "235": [
+  "clair",
+  "beau temps",
+  "éclaircie",
+  "s'éclaircir (pour le ciel)",
+  "serein"
+ ],
+ "236": [
+  "année dernière"
+ ],
+ "237": [
+  "laisser",
+  "permettre",
+  "céder"
+ ],
+ "238": [
+  "aller au travail",
+  "commencer son service"
+ ],
+ "239": [
+  "corps",
+  "santé"
+ ],
+ "240": [
+  "tomber malade"
+ ],
+ "241": [
+  "anniversaire"
+ ],
+ "242": [
+  "temps",
+  "durée",
+  "période",
+  "délai",
+  "horaire"
+ ],
+ "243": [
+  "affaire",
+  "chose (immatérielle)",
+  "besogne"
+ ],
+ "244": [
+  "montre (horlogerie)"
+ ],
+ "245": [
+  "téléphone portable",
+  "téléphone mobile",
+  "natel"
+ ],
+ "246": [
+  "envoyer",
+  "apporter (à qqn)",
+  "livrer",
+  "offrir",
+  "reconduire"
+ ],
+ "247": [
+  "par conséquent",
+  "c'est pourquoi",
+  "ce par quoi",
+  "ainsi",
+  "(c'est) la raison pour laquelle"
+ ],
+ "248": [
+  "(genre neutre) il",
+  "elle",
+  "lui"
+ ],
+ "249": [
+  "donner un coup de pied",
+  "jouer (avec une balle au pied)"
+ ],
+ "250": [
+  "sujet",
+  "titre",
+  "question",
+  "inscrire"
+ ],
+ "251": [
+  "danser"
+ ],
+ "252": [
+  "extérieur",
+  "étranger",
+  "externe",
+  "en plus"
+ ],
+ "253": [
+  "terminer",
+  "finir",
+  "s'épuiser",
+  "complet",
+  "entier",
+  "intact"
+ ],
+ "254": [
+  "jouer",
+  "s'amuser",
+  "se divertir"
+ ],
+ "255": [
+  "nuit",
+  "soir"
+ ],
+ "256": [
+  "à cause de",
+  "pour",
+  "à",
+  "afin de",
+  "en vue de"
+ ],
+ "257": [
+  "demander",
+  "se renseigner",
+  "questionner",
+  "interroger"
+ ],
+ "258": [
+  "question",
+  "problème"
+ ],
+ "259": [
+  "pastèque"
+ ],
+ "260": [
+  "espérer",
+  "désirer",
+  "espoir",
+  "espérance",
+  "promesse"
+ ],
+ "261": [
+  "laver",
+  "nettoyer"
+ ],
+ "262": [
+  "vers",
+  "en direction de",
+  "direction"
+ ],
+ "263": [
+  "heure (durée)"
+ ],
+ "264": [
+  "rire",
+  "sourire",
+  "ridiculiser"
+ ],
+ "265": [
+  "nouveau",
+  "neuf",
+  "récent",
+  "actuel",
+  "nouvellement",
+  "récemment"
+ ],
+ "266": [
+  "nom de famille"
+ ],
+ "267": [
+  "se reposer"
+ ],
+ "268": [
+  "neige",
+  "qui a l'apparence de la neige",
+  "essuyer"
+ ],
+ "269": [
+  "couleur",
+  "apparence",
+  "expression faciale",
+  "pigment",
+  "colorant"
+ ],
+ "270": [
+  "oeil",
+  "yeux"
+ ],
+ "271": [
+  "viande d'agneau"
+ ],
+ "272": [
+  "médicament",
+  "remède"
+ ],
+ "273": [
+  "vouloir",
+  "avoir besoin de",
+  "devoir"
+ ],
+ "274": [
+  "également",
+  "aussi",
+  "à la fois",
+  "même",
+  "voire"
+ ],
+ "275": [
+  "déjà"
+ ],
+ "276": [
+  "ensemble",
+  "avec",
+  "en compagnie de",
+  "en tout"
+ ],
+ "277": [
+  "sens",
+  "opinion",
+  "intention",
+  "signification",
+  "souhait",
+  "sentiment"
+ ],
+ "278": [
+  "couvert (temps)",
+  "nuageux",
+  "ombre"
+ ],
+ "279": [
+  "car",
+  "parce que",
+  "à cause de",
+  "par suite de",
+  "en raison de"
+ ],
+ "280": [
+  "nager",
+  "natation"
+ ],
+ "281": [
+  "côté droit",
+  "à droite"
+ ],
+ "282": [
+  "poisson"
+ ],
+ "283": [
+  "yuan (monnaie)",
+  "premier",
+  "principal"
+ ],
+ "284": [
+  "éloigné",
+  "loin"
+ ],
+ "285": [
+  "sport",
+  "mouvement",
+  "faire des exercices physiques",
+  "bouger"
+ ],
+ "286": [
+  "à nouveau",
+  "de nouveau",
+  "encore",
+  "une fois de plus",
+  "puis",
+  "continuer",
+  "revenir",
+  "re-"
+ ],
+ "287": [
+  "matin",
+  "matinée"
+ ],
+ "288": [
+  "(classificateur des objets plats : feuille, table…)",
+  "ouvrir",
+  "étendre"
+ ],
+ "289": [
+  "grandir",
+  "chef",
+  "aîné"
+ ],
+ "290": [
+  "mari",
+  "époux"
+ ],
+ "291": [
+  "chercher",
+  "rechercher",
+  "rendre la monnaie"
+ ],
+ "292": [
+  "(marque le déroulement d'une action)"
+ ],
+ "293": [
+  "vraiment",
+  "réellement",
+  "vrai",
+  "véritable"
+ ],
+ "294": [
+  "en train de",
+  "en cours de"
+ ],
+ "295": [
+  "savoir"
+ ],
+ "296": [
+  "préparer",
+  "s'apprêter à",
+  "projeter",
+  "compter faire qch"
+ ],
+ "297": [
+  "bicyclette",
+  "vélo"
+ ],
+ "298": [
+  "marcher",
+  "y aller",
+  "partir",
+  "aller",
+  "visiter",
+  "quitter"
+ ],
+ "299": [
+  "le plus"
+ ],
+ "300": [
+  "côté gauche",
+  "à gauche"
+ ]
+}

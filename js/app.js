@@ -1,4 +1,4 @@
-import { cfg, session, cache, DATA_URLS } from './state.js';
+import { cfg, session, cache, frenchCache, DATA_URLS, FRENCH_DATA_URLS } from './state.js';
 import { rawToWords, sortWords, shuffle, showScreen } from './utils.js';
 import { initSetup, readSetupConfig, saveSetupState, renderProgressSummary } from './setup.js';
 import { initFlashcard, renderCard, toggleFlip, markAndAdvance, speakCurrentWord, undoLastRating } from './flashcard.js';
@@ -8,7 +8,7 @@ import { resetActivity } from './activity.js';
 import { createBackup, parseBackup, restoreBackup } from './backup.js';
 import { renderStats } from './stats.js';
 import { initTheme } from './theme.js';
-import { initI18n, t, formatDate } from './i18n.js';
+import { initI18n, getLanguage, t, formatDate } from './i18n.js';
 import { preloadSounds } from './sound.js';
 import { initNavigation, openView, closeView } from './navigation.js';
 import { initGuide, resetGuide, showGuideTopic } from './guide.js';
@@ -70,12 +70,24 @@ async function selectDueWords() {
 }
 
 async function loadLevel(level) {
-  if (!cache[level]) {
-    const res = await fetch(DATA_URLS[level]);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    cache[level] = await res.json();
-  }
-  return rawToWords(cache[level], level);
+  cache[level] ??= await fetchJson(DATA_URLS[level]);
+  const french = getLanguage() === 'fr' ? await loadFrenchMeanings(level) : {};
+  return rawToWords(cache[level], level, french);
+}
+
+// Without them (e.g. offline before they were cached), the cards stay in English
+async function loadFrenchMeanings(level) {
+  frenchCache[level] ??= await fetchJson(FRENCH_DATA_URLS[level]).catch(err => {
+    console.warn(err);
+    return null;
+  });
+  return frenchCache[level] ?? {};
+}
+
+async function fetchJson(url) {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
+  return res.json();
 }
 
 function showSetup() {

@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { openGuide, openSettings, option, rateAllKnown, startSession } from './helpers.js';
+import { openGuide, openSettings, option, quitSession, rateAllKnown, startSession } from './helpers.js';
 
 test.describe('on a French device', () => {
   test.use({ locale: 'fr-FR' });
@@ -18,7 +18,8 @@ test.describe('on a French device', () => {
   });
 
   test('a session and its results are in French', async ({ page }) => {
-    await startSession(page);
+    await startSession(page); // A→Z: 爱 ài comes first
+    await expect(page.locator('#translation-back')).toHaveText('amour, aimer, affection');
     await expect(page.locator('#btn-next')).toHaveText('Suivant →');
     await page.locator('#flashcard').click();
     await expect(page.locator('#btn-know')).toHaveText('✓ Je sais');
@@ -66,6 +67,17 @@ test('the language can be changed in the settings, and the choice is remembered'
 
   await page.reload();
   await expect(page.locator('#btn-start')).toHaveText('Commencer');
+
+  // Meanings follow the language too (A→Z: 爱 ài comes first)
+  await startSession(page);
+  await expect(page.locator('#translation-back')).toHaveText('amour, aimer, affection');
+  await quitSession(page);
+  await openSettings(page);
+  await option(page, 'language', 'en').click();
+  await page.goBack();
+  await startSession(page);
+  await expect(page.locator('#translation-back')).toHaveText('to love, affection, to be fond of');
+  await quitSession(page);
 
   // Back to English, then reset settings goes back to the device language
   await openSettings(page);

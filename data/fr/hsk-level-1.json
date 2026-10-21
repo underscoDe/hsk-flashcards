@@ -1,0 +1,756 @@
+{
+ "1": [
+  "amour",
+  "aimer",
+  "affection",
+  "affectionner",
+  "être amateur de",
+  "adorer"
+ ],
+ "2": [
+  "huit",
+  "8"
+ ],
+ "3": [
+  "papa"
+ ],
+ "4": [
+  "verre (récipient)"
+ ],
+ "5": [
+  "Pékin",
+  "Beijing"
+ ],
+ "6": [
+  "racine",
+  "tige",
+  "fondation",
+  "origine",
+  "capital",
+  "principal",
+  "base",
+  "celui-ci",
+  "propre",
+  "personnel",
+  "(classificateur pour les livres, cahiers, carnets, etc.)"
+ ],
+ "7": [
+  "de rien",
+  "je vous en prie",
+  "impoli"
+ ],
+ "8": [
+  "ne… pas",
+  "non"
+ ],
+ "9": [
+  "légume",
+  "plat (cuisiné)",
+  "cuisine (de pays, région...)"
+ ],
+ "10": [
+  "thé",
+  "infusion de thé ou d'autre chose"
+ ],
+ "11": [
+  "manger",
+  "prendre qch (par voie orale)",
+  "ingérer un aliment",
+  "anéantir",
+  "absorber",
+  "s'imprégner de"
+ ],
+ "12": [
+  "taxi"
+ ],
+ "13": [
+  "téléphoner"
+ ],
+ "14": [
+  "grand",
+  "massif"
+ ],
+ "15": [
+  "(particule de possession ou de relation)",
+  "de"
+ ],
+ "16": [
+  "un peu",
+  "point",
+  "heure (de l’horloge)"
+ ],
+ "17": [
+  "ordinateur"
+ ],
+ "18": [
+  "télévision",
+  "télé",
+  "TV"
+ ],
+ "19": [
+  "cinéma",
+  "film"
+ ],
+ "20": [
+  "chose",
+  "quelque chose",
+  "machin",
+  "truc",
+  "objet",
+  "sujet",
+  "créature"
+ ],
+ "21": [
+  "tous",
+  "tous les",
+  "déjà"
+ ],
+ "22": [
+  "lire",
+  "faire ses études",
+  "lecture"
+ ],
+ "23": [
+  "excusez-moi",
+  "pardon",
+  "désolé"
+ ],
+ "24": [
+  "beaucoup",
+  "nombreux",
+  "de plus",
+  "de trop",
+  "plus de"
+ ],
+ "25": [
+  "combien",
+  "autant que",
+  "plus ou moins",
+  "quelque peu",
+  "assez"
+ ],
+ "26": [
+  "fils (famille)"
+ ],
+ "27": [
+  "deux",
+  "2"
+ ],
+ "28": [
+  "restaurant"
+ ],
+ "29": [
+  "avion"
+ ],
+ "30": [
+  "minute (durée)"
+ ],
+ "31": [
+  "gai",
+  "content",
+  "joyeux",
+  "heureux",
+  "de bonne humeur",
+  "entrain",
+  "ardeur"
+ ],
+ "32": [
+  "(classificateur général des personnes et des choses)",
+  "individuel"
+ ],
+ "33": [
+  "travail",
+  "besogne"
+ ],
+ "34": [
+  "chien",
+  "maudit"
+ ],
+ "35": [
+  "langue chinoise",
+  "chinois (langue)",
+  "mandarin"
+ ],
+ "36": [
+  "bien",
+  "bon",
+  "agréable",
+  "très",
+  "beaucoup",
+  "(après un verbe, indique l'achèvement de l'action)",
+  "se porter bien",
+  "aller bien"
+ ],
+ "37": [
+  "boire"
+ ],
+ "38": [
+  "et",
+  "avec",
+  "harmonie",
+  "paix",
+  "union",
+  "aimable",
+  "doux",
+  "harmonieux",
+  "concilier"
+ ],
+ "39": [
+  "(adverbe de degré)",
+  "très"
+ ],
+ "40": [
+  "derrière",
+  "en arrière",
+  "après"
+ ],
+ "41": [
+  "revenir",
+  "rentrer",
+  "fois"
+ ],
+ "42": [
+  "savoir (faire)",
+  "pouvoir",
+  "réunion"
+ ],
+ "43": [
+  "gare (de train)"
+ ],
+ "44": [
+  "combien",
+  "quelques",
+  "un peu"
+ ],
+ "45": [
+  "famille",
+  "foyer",
+  "maison",
+  "domicile",
+  "(suffixe pour les experts, spécialistes, ...)",
+  "(classificateur pour établissements divers : magasins, restaurants, hôtels, cinémas...)"
+ ],
+ "46": [
+  "crier",
+  "appeler",
+  "s'appeler",
+  "ordonner",
+  "par"
+ ],
+ "47": [
+  "aujourd'hui"
+ ],
+ "48": [
+  "neuf (chiffre)",
+  "9"
+ ],
+ "49": [
+  "ouvrir",
+  "allumer",
+  "conduire"
+ ],
+ "50": [
+  "voir",
+  "regarder",
+  "lire",
+  "considérer comme",
+  "voir que",
+  "traiter en tant que",
+  "juger",
+  "considérer",
+  "estimer",
+  "traiter",
+  "soigner"
+ ],
+ "51": [
+  "voir",
+  "apercevoir"
+ ],
+ "52": [
+  "morceau",
+  "yuan (familier)",
+  "bloc"
+ ],
+ "53": [
+  "venir",
+  "arriver",
+  "prochain",
+  "suivant",
+  "environ"
+ ],
+ "54": [
+  "enseignant",
+  "professeur"
+ ],
+ "55": [
+  "(marque une action accomplie)",
+  "(marque un changement de situation)"
+ ],
+ "56": [
+  "froid",
+  "glacial",
+  "désert",
+  "silencieux"
+ ],
+ "57": [
+  "dans",
+  "intérieur",
+  "à l'intérieur",
+  "li (mesure de longueur d'environ 500 mètres)"
+ ],
+ "58": [
+  "zéro",
+  "0",
+  "nul",
+  "quantité fractionnaire",
+  "se flétrir",
+  "se faner",
+  "nombre en sus d'un chiffre rond",
+  "néant",
+  "zéro degré",
+  "rien"
+ ],
+ "59": [
+  "six",
+  "6"
+ ],
+ "60": [
+  "maman",
+  "mère"
+ ],
+ "61": [
+  "(particule interrogative en fin de phrase)"
+ ],
+ "62": [
+  "acheter"
+ ],
+ "63": [
+  "chat",
+  "modem (fam.)"
+ ],
+ "64": [
+  "ne pas (avoir)"
+ ],
+ "65": [
+  "Il n'y a pas de quoi",
+  "cela n'a pas d'importance",
+  "ce n'est pas grave",
+  "de rien"
+ ],
+ "66": [
+  "riz (cuit)"
+ ],
+ "67": [
+  "demain",
+  "lendemain"
+ ],
+ "68": [
+  "nom"
+ ],
+ "69": [
+  "quel",
+  "comment"
+ ],
+ "70": [
+  "ce",
+  "cet",
+  "cette",
+  "cela",
+  "donc",
+  "dans ce cas"
+ ],
+ "71": [
+  "(particule finale : « et… ? », « où est… ? »)",
+  "(marque une action en cours)"
+ ],
+ "72": [
+  "pouvoir",
+  "être capable de",
+  "capacité"
+ ],
+ "73": [
+  "tu",
+  "toi"
+ ],
+ "74": [
+  "année",
+  "récolte"
+ ],
+ "75": [
+  "fille (parenté)"
+ ],
+ "76": [
+  "ami",
+  "copain"
+ ],
+ "77": [
+  "joli",
+  "jolie",
+  "beau",
+  "belle",
+  "chic",
+  "raffiné",
+  "élégant"
+ ],
+ "78": [
+  "pomme",
+  "Apple"
+ ],
+ "79": [
+  "sept",
+  "7"
+ ],
+ "80": [
+  "argent",
+  "monnaie",
+  "somme",
+  "richesse"
+ ],
+ "81": [
+  "(en) avant",
+  "devant",
+  "ci-dessus"
+ ],
+ "82": [
+  "solliciter",
+  "inviter",
+  "(veuillez) s'il vous plait",
+  "je vous en prie",
+  "demander"
+ ],
+ "83": [
+  "aller",
+  "quitter",
+  "enlever",
+  "(placé après un verbe pour marquer la direction ou la destination) vers",
+  "dans la direction de",
+  "pour"
+ ],
+ "84": [
+  "chaud",
+  "ardent",
+  "affectionné"
+ ],
+ "85": [
+  "personne (n.f.)",
+  "homme",
+  "être humain",
+  "homo sapiens"
+ ],
+ "86": [
+  "connaitre",
+  "savoir"
+ ],
+ "87": [
+  "jour",
+  "(Soleil)"
+ ],
+ "88": [
+  "trois",
+  "3"
+ ],
+ "89": [
+  "magasin"
+ ],
+ "90": [
+  "sur",
+  "dessus",
+  "monter"
+ ],
+ "91": [
+  "matinée"
+ ],
+ "92": [
+  "peu",
+  "quelque",
+  "manquer de"
+ ],
+ "93": [
+  "qui",
+  "quiconque"
+ ],
+ "94": [
+  "que",
+  "quoi",
+  "quel",
+  "quelle",
+  "tout",
+  "n'importe quel",
+  "n'importe quelle",
+  "quelconque"
+ ],
+ "95": [
+  "dix",
+  "10"
+ ],
+ "96": [
+  "temps",
+  "moment"
+ ],
+ "97": [
+  "être",
+  "oui",
+  "correct"
+ ],
+ "98": [
+  "livre",
+  "bouquin",
+  "document",
+  "lettre",
+  "calligraphie",
+  "écrire",
+  "calligraphier"
+ ],
+ "99": [
+  "eau",
+  "liquide"
+ ],
+ "100": [
+  "fruit"
+ ],
+ "101": [
+  "dormir",
+  "se coucher",
+  "aller au lit"
+ ],
+ "102": [
+  "parler",
+  "dire",
+  "bavarder",
+  "discuter",
+  "s'exprimer",
+  "prendre la parole"
+ ],
+ "103": [
+  "quatre",
+  "4"
+ ],
+ "104": [
+  "an (âge)",
+  "année"
+ ],
+ "105": [
+  "il",
+  "lui"
+ ],
+ "106": [
+  "elle"
+ ],
+ "107": [
+  "trop",
+  "très",
+  "extrêmement",
+  "suprême"
+ ],
+ "108": [
+  "temps (météorologie)",
+  "météo"
+ ],
+ "109": [
+  "écouter",
+  "suivre",
+  "obéir à"
+ ],
+ "110": [
+  "camarade (de classe)",
+  "condisciple"
+ ],
+ "111": [
+  "allô",
+  "hé !",
+  "nourrir"
+ ],
+ "112": [
+  "je",
+  "moi"
+ ],
+ "113": [
+  "nous"
+ ],
+ "114": [
+  "cinq",
+  "5"
+ ],
+ "115": [
+  "aimer",
+  "apprécier",
+  "se plaire (dans)",
+  "prendre plaisir à",
+  "avoir du gout pour",
+  "être amateur de",
+  "kiffer"
+ ],
+ "116": [
+  "sous",
+  "dessous",
+  "suivant",
+  "prochain",
+  "bas",
+  "en bas",
+  "diminuer",
+  "descendre",
+  "arriver à (une décision, une conclusion)"
+ ],
+ "117": [
+  "après-midi"
+ ],
+ "118": [
+  "pleuvoir"
+ ],
+ "119": [
+  "monsieur",
+  "Mr."
+ ],
+ "120": [
+  "maintenant",
+  "actuellement",
+  "présentement"
+ ],
+ "121": [
+  "penser",
+  "réfléchir",
+  "songer",
+  "supposer",
+  "estimer",
+  "vouloir",
+  "désirer",
+  "penser à",
+  "manquer (sentiment)"
+ ],
+ "122": [
+  "petit",
+  "jeune"
+ ],
+ "123": [
+  "mademoiselle",
+  "demoiselle"
+ ],
+ "124": [
+  "certains",
+  "quelques",
+  "plusieurs",
+  "un peu"
+ ],
+ "125": [
+  "écrire",
+  "composer"
+ ],
+ "126": [
+  "merci",
+  "remercier"
+ ],
+ "127": [
+  "semaine"
+ ],
+ "128": [
+  "étudiant",
+  "élève",
+  "écolier"
+ ],
+ "129": [
+  "étudier",
+  "apprendre",
+  "apprentissage",
+  "imiter"
+ ],
+ "130": [
+  "école"
+ ],
+ "131": [
+  "1 (nombre)",
+  "un"
+ ],
+ "132": [
+  "vêtement",
+  "habit",
+  "habillement"
+ ],
+ "133": [
+  "docteur",
+  "médecin"
+ ],
+ "134": [
+  "hôpital"
+ ],
+ "135": [
+  "chaise"
+ ],
+ "136": [
+  "avoir",
+  "posséder",
+  "il y a",
+  "exister"
+ ],
+ "137": [
+  "Lune",
+  "mois"
+ ],
+ "138": [
+  "à",
+  "dans",
+  "être en train de"
+ ],
+ "139": [
+  "au revoir"
+ ],
+ "140": [
+  "comment",
+  "pourquoi"
+ ],
+ "141": [
+  "comment ?",
+  "que penser de ?"
+ ],
+ "142": [
+  "ce",
+  "ceci",
+  "cet",
+  "cette"
+ ],
+ "143": [
+  "Chine",
+  "Empire du Milieu",
+  "centre du pays"
+ ],
+ "144": [
+  "midi",
+  "zénith"
+ ],
+ "145": [
+  "habiter",
+  "loger",
+  "rester"
+ ],
+ "146": [
+  "table",
+  "bureau"
+ ],
+ "147": [
+  "caractère",
+  "mot"
+ ],
+ "148": [
+  "hier"
+ ],
+ "149": [
+  "s'assoir",
+  "s'asseoir",
+  "prendre (un transport)",
+  "se situer",
+  "se trouver",
+  "siège",
+  "place assise"
+ ],
+ "150": [
+  "faire",
+  "effectuer",
+  "fabriquer",
+  "confectionner",
+  "réaliser",
+  "être (métier : pompier, médecin...)",
+  "devenir",
+  "servir de",
+  "écrire",
+  "composer"
+ ]
+}

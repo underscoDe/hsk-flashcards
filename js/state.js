@@ -7,6 +7,11 @@ export const DATA_URLS = {
   '6': '/data/hsk-level-6.json',
 };
 
+// French meanings by word id (CFDICT, see scripts/update-french.mjs)
+export const FRENCH_DATA_URLS = Object.fromEntries(
+  Object.keys(DATA_URLS).map(level => [level, `/data/fr/hsk-level-${level}.json`])
+);
+
 export const LEVEL_COUNTS = {
   '1': 150, '2': 150, '3': 299, '4': 601, '5': 1300, '6': 2500,
 };
@@ -35,3 +40,4 @@ export const session = {
 };
 
 export const cache = {};
+export const frenchCache = {};

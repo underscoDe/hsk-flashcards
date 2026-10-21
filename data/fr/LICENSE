@@ -1,0 +1,10 @@
+French meanings of the HSK words (data/fr/*.json)
+
+Built by scripts/update-french.mjs from CFDICT, the free Chinese-French dictionary
+by Chine Informations (https://chine.in), https://chine.in/mandarin/dictionnaire/CFDICT/,
+with additions and corrections for HSK words it lacks or gets wrong (FRENCH_FIXES
+in the script).
+
+These files, additions and corrections included, are distributed under the
+Creative Commons Attribution-ShareAlike 3.0 license, like CFDICT:
+https://creativecommons.org/licenses/by-sa/3.0/

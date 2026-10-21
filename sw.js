@@ -1,4 +1,4 @@
-const VERSION = 'v12'; // bump on every data update (scripts/update-vocab.sh)
+const VERSION = 'v13'; // bump on every data update (scripts/update-vocab.sh)
 const STATIC_CACHE = `hsk-static-${VERSION}`;
 const DATA_CACHE   = `hsk-data-${VERSION}`;
 
@@ -29,7 +29,7 @@ const STATIC_ASSETS = [
   ...['flip', 'known', 'unknown', 'correct', 'wrong', 'mastered', 'undo', 'great', 'finish'].map(name => `/sounds/${name}.mp3`),
 ];
 
-const DATA_ASSETS = [1, 2, 3, 4, 5, 6].map(level => `/data/hsk-level-${level}.json`);
+const DATA_ASSETS = [1, 2, 3, 4, 5, 6].flatMap(level => [`/data/hsk-level-${level}.json`, `/data/fr/hsk-level-${level}.json`]);
 
 // cache: 'reload' bypasses the HTTP cache so we never pre-cache stale files
 function precache(cacheName, urls) {

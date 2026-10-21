@@ -135,6 +135,12 @@ describe('rawToWords', () => {
     expect(rawToWords(raw(['variant of 胡同[hú tòng]']))[0].translation).toBe('variant of 胡同 (hú tòng)');
   });
 
+  it('uses up to three French meanings, and English for words without any', () => {
+    const words = [{ id: 7, hanzi: '茶', pinyin: 'chá', translations: ['tea'] }, { id: 8, hanzi: '水', pinyin: 'shuǐ', translations: ['water'] }];
+    const french = { 7: ['thé', 'infusion', 'théier', 'tisane'] };
+    expect(rawToWords(words, '1', french).map(word => word.translation)).toEqual(['thé, infusion, théier', 'water']);
+  });
+
   it('uses the hand-written fix for words whose source only holds a reference', () => {
     const [word] = rawToWords([{ id: 32, hanzi: '个', pinyin: 'gè', translations: ['variant of 個|个[gè]'] }]);
     expect(word.translation).toMatch(/^classifier for people/);
