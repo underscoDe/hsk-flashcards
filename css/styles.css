@@ -312,6 +312,33 @@ body {
   font-weight: 600;
   color: var(--on-surface);
 }
+
+/* "?" next to an option: opens the matching guide topic */
+.btn-help {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  margin-left: 6px;
+  padding: 0;
+  border: none;
+  border-radius: var(--r-full);
+  background: var(--surface-mid);
+  color: var(--on-surface-muted);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+  vertical-align: middle;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+}
+.btn-help::before { content: ''; position: absolute; inset: -12px; } /* bigger touch target */
+.btn-help:hover { background: var(--primary-l); color: var(--primary); }
+.review-card .btn-help { background: var(--surface); }
 .btn-review-today {
   flex-shrink: 0;
   padding: 9px 16px;
@@ -1414,6 +1441,12 @@ body:has(.sheet[open]) { overflow: hidden; }
   box-shadow: var(--shadow-md);
 }
 .guide-item + .guide-item { border-top: 1px solid var(--divider); }
+.guide-item { scroll-margin-top: 72px; }
+.guide-item.is-pointed { animation: pointed 1.6s ease; }
+@keyframes pointed {
+  from, 40% { background: var(--primary-bg); }
+  to        { background: transparent; }
+}
 .guide-item summary {
   position: relative;
   display: block; /* not flex: search highlights would split the title */

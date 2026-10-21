@@ -6,7 +6,7 @@ import { showResults } from './results.js';
 import { getDueEntries, resetProgress } from './progress.js';
 import { initTheme } from './theme.js';
 import { initNavigation, openView, closeView } from './navigation.js';
-import { initGuide, resetGuide } from './guide.js';
+import { initGuide, resetGuide, showGuideTopic } from './guide.js';
 
 /** Shows the loading screen, then starts a session with the words from `getWords`. */
 async function startSession(getWords) {
@@ -92,11 +92,20 @@ function openSettings() {
   openPage('settings-screen');
 }
 
-function openGuide() {
-  if (isShown('guide-screen')) return;
-  resetGuide();
-  openPage('guide-screen');
-  window.scrollTo(0, 0);
+/** Opens the guide, at a topic or section when `topicId` is given. */
+function openGuide(topicId = null) {
+  if (!isShown('guide-screen')) {
+    resetGuide();
+    openPage('guide-screen');
+    window.scrollTo(0, 0);
+  }
+  if (topicId) showGuideTopic(topicId);
+}
+
+/** "?" buttons: the options sheet closes first, so back from the guide returns home. */
+async function handleHelpClick(topicId) {
+  if (document.getElementById('options-sheet').open) await closeView();
+  openGuide(topicId);
 }
 
 function isShown(screenId) {
@@ -183,9 +192,12 @@ function init() {
   document.getElementById('btn-open-settings').addEventListener('click', openSettings);
   document.getElementById('btn-close-settings').addEventListener('click', closeView);
   document.getElementById('nav-settings').addEventListener('click', openSettings);
-  document.getElementById('btn-open-guide').addEventListener('click', openGuide);
+  document.getElementById('btn-open-guide').addEventListener('click', () => openGuide());
   document.getElementById('btn-close-guide').addEventListener('click', closeView);
-  document.getElementById('nav-guide').addEventListener('click', openGuide);
+  document.getElementById('nav-guide').addEventListener('click', () => openGuide());
+  document.querySelectorAll('.btn-help').forEach(btn => {
+    btn.addEventListener('click', () => handleHelpClick(btn.dataset.guide));
+  });
   document.getElementById('nav-home').addEventListener('click', () => {
     if (PAGES.some(isShown)) closeView();
   });

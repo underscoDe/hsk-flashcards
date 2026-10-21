@@ -3,6 +3,7 @@
 // history entry, and going back through it runs that view's close handler.
 const views = [];
 let isClosingInApp = false;
+let resolveClosing = null;
 
 /**
  * Registers a view that was just opened; `handleClose` hides it again.
@@ -14,14 +15,22 @@ export function openView(handleClose, handleBack = null) {
   history.pushState({ view: views.length }, '');
 }
 
-/** Closes the top view from an in-app button, through history so both stay in sync. */
+/**
+ * Closes the top view from an in-app button, through history so both stay in sync.
+ * Resolves once it is closed, so another view can be opened in its place.
+ */
 export function closeView() {
-  if (!views.length) return;
+  if (!views.length) return Promise.resolve();
   isClosingInApp = true;
   history.back();
+  return new Promise(resolve => { resolveClosing = resolve; });
 }
 
 export function initNavigation() {
+  // Our entries are views, not pages: the browser restoring their scroll position
+  // after going back would undo scrolling done in the newly shown view
+  history.scrollRestoration = 'manual';
+
   window.addEventListener('popstate', () => {
     const view = views.at(-1);
     if (!view) return;
@@ -35,5 +44,7 @@ export function initNavigation() {
     isClosingInApp = false;
     views.pop();
     view.handleClose();
+    resolveClosing?.();
+    resolveClosing = null;
   });
 }

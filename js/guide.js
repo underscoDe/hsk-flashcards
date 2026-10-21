@@ -34,6 +34,24 @@ export function initGuide() {
 export function resetGuide() {
   document.getElementById('guide-search').value = '';
   search('');
+  // Left over when the guide was closed before the animation ended
+  document.querySelectorAll('.guide-item.is-pointed').forEach(el => el.classList.remove('is-pointed'));
+}
+
+/** Opens a topic, or shows a section, for the "?" buttons around the app. */
+export function showGuideTopic(id) {
+  const target = document.getElementById(id);
+  target.scrollIntoView({ block: 'start' });
+  if (target.tagName !== 'DETAILS') return;
+
+  target.open = true;
+  target.classList.add('is-pointed');
+  // The answer's own fade-in also bubbles up here: wait for the topic's animation
+  target.addEventListener('animationend', function handleEnd(e) {
+    if (e.target !== target) return;
+    target.classList.remove('is-pointed');
+    target.removeEventListener('animationend', handleEnd);
+  });
 }
 
 function search(query) {

@@ -67,7 +67,10 @@
 
     <!-- Daily review (shown once at least one word has been rated) -->
     <div class="review-card" id="review-section" hidden>
-      <p class="review-text" id="review-text"></p>
+      <p class="review-text">
+        <span id="review-text"></span>
+        <button class="btn-help" data-guide="guide-topic-daily" aria-label="How the daily review works">?</button>
+      </p>
       <button class="btn-review-today" id="btn-review-today">Review now</button>
     </div>
 
@@ -75,7 +78,9 @@
 
       <!-- Level -->
       <div class="setup-section">
-        <div class="section-label">HSK Level</div>
+        <div class="section-label">HSK Level
+          <button class="btn-help" data-guide="guide-topic-levels" aria-label="About HSK levels">?</button>
+        </div>
         <div class="level-grid">
           <button class="btn-level active" data-group="level" data-value="1">
             <span class="level-name">HSK 1</span>
@@ -177,7 +182,9 @@
       <div class="sheet-body">
         <!-- Card mode -->
         <div class="setup-section">
-          <div class="section-label">Card mode</div>
+          <div class="section-label">Card mode
+            <button class="btn-help" data-guide="guide-modes" aria-label="About card modes">?</button>
+          </div>
           <div class="choice-list">
             <button class="btn-choice active" data-group="card-mode" data-value="hanzi-first">
               <span class="choice-title">Hanzi → Pinyin</span>
@@ -196,7 +203,9 @@
 
         <!-- Word selection -->
         <div class="setup-section">
-          <div class="section-label">Word selection</div>
+          <div class="section-label">Word selection
+            <button class="btn-help" data-guide="guide-topic-order" aria-label="About word order">?</button>
+          </div>
           <div class="btn-group">
             <button class="btn-opt active" data-group="order" data-value="random">Random</button>
             <button class="btn-opt" data-group="order" data-value="asc">A→Z Pinyin</button>
@@ -369,7 +378,8 @@
               <summary>Move around the app</summary>
               <div class="guide-answer">
                 <p>On a phone, the buttons at the top of the home screen open this guide and the settings.
-                  On a computer, use the navigation bar at the top.</p>
+                  On a computer, use the navigation bar at the top. The small <strong>?</strong> buttons next to
+                  some options open the matching topic of this guide.</p>
                 <p>The back button of your phone or browser closes the session options, the settings and this guide.
                   During a session, it asks before quitting, so you never lose a session by accident.</p>
               </div>
@@ -380,7 +390,7 @@
         <section class="guide-section" id="guide-words">
           <h2 class="guide-section-title">Choosing words</h2>
           <div class="guide-card">
-            <details class="guide-item">
+            <details class="guide-item" id="guide-topic-levels">
               <summary>HSK levels</summary>
               <div class="guide-answer">
                 <p>Each level adds new words to the previous ones: HSK 1 and 2 have 150 words each, HSK 3 has 299,
@@ -395,7 +405,7 @@
                   Each card then shows its level in a small badge. Press Combo mode again to go back to a single level.</p>
               </div>
             </details>
-            <details class="guide-item">
+            <details class="guide-item" id="guide-topic-order">
               <summary>Word order: random, A→Z or Z→A</summary>
               <div class="guide-answer">
                 <p><strong>Random</strong> picks words anywhere in the level, a new mix each time.
@@ -566,7 +576,7 @@
                   not to be forgotten. This method is known as the Leitner system.</p>
               </div>
             </details>
-            <details class="guide-item">
+            <details class="guide-item" id="guide-topic-daily">
               <summary>The daily review</summary>
               <div class="guide-answer">
                 <p>Once you have rated a word, a card at the top of the home screen tells you how many words are due today.

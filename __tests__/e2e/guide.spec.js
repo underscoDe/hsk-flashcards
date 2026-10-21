@@ -86,3 +86,26 @@ test.describe('desktop', () => {
     expect(await page.evaluate(() => history.state)).toBeNull();
   });
 });
+
+test.describe('"?" buttons', () => {
+  test('open the matching topic, from the home and from the options sheet', async ({ page }) => {
+    await page.locator('[data-guide="guide-topic-levels"]').click();
+    const levels = page.locator('#guide-topic-levels');
+    await expect(levels).toHaveAttribute('open', '');
+    await expect(levels).toBeInViewport();
+    await expect(levels).not.toHaveClass(/is-pointed/, { timeout: 4000 }); // the flash ends
+    await page.goBack();
+    await expect(page.locator('#setup-screen')).toBeVisible();
+
+    await page.locator('#btn-open-options').click();
+    await page.locator('[data-guide="guide-topic-order"]').click();
+    await expect(page.locator('#options-sheet')).toBeHidden();
+    await expect(page.locator('#guide-topic-order')).toBeInViewport();
+    await expect(page.locator('#guide-topic-order .guide-answer')).toBeVisible();
+
+    await page.goBack(); // one step home: the sheet was closed, not left underneath
+    await expect(page.locator('#setup-screen')).toBeVisible();
+    await expect(page.locator('#options-sheet')).toBeHidden();
+    expect(await page.evaluate(() => history.state)).toBeNull();
+  });
+});
