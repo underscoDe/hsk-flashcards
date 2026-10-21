@@ -186,6 +186,7 @@ function renderDailyReview() {
   const section = document.getElementById('review-section');
   section.hidden = !hasProgress();
   document.getElementById('btn-reset-progress').disabled = section.hidden;
+  document.getElementById('btn-export-progress').disabled = section.hidden;
   if (section.hidden) return;
 
   document.getElementById('btn-open-stats').textContent = statsLinkText();

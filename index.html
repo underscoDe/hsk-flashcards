@@ -291,7 +291,18 @@
       </div>
 
       <div class="setup-section">
-        <div class="section-label">Data</div>
+        <div class="section-label">Data
+          <button class="btn-help" data-guide="guide-topic-backup" aria-label="About backups">?</button>
+        </div>
+        <button class="settings-row" id="btn-export-progress">
+          <span class="settings-row-title">Export progress</span>
+          <span class="settings-row-desc">Save your progress and stats to a file, to keep them safe or move them to another device.</span>
+        </button>
+        <button class="settings-row" id="btn-import-progress">
+          <span class="settings-row-title">Import progress</span>
+          <span class="settings-row-desc">Restore a file saved with Export progress. It replaces the progress on this device.</span>
+        </button>
+        <input type="file" id="import-file" accept=".json,application/json" hidden>
         <button class="settings-row" id="btn-reset-settings">
           <span class="settings-row-title">Reset settings</span>
           <span class="settings-row-desc">Session options and theme back to defaults. Progress is kept.</span>
@@ -705,7 +716,21 @@
               <div class="guide-answer">
                 <p>Only on this device, in this browser: there is no account and nothing is sent anywhere.
                   This also means that your progress is not shared between your phone and your computer, or between two browsers,
-                  and that clearing the browser’s data for this site erases it.</p>
+                  and that clearing the browser’s data for this site erases it.
+                  To keep it safe or move it, use a backup file (see below).</p>
+              </div>
+            </details>
+            <details class="guide-item" id="guide-topic-backup">
+              <summary>Back up your progress or move it to another device</summary>
+              <div class="guide-answer">
+                <ol>
+                  <li>In <strong>Settings</strong>, press <strong>Export progress</strong>: a small file is saved in your downloads.
+                    It holds the words you rated and your stats, not your settings.</li>
+                  <li>Send the file to your other device if needed, for example by email or with a cloud drive.</li>
+                  <li>On that device, press <strong>Import progress</strong> in Settings and choose the file.</li>
+                </ol>
+                <p>Importing replaces the progress and stats of that device: nothing is merged.
+                  Export again now and then, so a recent copy is always at hand.</p>
               </div>
             </details>
             <details class="guide-item">
@@ -920,6 +945,18 @@
     <div class="dialog-actions">
       <button class="dialog-btn-cancel">Cancel</button>
       <button class="dialog-btn-confirm">Reset</button>
+    </div>
+  </div>
+</div>
+
+<!-- ======= IMPORT DIALOG ======= -->
+<div class="dialog-backdrop" id="import-dialog" aria-modal="true" role="dialog" aria-labelledby="import-dialog-title" aria-describedby="import-dialog-body">
+  <div class="dialog-card">
+    <p class="dialog-title" id="import-dialog-title">Replace your progress?</p>
+    <p class="dialog-body" id="import-dialog-body"></p>
+    <div class="dialog-actions">
+      <button class="dialog-btn-cancel">Cancel</button>
+      <button class="dialog-btn-confirm">Import</button>
     </div>
   </div>
 </div>

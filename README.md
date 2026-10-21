@@ -25,6 +25,7 @@ A clean, mobile-friendly flashcard app for practicing Chinese vocabulary across 
 - **Remembers your settings** — level, card mode, order, count and range are restored on the next visit, with a one-click reset to defaults (progress is kept)
 - **Session results** — score, missed words, retry missed words only
 - **Stats** — day streak (best streak too), cards rated today, words seen and mastered, and a 30-day chart of cards rated per day with the new words in each
+- **Backup** — export progress and stats to a file and import it on another device or browser
 - **Spaced repetition** — progress saved on the device (Leitner boxes: 1, 2, 4, 8, 16 days), daily review of due words, mastered words per level
 - **Offline** — installable PWA, all levels available without a connection
 
@@ -68,9 +69,10 @@ npm run test:all       # both
 ```
 
 - **Unit tests** (`__tests__/unit/`) cover the pure logic: Leitner boxes and due dates, daily activity and streaks (with a fake clock),
+  backup files (export, rejected files, invalid entries skipped on import),
   tone detection, translation cleaning, pinyin answer checking, guide search matching, and a check of all 5,000 words (unique ids, one syllable per
   character, no raw dictionary notation).
-- **Browser tests** (`__tests__/e2e/`) drive the app like a user: sessions, undo, typing mode, the guide search, stats and streaks, spaced repetition over
+- **Browser tests** (`__tests__/e2e/`) drive the app like a user: sessions, undo, typing mode, the guide search, stats and streaks, backup export and import, spaced repetition over
   simulated days, remembered settings, theme, tone colors, pronunciation (with a fake voice) and offline mode.
 - They use the installed Google Chrome. Without it, run `npx playwright install chromium` and
   `PW_CHANNEL=chromium npm run test:e2e`.
@@ -97,6 +99,7 @@ css/
 js/
   activity.js       Daily activity log (cards rated, new words, streaks) for the stats
   app.js            Orchestration, session start
+  backup.js         Progress and stats backup file (export, check, restore)
   state.js          Shared state (cfg, session, cache)
   setup.js          Setup screen interactions
   flashcard.js      Card rendering, flip, swipe, keyboard

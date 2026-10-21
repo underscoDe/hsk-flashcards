@@ -5,6 +5,7 @@ import { initFlashcard, renderCard, setFlipped, markAndAdvance, speakCurrentWord
 import { showResults } from './results.js';
 import { getDueEntries, resetProgress } from './progress.js';
 import { resetActivity } from './activity.js';
+import { createBackup, parseBackup, restoreBackup } from './backup.js';
 import { renderStats } from './stats.js';
 import { initTheme } from './theme.js';
 import { initNavigation, openView, closeView } from './navigation.js';
@@ -117,6 +118,48 @@ async function handleHelpClick(topicId) {
   openGuide(topicId);
 }
 
+/** Saves the progress and stats to a file in the downloads. */
+function exportBackup() {
+  const { name, text } = createBackup();
+  const url  = URL.createObjectURL(new Blob([text], { type: 'application/json' }));
+  const link = document.createElement('a');
+  link.href     = url;
+  link.download = name;
+  link.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000); // Safari still needs it right after the click
+}
+
+let pendingBackup = null;
+
+/** Checks the chosen file, then asks before replacing the progress. */
+async function handleImportFile(e) {
+  const file = e.target.files[0];
+  e.target.value = ''; // so choosing the same file again still fires `change`
+  if (!file) return;
+
+  pendingBackup = parseBackup(await file.text());
+  if (!pendingBackup) {
+    showMessage('Not a backup file', 'Choose a file saved with Export progress in this app.');
+    return;
+  }
+  const date = pendingBackup.exportedAt?.toLocaleDateString('en', { month: 'short', day: 'numeric', year: 'numeric' });
+  document.getElementById('import-dialog-body').textContent =
+    `This backup${date ? ` from ${date}` : ''} has ${wordsText(pendingBackup.wordCount)}. ` +
+    'It replaces the progress and stats on this device.';
+  document.getElementById('import-dialog').classList.add('visible');
+}
+
+function importBackup() {
+  restoreBackup(pendingBackup);
+  renderProgressSummary();
+  showMessage('Progress imported', `${wordsText(pendingBackup.wordCount)} and your stats are back.`);
+  pendingBackup = null;
+}
+
+function wordsText(count) {
+  return `${count} word${count === 1 ? '' : 's'}`;
+}
+
 function isShown(screenId) {
   return document.getElementById(screenId).classList.contains('active');
 }
@@ -214,12 +257,19 @@ function init() {
     if (PAGES.some(isShown)) closeView();
   });
 
+  document.getElementById('btn-export-progress').addEventListener('click', exportBackup);
+  document.getElementById('btn-import-progress').addEventListener('click', () => {
+    document.getElementById('import-file').click();
+  });
+  document.getElementById('import-file').addEventListener('change', handleImportFile);
+
   initDialog('quit-dialog', document.getElementById('btn-quit'), closeView);
   initDialog('reset-dialog', document.getElementById('btn-reset-progress'), () => {
     resetProgress();
     resetActivity();
     renderProgressSummary();
   });
+  initDialog('import-dialog', null, importBackup);
 
   document.getElementById('btn-retry-unknown').addEventListener('click', () => {
     // Unrated (skipped) words count as "to review" in the results, so include them
@@ -252,12 +302,12 @@ function showMessage(title, body) {
   document.getElementById('message-dialog-ok').focus();
 }
 
-/** Wires a confirmation dialog: `trigger` opens it, the confirm button runs `handleConfirm`. */
+/** Wires a confirmation dialog: `trigger` (if any) opens it, the confirm button runs `handleConfirm`. */
 function initDialog(dialogId, trigger, handleConfirm) {
   const dialog = document.getElementById(dialogId);
   const close  = () => dialog.classList.remove('visible');
 
-  trigger.addEventListener('click', () => dialog.classList.add('visible'));
+  trigger?.addEventListener('click', () => dialog.classList.add('visible'));
   dialog.querySelector('.dialog-btn-cancel').addEventListener('click', close);
   dialog.querySelector('.dialog-btn-confirm').addEventListener('click', () => {
     close();

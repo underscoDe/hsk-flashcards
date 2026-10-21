@@ -72,6 +72,20 @@ export function hasProgress() {
   return Object.keys(progress).length > 0;
 }
 
+/** Copy of every saved word, for backups. */
+export function exportProgress() {
+  return structuredClone(progress);
+}
+
+/** Replaces the saved words with a backup's; entries that don't look right are skipped. */
+export function importProgress(data) {
+  resetProgress();
+  Object.entries(data)
+    .filter(([id, entry]) => /^\d+$/.test(id) && isValidEntry(entry))
+    .forEach(([id, { box, due, level }]) => { progress[id] = { box, due, level }; });
+  saveProgress();
+}
+
 export function resetProgress() {
   Object.keys(progress).forEach(id => delete progress[id]);
   saveProgress();
@@ -83,6 +97,11 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 
 function isDue(entry) {
   return entry.due <= Date.now();
+}
+
+function isValidEntry(entry) {
+  return Number.isInteger(entry?.box) && entry.box >= 0 && entry.box <= MAX_BOX
+    && Number.isFinite(entry.due) && typeof entry.level === 'string';
 }
 
 // Local midnight `days` days from today (Date handles month ends and DST)

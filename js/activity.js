@@ -56,6 +56,20 @@ export function getStreaks() {
   return { current, best };
 }
 
+/** Copy of the whole log, for backups. */
+export function exportActivity() {
+  return structuredClone(activity);
+}
+
+/** Replaces the log with a backup's; days that don't look right are skipped. */
+export function importActivity(data) {
+  resetActivity();
+  Object.entries(data)
+    .filter(([day, counts]) => isValidDay(day, counts))
+    .forEach(([day, counts]) => { activity[day] = { reviewed: counts.reviewed, new: counts.new }; });
+  saveActivity();
+}
+
 export function resetActivity() {
   Object.keys(activity).forEach(day => delete activity[day]);
   saveActivity();
@@ -75,6 +89,12 @@ function dayKey(offset) {
 function dayNumber(key) {
   const [year, month, day] = key.split('-').map(Number);
   return Date.UTC(year, month - 1, day) / (24 * 60 * 60 * 1000);
+}
+
+function isValidDay(day, counts) {
+  return /^\d{4}-\d{2}-\d{2}$/.test(day)
+    && Number.isInteger(counts?.reviewed) && counts.reviewed > 0
+    && Number.isInteger(counts.new) && counts.new >= 0 && counts.new <= counts.reviewed;
 }
 
 function loadActivity() {

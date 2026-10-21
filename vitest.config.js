@@ -5,7 +5,7 @@ export default defineConfig({
     include: ['__tests__/unit/**/*.test.js'],
     coverage: {
       // Pure logic modules; the DOM-driven ones (setup, flashcard, app…) are covered by e2e tests
-      include: ['js/utils.js', 'js/progress.js', 'js/activity.js'],
+      include: ['js/utils.js', 'js/progress.js', 'js/activity.js', 'js/backup.js'],
       thresholds: { lines: 80, functions: 80, branches: 80, statements: 80 },
     },
   },

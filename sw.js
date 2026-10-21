@@ -1,4 +1,4 @@
-const VERSION = 'v9'; // bump on every data update (scripts/update-vocab.sh)
+const VERSION = 'v10'; // bump on every data update (scripts/update-vocab.sh)
 const STATIC_CACHE = `hsk-static-${VERSION}`;
 const DATA_CACHE   = `hsk-data-${VERSION}`;
 
@@ -8,6 +8,7 @@ const STATIC_ASSETS = [
   '/css/styles.css',
   '/js/activity.js',
   '/js/app.js',
+  '/js/backup.js',
   '/js/flashcard.js',
   '/js/guide.js',
   '/js/navigation.js',
