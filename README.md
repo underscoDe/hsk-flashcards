@@ -13,6 +13,7 @@ A clean, mobile-friendly flashcard app for practicing Chinese vocabulary across 
 - **Flexible word selection** — random, A→Z or Z→A by pinyin
 - **Word range** — study words 25–50 from a sorted list, for example
 - **Shuffle presentation** — pick words in order, review them in random order
+- **Typing mode** — type the pinyin with tones (`nǐ hǎo` or `ni3 hao3`); the check suggests the rating, which you can still change
 - **Mobile swipe gestures** — swipe right = got it, swipe left = review again
 - **Keyboard shortcuts** — `Space` flip, `← →` navigate, `K` got it, `U` review again, `P` listen, `Z` undo
 - **Undo** — revert the last ratings (button, `Z`, or from the results screen), progress included
@@ -64,9 +65,9 @@ npm run test:all       # both
 ```
 
 - **Unit tests** (`__tests__/unit/`) cover the pure logic: Leitner boxes and due dates (with a fake clock),
-  tone detection, translation cleaning, and a check of all 5,000 words (unique ids, one syllable per
+  tone detection, translation cleaning, pinyin answer checking, and a check of all 5,000 words (unique ids, one syllable per
   character, no raw dictionary notation).
-- **Browser tests** (`__tests__/e2e/`) drive the app like a user: sessions, undo, spaced repetition over
+- **Browser tests** (`__tests__/e2e/`) drive the app like a user: sessions, undo, typing mode, spaced repetition over
   simulated days, remembered settings, theme, tone colors, pronunciation (with a fake voice) and offline mode.
 - They use the installed Google Chrome. Without it, run `npx playwright install chromium` and
   `PW_CHANNEL=chromium npm run test:e2e`.

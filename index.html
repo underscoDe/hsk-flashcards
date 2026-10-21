@@ -135,6 +135,7 @@
         <div class="btn-group">
           <button class="btn-opt active" data-group="card-mode" data-value="hanzi-first">Hanzi → Pinyin</button>
           <button class="btn-opt" data-group="card-mode" data-value="pinyin-first">Pinyin → Hanzi</button>
+          <button class="btn-opt" data-group="card-mode" data-value="type-pinyin">Type pinyin</button>
         </div>
       </div>
 
@@ -290,6 +291,14 @@
 
       </div>
     </div>
+
+    <form class="answer-row" id="answer-form" hidden>
+      <input class="answer-input" id="answer-input" type="text" placeholder="Pinyin: nǐ hǎo or ni3 hao3"
+             aria-label="Pinyin with tones" autocomplete="off" autocapitalize="off" autocorrect="off"
+             spellcheck="false" enterkeyhint="done">
+      <button class="btn-check" type="submit">Check</button>
+      <p class="answer-feedback" id="answer-feedback" role="status"></p>
+    </form>
 
     <div class="assess-row" id="assess-row">
       <button class="btn-assess btn-review" id="btn-review">✗ Review again</button>

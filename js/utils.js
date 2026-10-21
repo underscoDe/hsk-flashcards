@@ -79,6 +79,41 @@ export function getTone(syllable) {
   return entry ? Number(entry[0]) : 5;
 }
 
+// Each tone-marked vowel → its plain letter, with ü written v as on pinyin keyboards
+const PLAIN_VOWELS = Object.fromEntries(
+  Object.values(TONE_MARKS).flatMap(marks => [...marks].map((mark, i) => [mark, 'aeiouv'[i]]))
+);
+
+function stripTones(text) {
+  return [...text].map(c => PLAIN_VOWELS[c] ?? c).join('');
+}
+
+/**
+ * Checks a typed pinyin answer against the expected pinyin, tones included.
+ * Accepts tone marks (nǐ hǎo) or numbers (ni3 hao3, 0 or 5 or nothing for the neutral
+ * tone), with or without spaces, and ü as ü, v or u:.
+ * Returns 'correct', 'tones' (right syllables, wrong tones) or 'wrong'.
+ */
+export function checkPinyin(answer, pinyin) {
+  let rest = answer.normalize('NFC').toLowerCase().replace(/u:|ü/g, 'v').replace(/[\s'’-]/g, '');
+  let hasRightTones = true;
+
+  // The expected syllables tell where each typed syllable ends
+  for (const syllable of pinyin.toLowerCase().split(' ')) {
+    const letters = stripTones(syllable);
+    const typed   = rest.slice(0, letters.length);
+    if (stripTones(typed) !== letters) return 'wrong';
+
+    const digit = rest[letters.length]?.match(/[0-5]/)?.[0];
+    const tone  = digit ? Number(digit) || 5 : getTone(typed);
+    if (tone !== getTone(syllable)) hasRightTones = false;
+    rest = rest.slice(letters.length + (digit ? 1 : 0));
+  }
+
+  if (rest) return 'wrong';
+  return hasRightTones ? 'correct' : 'tones';
+}
+
 // Storage can be unavailable (private mode, blocked site data): reads fall back
 // to null and failed writes are only logged, so the app keeps working.
 export function readStorage(key) {

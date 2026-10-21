@@ -938,6 +938,55 @@ body {
 .flashcard.mode-pinyin-first .card-back-face .pinyin,
 .flashcard.mode-pinyin-first .card-back-face .translation { display: none; }
 
+/* ---- Card mode: type-pinyin (meaning on the front tells homographs apart) ---- */
+.flashcard.mode-type-pinyin .card-front-face .translation { display: block; margin-top: 14px; }
+
+.answer-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  margin: 8px 0 10px;
+}
+.answer-input {
+  min-width: 0;
+  padding: 11px 14px;
+  border: 1.5px solid var(--outline);
+  border-radius: var(--r);
+  background: var(--surface);
+  color: var(--on-surface);
+  font-family: inherit;
+  font-size: 16px; /* 16px+ keeps iOS from zooming in */
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.answer-input:focus      { border-color: var(--primary); box-shadow: var(--ring); }
+.answer-input.is-correct { border-color: var(--success); box-shadow: none; }
+.answer-input.is-wrong   { border-color: var(--error);   box-shadow: none; }
+.btn-check {
+  padding: 11px 18px;
+  border: none;
+  border-radius: var(--r);
+  background: var(--primary);
+  color: var(--on-primary);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.answer-input:read-only + .btn-check { opacity: 0.4; pointer-events: none; }
+.answer-feedback {
+  grid-column: 1 / -1;
+  min-height: 1.4em;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: center;
+}
+.answer-input.is-correct ~ .answer-feedback { color: var(--success); }
+.answer-input.is-wrong   ~ .answer-feedback { color: var(--error); }
+
+/* Rating suggested by the typed answer; Enter confirms it */
+.btn-assess.suggested { outline: 2px solid currentColor; outline-offset: 2px; }
+
 /* Touch devices: swap hints, enforce touch targets */
 @media (hover: none) and (pointer: coarse) {
   .kbd-hint { display: none; }

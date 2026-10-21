@@ -1,6 +1,6 @@
 import { session, cfg } from './state.js';
 import { recordAnswer, getEntry, restoreEntry } from './progress.js';
-import { getTone, showScreen } from './utils.js';
+import { getTone, checkPinyin, showScreen } from './utils.js';
 import { initSpeech, speak } from './speech.js';
 
 export function renderCard() {
@@ -27,6 +27,10 @@ export function renderCard() {
   document.getElementById('flashcard').classList.toggle(
     'mode-pinyin-first', cfg.cardMode === 'pinyin-first'
   );
+  document.getElementById('flashcard').classList.toggle(
+    'mode-type-pinyin', cfg.cardMode === 'type-pinyin'
+  );
+  resetAnswer(cfg.cardMode === 'type-pinyin');
 
   updateStatusBadge(word.id);
   updateLevelBadge(session.showsLevel ? word.level : null);
@@ -47,6 +51,43 @@ function renderWithTones(el, units, tones, separator) {
     return i > 0 && separator ? [separator, span] : [span];
   });
   el.replaceChildren(...nodes);
+}
+
+/** Empties the answer field of the typing mode and gets it ready for the new card. */
+function resetAnswer(isTyping) {
+  const input = document.getElementById('answer-input');
+  document.getElementById('answer-form').hidden = !isTyping;
+  input.value    = '';
+  input.readOnly = false;
+  input.classList.remove('is-correct', 'is-wrong');
+  document.getElementById('answer-feedback').textContent = '';
+  document.querySelectorAll('.btn-assess').forEach(btn => btn.classList.remove('suggested'));
+  if (isTyping) input.focus({ preventScroll: true });
+}
+
+const ANSWER_FEEDBACK = {
+  correct: '✓ Correct',
+  tones:   '✗ Right syllables, wrong tones',
+  wrong:   '✗ Not quite',
+};
+
+/** Typing mode: checks the typed pinyin, reveals the card and suggests a rating. */
+function checkAnswer() {
+  if (session.isFlipped) return;
+
+  const input  = document.getElementById('answer-input');
+  const result = checkPinyin(input.value, session.words[session.currentIndex].pinyin);
+  const isCorrect = result === 'correct';
+
+  input.readOnly = true;
+  input.classList.add(isCorrect ? 'is-correct' : 'is-wrong');
+  document.getElementById('answer-feedback').textContent = ANSWER_FEEDBACK[result];
+  setFlipped(true);
+
+  // Enter now confirms the suggestion; the other button stays one click away (typos)
+  const suggested = document.getElementById(isCorrect ? 'btn-know' : 'btn-review');
+  suggested.classList.add('suggested');
+  suggested.focus({ preventScroll: true });
 }
 
 export function speakCurrentWord() {
@@ -201,6 +242,11 @@ export function initFlashcard() {
     } else {
       document.dispatchEvent(new CustomEvent('hsk:session-end'));
     }
+  });
+
+  document.getElementById('answer-form').addEventListener('submit', e => {
+    e.preventDefault();
+    checkAnswer();
   });
 
   document.getElementById('btn-undo').addEventListener('click', undoLastRating);

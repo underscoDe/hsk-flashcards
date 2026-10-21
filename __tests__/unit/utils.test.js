@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { getTone, rawToWords, readStorage, shuffle, sortWords, writeStorage } from '../../js/utils.js';
+import { checkPinyin, getTone, rawToWords, readStorage, shuffle, sortWords, writeStorage } from '../../js/utils.js';
 
 describe('shuffle', () => {
   it('keeps the same elements without mutating the input', () => {
@@ -32,6 +32,50 @@ describe('getTone', () => {
     ['Běi', 3], ['Zhōng', 1], ['lǜ', 4], ['nǚ', 3], ['qi', 5],
   ])('%s → tone %i', (syllable, tone) => {
     expect(getTone(syllable)).toBe(tone);
+  });
+});
+
+describe('checkPinyin', () => {
+  it.each([
+    ['nǐ hǎo', 'nǐ hǎo'],
+    ['ni3 hao3', 'nǐ hǎo'],
+    ['ni3hao3', 'nǐ hǎo'],
+    ['nǐhǎo', 'nǐ hǎo'],
+    ['  NI3 Hao3 ', 'nǐ hǎo'],
+    ['ni3 hǎo', 'nǐ hǎo'],          // mixed notations
+    ['bei3jing1', 'Běi jīng'],      // proper nouns are capitalized in the data
+    ['ba4 ba', 'bà ba'],            // neutral tone: nothing…
+    ['ba4 ba5', 'bà ba'],           // …5…
+    ['ba4 ba0', 'bà ba'],           // …or 0
+    ['lv4', 'lǜ'],
+    ['lu:4', 'lǜ'],
+    ['lü4', 'lǜ'],
+    ['nv3 er2', 'nǚ ér'],
+    ["xi1'an1", 'xī ān'],
+    ['n\u01D0', 'nǐ'],              // precomposed
+    ['ni\u030C', 'nǐ'],             // decomposed (combining caron)
+  ])('accepts %s for %s', (answer, pinyin) => {
+    expect(checkPinyin(answer, pinyin)).toBe('correct');
+  });
+
+  it.each([
+    ['ni hao', 'nǐ hǎo'],    // tones are required
+    ['ni2 hao3', 'nǐ hǎo'],
+    ['nǐ hāo', 'nǐ hǎo'],
+    ['ba4 ba4', 'bà ba'],
+  ])('flags the tones of %s for %s', (answer, pinyin) => {
+    expect(checkPinyin(answer, pinyin)).toBe('tones');
+  });
+
+  it.each([
+    ['', 'nǐ hǎo'],
+    ['ni3', 'nǐ hǎo'],
+    ['ni3 hao3 ma', 'nǐ hǎo'],
+    ['ni3 gao3', 'nǐ hǎo'],
+    ['hao3 ni3', 'nǐ hǎo'],
+    ['lu4', 'lǜ'],           // u is not ü
+  ])('rejects %s for %s', (answer, pinyin) => {
+    expect(checkPinyin(answer, pinyin)).toBe('wrong');
   });
 });
 
@@ -92,6 +136,16 @@ describe('vocabulary data', () => {
   it('shows no raw CC-CEDICT notation and no empty translation', () => {
     const dirty = words.filter(w => !w.translation.trim() || /\[|\]|\||CL:|pr\.\s*\)/.test(w.translation));
     expect(dirty.map(w => `${w.hanzi}: ${w.translation}`)).toEqual([]);
+  });
+
+  it('accepts every word typed with tone marks or with tone numbers', () => {
+    const toNumbers = pinyin => pinyin.split(' ').map(s => s.replace(/[^a-zA-Z]/g, c => 'aeiouv'[
+      ['āáǎà', 'ēéěè', 'īíǐì', 'ōóǒò', 'ūúǔù', 'ǖǘǚǜ'].findIndex(marks => marks.includes(c))
+    ]) + getTone(s)).join('');
+    const rejected = words.filter(w =>
+      checkPinyin(w.pinyin, w.pinyin) !== 'correct' || checkPinyin(toNumbers(w.pinyin), w.pinyin) !== 'correct'
+    );
+    expect(rejected.map(w => `${w.hanzi}: ${w.pinyin} / ${toNumbers(w.pinyin)}`)).toEqual([]);
   });
 });
 

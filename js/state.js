@@ -19,7 +19,7 @@ export const cfg = {
   count:               25,
   rangeFrom:           null,  // 1-indexed, overrides count when both set
   rangeTo:             null,
-  cardMode:            'hanzi-first', // 'hanzi-first' | 'pinyin-first'
+  cardMode:            'hanzi-first', // 'hanzi-first' | 'pinyin-first' | 'type-pinyin'
 };
 
 export const session = {
