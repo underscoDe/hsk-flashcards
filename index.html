@@ -16,6 +16,21 @@
         || (preference !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches);
       document.documentElement.dataset.theme = isDark ? 'dark' : 'light';
     })();
+    // Language before first paint (kept in sync with js/i18n.js): the page is written in English,
+    // so in another language it stays hidden until js/i18n.js has translated it
+    (function () {
+      var root = document.documentElement;
+      var language;
+      try { language = JSON.parse(localStorage.getItem('hsk-language')); } catch (e) {}
+      if (language !== 'en' && language !== 'fr') {
+        language = (navigator.languages || [navigator.language]).map(function (tag) { return tag.slice(0, 2).toLowerCase(); })
+          .filter(function (lang) { return lang === 'en' || lang === 'fr'; })[0] || 'en';
+      }
+      root.lang = language;
+      if (language === 'en') return;
+      root.classList.add('i18n-pending');
+      setTimeout(function () { root.classList.remove('i18n-pending'); }, 3000); // never stay blank
+    })();
   </script>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -35,15 +50,15 @@
 <div class="app">
 
   <!-- Desktop navigation; phones use the home header buttons and the review card (stats) -->
-  <nav class="site-nav" aria-label="Main">
+  <nav class="site-nav" aria-label="Main" data-i18n-aria-label="nav.main">
     <div class="site-nav-brand">
       <span class="logo-badge">汉</span>
       HSK Flashcards
     </div>
-    <button class="site-nav-link" id="nav-home">Home</button>
-    <button class="site-nav-link" id="nav-stats">Stats</button>
-    <button class="site-nav-link" id="nav-guide">Guide</button>
-    <button class="site-nav-link" id="nav-settings">Settings</button>
+    <button class="site-nav-link" id="nav-home" data-i18n="nav.home">Home</button>
+    <button class="site-nav-link" id="nav-stats" data-i18n="nav.stats">Stats</button>
+    <button class="site-nav-link" id="nav-guide" data-i18n="nav.guide">Guide</button>
+    <button class="site-nav-link" id="nav-settings" data-i18n="nav.settings">Settings</button>
   </nav>
 
   <!-- ======= SETUP SCREEN ======= -->
@@ -52,14 +67,14 @@
       <div class="logo-badge">汉</div>
       <div>
         <div class="app-title">HSK Flashcards</div>
-        <div class="app-subtitle">Chinese vocabulary practice</div>
+        <div class="app-subtitle" data-i18n="home.subtitle">Chinese vocabulary practice</div>
       </div>
-      <button class="btn-icon" id="btn-open-guide" aria-label="Guide">
+      <button class="btn-icon" id="btn-open-guide" aria-label="Guide" data-i18n-aria-label="nav.guide">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><path d="M12 17h.01"/>
         </svg>
       </button>
-      <button class="btn-icon" id="btn-open-settings" aria-label="Settings">
+      <button class="btn-icon" id="btn-open-settings" aria-label="Settings" data-i18n-aria-label="nav.settings">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
         </svg>
@@ -71,19 +86,19 @@
       <div class="review-info">
         <p class="review-text">
           <span id="review-text"></span>
-          <button class="btn-help" data-guide="guide-topic-daily" aria-label="How the daily review works">?</button>
+          <button class="btn-help" data-guide="guide-topic-daily" aria-label="How the daily review works" data-i18n-aria-label="help.daily">?</button>
         </p>
         <button class="btn-stats-link" id="btn-open-stats"></button>
       </div>
-      <button class="btn-review-today" id="btn-review-today">Review now</button>
+      <button class="btn-review-today" id="btn-review-today" data-i18n="home.reviewNow">Review now</button>
     </div>
 
     <div class="setup-card">
 
       <!-- Level -->
       <div class="setup-section">
-        <div class="section-label">HSK Level
-          <button class="btn-help" data-guide="guide-topic-levels" aria-label="About HSK levels">?</button>
+        <div class="section-label"><span data-i18n="home.level">HSK Level</span>
+          <button class="btn-help" data-guide="guide-topic-levels" aria-label="About HSK levels" data-i18n-aria-label="help.levels">?</button>
         </div>
         <div class="level-grid">
           <button class="btn-level active" data-group="level" data-value="1">
@@ -117,7 +132,7 @@
             <span class="level-progress" hidden><span class="level-progress-fill"></span></span>
           </button>
         </div>
-        <button class="btn-combo" data-group="level" data-value="combo">⊕ Combo mode</button>
+        <button class="btn-combo" data-group="level" data-value="combo" data-i18n="home.combo">⊕ Combo mode</button>
         <div class="combo-panel" id="combo-panel">
           <div class="combo-grid">
             <label class="combo-item">
@@ -151,13 +166,13 @@
               <span class="combo-label">HSK 6 <small>2500 words</small></span>
             </label>
           </div>
-          <p class="count-hint combo-hint" id="combo-hint" role="alert" hidden>Select at least one level.</p>
+          <p class="count-hint combo-hint" id="combo-hint" role="alert" hidden data-i18n="home.comboHint">Select at least one level.</p>
         </div>
       </div>
 
       <button class="options-row" id="btn-open-options" aria-haspopup="dialog">
         <span>
-          <span class="section-label">Session options</span>
+          <span class="section-label" data-i18n="options.title">Session options</span>
           <span class="options-summary" id="options-summary"></span>
         </span>
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -169,7 +184,7 @@
 
     <div class="start-bar">
       <button class="btn-start" id="btn-start">
-        Start reviewing
+        <span data-i18n="home.start">Start reviewing</span>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M5 12h14M12 5l7 7-7 7"/>
         </svg>
@@ -180,45 +195,45 @@
     <dialog class="sheet" id="options-sheet" aria-labelledby="options-sheet-title">
       <div class="sheet-header">
         <div class="sheet-handle" aria-hidden="true"></div>
-        <h2 class="sheet-title" id="options-sheet-title">Session options</h2>
-        <button class="btn-sheet-done" id="btn-close-options">Done</button>
+        <h2 class="sheet-title" id="options-sheet-title" data-i18n="options.title">Session options</h2>
+        <button class="btn-sheet-done" id="btn-close-options" data-i18n="options.done">Done</button>
       </div>
       <div class="sheet-body">
         <!-- Card mode -->
         <div class="setup-section">
-          <div class="section-label">Card mode
-            <button class="btn-help" data-guide="guide-modes" aria-label="About card modes">?</button>
+          <div class="section-label"><span data-i18n="options.cardMode">Card mode</span>
+            <button class="btn-help" data-guide="guide-modes" aria-label="About card modes" data-i18n-aria-label="help.modes">?</button>
           </div>
           <div class="choice-list">
             <button class="btn-choice active" data-group="card-mode" data-value="hanzi-first">
-              <span class="choice-title">Hanzi → Pinyin</span>
-              <span class="choice-desc">See the characters, recall the reading</span>
+              <span class="choice-title" data-i18n="mode.hanziFirst">Hanzi → Pinyin</span>
+              <span class="choice-desc" data-i18n="mode.hanziFirstDesc">See the characters, recall the reading</span>
             </button>
             <button class="btn-choice" data-group="card-mode" data-value="pinyin-first">
-              <span class="choice-title">Pinyin → Hanzi</span>
-              <span class="choice-desc">See the reading and meaning, recall the characters</span>
+              <span class="choice-title" data-i18n="mode.pinyinFirst">Pinyin → Hanzi</span>
+              <span class="choice-desc" data-i18n="mode.pinyinFirstDesc">See the reading and meaning, recall the characters</span>
             </button>
             <button class="btn-choice" data-group="card-mode" data-value="type-pinyin">
-              <span class="choice-title">Type pinyin</span>
-              <span class="choice-desc">Type the reading with tones, checked for you</span>
+              <span class="choice-title" data-i18n="mode.typePinyin">Type pinyin</span>
+              <span class="choice-desc" data-i18n="mode.typePinyinDesc">Type the reading with tones, checked for you</span>
             </button>
           </div>
         </div>
 
         <!-- Word selection -->
         <div class="setup-section">
-          <div class="section-label">Word selection
-            <button class="btn-help" data-guide="guide-topic-order" aria-label="About word order">?</button>
+          <div class="section-label"><span data-i18n="options.order">Word selection</span>
+            <button class="btn-help" data-guide="guide-topic-order" aria-label="About word order" data-i18n-aria-label="help.order">?</button>
           </div>
           <div class="btn-group">
-            <button class="btn-opt active" data-group="order" data-value="random">Random</button>
-            <button class="btn-opt" data-group="order" data-value="asc">A→Z Pinyin</button>
-            <button class="btn-opt" data-group="order" data-value="desc">Z→A Pinyin</button>
+            <button class="btn-opt active" data-group="order" data-value="random" data-i18n="order.random">Random</button>
+            <button class="btn-opt" data-group="order" data-value="asc" data-i18n="order.asc">A→Z Pinyin</button>
+            <button class="btn-opt" data-group="order" data-value="desc" data-i18n="order.desc">Z→A Pinyin</button>
           </div>
           <div class="shuffle-row" id="shuffle-row">
             <div class="shuffle-inner">
-              <span class="shuffle-label-text">Shuffle presentation</span>
-              <label class="toggle-switch" aria-label="Shuffle presentation order">
+              <span class="shuffle-label-text" data-i18n="options.shuffle">Shuffle presentation</span>
+              <label class="toggle-switch" aria-label="Shuffle presentation order" data-i18n-aria-label="options.shuffleAria">
                 <input type="checkbox" id="toggle-shuffle">
                 <span class="toggle-track"></span>
               </label>
@@ -228,15 +243,15 @@
 
         <!-- Count -->
         <div class="setup-section" id="count-section">
-          <div class="section-label">Words to review</div>
+          <div class="section-label" data-i18n="options.count">Words to review</div>
           <div class="btn-group">
             <button class="btn-opt" data-group="count" data-value="10">10</button>
             <button class="btn-opt active" data-group="count" data-value="25">25</button>
             <button class="btn-opt" data-group="count" data-value="50">50</button>
-            <button class="btn-opt" data-group="count" data-value="all">All</button>
+            <button class="btn-opt" data-group="count" data-value="all" data-i18n="options.all">All</button>
           </div>
           <div class="count-custom">
-            <label class="count-label" for="custom-count">Custom amount</label>
+            <label class="count-label" for="custom-count" data-i18n="options.custom">Custom amount</label>
             <input
               class="count-input"
               type="number"
@@ -245,27 +260,30 @@
               max="9999"
               inputmode="numeric"
               placeholder="e.g. 40"
+              data-i18n-placeholder="options.customPlaceholder"
               aria-describedby="custom-count-hint"
             >
-            <p class="count-hint" id="custom-count-hint">Enter any number between 1 and 9,999</p>
+            <p class="count-hint" id="custom-count-hint" data-i18n="options.customHint">Enter any number between 1 and 9,999</p>
           </div>
 
           <div class="range-row" id="range-row">
             <div class="range-inner">
               <div class="range-inputs">
                 <div class="range-field">
-                  <label class="range-field-label" for="range-from">From word</label>
+                  <label class="range-field-label" for="range-from" data-i18n="options.from">From word</label>
                   <input class="range-input" type="number" id="range-from"
-                    min="1" placeholder="e.g. 26" inputmode="numeric" aria-label="From word number">
+                    min="1" placeholder="e.g. 26" inputmode="numeric" aria-label="From word number"
+                    data-i18n-placeholder="options.fromPlaceholder" data-i18n-aria-label="options.fromAria">
                 </div>
                 <div class="range-arrow">→</div>
                 <div class="range-field">
-                  <label class="range-field-label" for="range-to">To word</label>
+                  <label class="range-field-label" for="range-to" data-i18n="options.to">To word</label>
                   <input class="range-input" type="number" id="range-to"
-                    min="1" placeholder="e.g. 50" inputmode="numeric" aria-label="To word number">
+                    min="1" placeholder="e.g. 50" inputmode="numeric" aria-label="To word number"
+                    data-i18n-placeholder="options.toPlaceholder" data-i18n-aria-label="options.toAria">
                 </div>
               </div>
-              <p class="count-hint" id="range-hint">Fill both fields to override the count above.</p>
+              <p class="count-hint" id="range-hint" data-i18n="options.rangeHint">Fill both fields to override the count above.</p>
             </div>
           </div>
         </div>
@@ -276,59 +294,70 @@
   <!-- ======= SETTINGS SCREEN ======= -->
   <div id="settings-screen" class="screen">
     <div class="page-header">
-      <button class="btn-back" id="btn-close-settings">← Back</button>
-      <h1 class="page-title">Settings</h1>
+      <button class="btn-back" id="btn-close-settings" data-i18n="common.back">← Back</button>
+      <h1 class="page-title" data-i18n="nav.settings">Settings</h1>
     </div>
 
     <div class="setup-card">
       <div class="setup-section">
-        <div class="section-label">Theme</div>
+        <div class="section-label" data-i18n="settings.theme">Theme</div>
         <div class="btn-group">
-          <button class="btn-opt active" data-group="theme" data-value="system">System</button>
-          <button class="btn-opt" data-group="theme" data-value="light">Light</button>
-          <button class="btn-opt" data-group="theme" data-value="dark">Dark</button>
+          <button class="btn-opt active" data-group="theme" data-value="system" data-i18n="settings.system">System</button>
+          <button class="btn-opt" data-group="theme" data-value="light" data-i18n="settings.light">Light</button>
+          <button class="btn-opt" data-group="theme" data-value="dark" data-i18n="settings.dark">Dark</button>
         </div>
       </div>
 
       <div class="setup-section">
-        <div class="section-label">Sounds and vibration
-          <button class="btn-help" data-guide="guide-topic-sound" aria-label="About sounds and vibration">?</button>
+        <div class="section-label"><span data-i18n="settings.sound">Sounds and vibration</span>
+          <button class="btn-help" data-guide="guide-topic-sound" aria-label="About sounds and vibration" data-i18n-aria-label="help.sound">?</button>
         </div>
         <div class="btn-group">
-          <button class="btn-opt active" data-group="sound" data-value="on">On</button>
-          <button class="btn-opt" data-group="sound" data-value="off">Off</button>
+          <button class="btn-opt active" data-group="sound" data-value="on" data-i18n="settings.on">On</button>
+          <button class="btn-opt" data-group="sound" data-value="off" data-i18n="settings.off">Off</button>
         </div>
       </div>
 
       <div class="setup-section">
-        <div class="section-label">Data
-          <button class="btn-help" data-guide="guide-topic-backup" aria-label="About backups">?</button>
+        <div class="section-label"><span data-i18n="settings.language">Language</span>
+          <button class="btn-help" data-guide="guide-topic-language" aria-label="About the language" data-i18n-aria-label="help.language">?</button>
+        </div>
+        <div class="btn-group">
+          <button class="btn-opt active" data-group="language" data-value="auto" data-i18n="settings.auto">Auto</button>
+          <button class="btn-opt" data-group="language" data-value="en" lang="en">English</button>
+          <button class="btn-opt" data-group="language" data-value="fr" lang="fr">Français</button>
+        </div>
+      </div>
+
+      <div class="setup-section">
+        <div class="section-label"><span data-i18n="settings.data">Data</span>
+          <button class="btn-help" data-guide="guide-topic-backup" aria-label="About backups" data-i18n-aria-label="help.backup">?</button>
         </div>
         <button class="settings-row" id="btn-export-progress">
-          <span class="settings-row-title">Export progress</span>
-          <span class="settings-row-desc">Save your progress and stats to a file, to keep them safe or move them to another device.</span>
+          <span class="settings-row-title" data-i18n="settings.export">Export progress</span>
+          <span class="settings-row-desc" data-i18n="settings.exportDesc">Save your progress and stats to a file, to keep them safe or move them to another device.</span>
         </button>
         <button class="settings-row" id="btn-import-progress">
-          <span class="settings-row-title">Import progress</span>
-          <span class="settings-row-desc">Restore a file saved with Export progress. It replaces the progress on this device.</span>
+          <span class="settings-row-title" data-i18n="settings.import">Import progress</span>
+          <span class="settings-row-desc" data-i18n="settings.importDesc">Restore a file saved with Export progress. It replaces the progress on this device.</span>
         </button>
         <input type="file" id="import-file" accept=".json,application/json" hidden>
         <button class="settings-row" id="btn-reset-settings">
-          <span class="settings-row-title">Reset settings</span>
-          <span class="settings-row-desc">Session options, theme and sounds back to defaults. Progress is kept.</span>
+          <span class="settings-row-title" data-i18n="settings.resetSettings">Reset settings</span>
+          <span class="settings-row-desc" data-i18n="settings.resetSettingsDesc">Session options, theme, sounds and language back to defaults. Progress is kept.</span>
         </button>
         <button class="settings-row settings-row-danger" id="btn-reset-progress">
-          <span class="settings-row-title">Reset progress</span>
-          <span class="settings-row-desc">Forget which words you know and clear your stats. This can’t be undone.</span>
+          <span class="settings-row-title" data-i18n="settings.resetProgress">Reset progress</span>
+          <span class="settings-row-desc" data-i18n="settings.resetProgressDesc">Forget which words you know and clear your stats. This can’t be undone.</span>
         </button>
       </div>
 
       <div class="setup-section about">
-        <div class="section-label">About</div>
-        <p>The 5,000 words of the HSK 2.0 lists, with meanings from CC-CEDICT, via
+        <div class="section-label" data-i18n="settings.about">About</div>
+        <p><span data-i18n="about.words">The 5,000 words of the HSK 2.0 lists, with meanings from CC-CEDICT, via</span>
           <a href="https://github.com/gigacool/hanyu-shuiping-kaoshi" target="_blank" rel="noopener">hanyu-shuiping-kaoshi</a> (MIT).
-          Sounds by <a href="https://kenney.nl" target="_blank" rel="noopener">Kenney</a> (CC0).
-          Your progress stays on this device.</p>
+          <span data-i18n="about.sounds">Sounds by</span> <a href="https://kenney.nl" target="_blank" rel="noopener">Kenney</a> (CC0).
+          <span data-i18n="about.local">Your progress stays on this device.</span></p>
         <p>© <span id="footer-year"></span>
           <a href="https://www.linkedin.com/in/arsene-awounou/" target="_blank" rel="noopener">Arsène Awounou</a></p>
       </div>
@@ -338,8 +367,8 @@
   <!-- ======= STATS SCREEN ======= -->
   <div id="stats-screen" class="screen">
     <div class="page-header">
-      <button class="btn-back" id="btn-close-stats">← Back</button>
-      <h1 class="page-title">Stats</h1>
+      <button class="btn-back" id="btn-close-stats" data-i18n="common.back">← Back</button>
+      <h1 class="page-title" data-i18n="nav.stats">Stats</h1>
     </div>
 
     <div class="streak-card">
@@ -350,7 +379,7 @@
       </div>
       <div class="streak-best">
         <span class="streak-best-num" id="streak-best">0</span>
-        <span class="streak-best-label">Best</span>
+        <span class="streak-best-label" data-i18n="stats.best">Best</span>
       </div>
     </div>
 
@@ -359,29 +388,29 @@
         <div class="stats-grid stats-totals">
           <div class="stat-box">
             <div class="stat-num" id="st-today">0</div>
-            <div class="stat-lbl">Cards today</div>
+            <div class="stat-lbl" data-i18n="stats.today">Cards today</div>
           </div>
           <div class="stat-box">
             <div class="stat-num" id="st-seen">0</div>
-            <div class="stat-lbl">Words seen</div>
+            <div class="stat-lbl" data-i18n="stats.seen">Words seen</div>
           </div>
           <div class="stat-box s-known">
             <div class="stat-num" id="st-mastered">0</div>
-            <div class="stat-lbl">Mastered</div>
+            <div class="stat-lbl" data-i18n="stats.mastered">Mastered</div>
           </div>
         </div>
       </div>
 
       <div class="setup-section">
-        <div class="section-label">Last 30 days
-          <button class="btn-help" data-guide="guide-topic-stats" aria-label="About stats and streaks">?</button>
+        <div class="section-label"><span data-i18n="stats.last30">Last 30 days</span>
+          <button class="btn-help" data-guide="guide-topic-stats" aria-label="About stats and streaks" data-i18n-aria-label="help.stats">?</button>
         </div>
-        <div class="chart" id="activity-chart" role="group" aria-label="Cards rated per day"></div>
-        <div class="chart-axis"><span id="chart-start"></span><span>Today</span></div>
+        <div class="chart" id="activity-chart" role="group" aria-label="Cards rated per day" data-i18n-aria-label="stats.chartAria"></div>
+        <div class="chart-axis"><span id="chart-start"></span><span data-i18n="stats.todayAxis">Today</span></div>
         <p class="chart-detail" id="chart-detail" role="status"></p>
         <div class="chart-legend">
-          <span class="legend-seen">Seen before</span>
-          <span class="legend-new">New words</span>
+          <span class="legend-seen" data-i18n="stats.seenBefore">Seen before</span>
+          <span class="legend-new" data-i18n="stats.newWords">New words</span>
         </div>
         <p class="chart-summary" id="chart-summary"></p>
       </div>
@@ -389,11 +418,11 @@
   </div>
 
   <!-- ======= GUIDE SCREEN ======= -->
-  <!-- Plain HTML so it works offline; js/guide.js filters and highlights it -->
+  <!-- Plain HTML so it works offline; js/guide.js shows it in the current language, filters and highlights it -->
   <div id="guide-screen" class="screen">
     <div class="page-header">
-      <button class="btn-back" id="btn-close-guide">← Back</button>
-      <h1 class="page-title">Guide</h1>
+      <button class="btn-back" id="btn-close-guide" data-i18n="common.back">← Back</button>
+      <h1 class="page-title" data-i18n="nav.guide">Guide</h1>
     </div>
 
     <div class="guide-search">
@@ -402,11 +431,16 @@
       </svg>
       <input class="guide-search-input" id="guide-search" type="search" placeholder="Search the guide"
              aria-label="Search the guide" aria-describedby="guide-status"
+             data-i18n-placeholder="guide.search" data-i18n-aria-label="guide.search"
              autocomplete="off" spellcheck="false" enterkeyhint="search">
     </div>
     <p class="guide-status" id="guide-status" role="status"></p>
 
-    <div class="guide-layout">
+    <div class="guide-layout" id="guide-layout">
+    </div>
+
+    <!-- One guide per language; js/guide.js puts the current one in .guide-layout -->
+    <template id="guide-en">
       <nav class="guide-toc" aria-label="Guide topics">
         <button class="guide-toc-link" data-target="guide-start">Getting started</button>
         <button class="guide-toc-link" data-target="guide-words">Choosing words</button>
@@ -708,6 +742,14 @@
         <section class="guide-section" id="guide-data">
           <h2 class="guide-section-title">Settings and data</h2>
           <div class="guide-card">
+            <details class="guide-item" id="guide-topic-language">
+              <summary>Language of the app</summary>
+              <div class="guide-answer">
+                <p>The app follows the language of your device: English or French (English for any other language).
+                  To choose another one, go to <strong>Settings</strong> under <strong>Language</strong>.</p>
+                <p>The meanings of the words on the cards are in English for now, whatever the language.</p>
+              </div>
+            </details>
             <details class="guide-item">
               <summary>Dark mode</summary>
               <div class="guide-answer">
@@ -727,7 +769,7 @@
               <summary>Your choices are remembered</summary>
               <div class="guide-answer">
                 <p>The level and the session options are kept for your next visit.
-                  <strong>Reset settings</strong> in Settings puts them, the theme and the sounds back to their defaults, without touching your progress.</p>
+                  <strong>Reset settings</strong> in Settings puts them, the theme, the sounds and the language back to their defaults, without touching your progress.</p>
               </div>
             </details>
             <details class="guide-item">
@@ -781,21 +823,406 @@
           <p>Try other words, like “tones”, “review” or “offline”.</p>
         </div>
       </div>
-    </div>
+    </template>
+
+    <template id="guide-fr">
+      <nav class="guide-toc" aria-label="Sujets du guide">
+        <button class="guide-toc-link" data-target="guide-start">Pour commencer</button>
+        <button class="guide-toc-link" data-target="guide-words">Choisir les mots</button>
+        <button class="guide-toc-link" data-target="guide-modes">Modes de carte</button>
+        <button class="guide-toc-link" data-target="guide-session">Pendant une session</button>
+        <button class="guide-toc-link" data-target="guide-progress">Progression et révisions</button>
+        <button class="guide-toc-link" data-target="guide-data">Réglages et données</button>
+      </nav>
+
+      <div class="guide-content">
+        <section class="guide-section" id="guide-start">
+          <h2 class="guide-section-title">Pour commencer</h2>
+          <div class="guide-card">
+            <details class="guide-item">
+              <summary>Qu’est-ce que HSK Flashcards&nbsp;?</summary>
+              <div class="guide-answer">
+                <p>Une app de cartes mémoire gratuite pour apprendre les 5&nbsp;000 mots des six niveaux du HSK (le test officiel de chinois, listes HSK&nbsp;2.0).
+                  Chaque carte montre un mot en caractères (hanzi), sa lecture (pinyin) et son sens, pour l’instant en anglais.</p>
+                <p>L’app retient les mots que vous connaissez et vous les redonne juste avant que vous ne les oubliiez&nbsp;:
+                  quelques minutes par jour suffisent pour progresser régulièrement.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Lancer votre première session</summary>
+              <div class="guide-answer">
+                <ol>
+                  <li>Sur l’écran d’accueil, choisissez un <strong>niveau</strong>. Si vous débutez en chinois, commencez par HSK&nbsp;1.</li>
+                  <li>Si vous le souhaitez, ouvrez les <strong>Options de session</strong> pour choisir le mode des cartes, l’ordre et le nombre de mots. Sur ordinateur, elles sont affichées à côté des niveaux.</li>
+                  <li>Appuyez sur <strong>Commencer</strong>.</li>
+                  <li>Essayez de retrouver le mot, puis touchez la carte pour voir la réponse.</li>
+                  <li>Soyez honnête&nbsp;: appuyez sur <strong>✓ Je sais</strong> si vous le saviez, sur <strong>✗ À revoir</strong> sinon.</li>
+                </ol>
+                <p>À la fin, l’écran de résultats affiche votre score. Les mots notés reviennent d’eux-mêmes dans la révision du jour.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Installer l’app sur votre téléphone ou ordinateur</summary>
+              <div class="guide-answer">
+                <p>Une fois installée, l’app s’ouvre en plein écran comme n’importe quelle autre app et marche sans connexion internet.</p>
+                <ul>
+                  <li><strong>Android (Chrome)&nbsp;:</strong> ouvrez le menu ⋮, puis <em>Ajouter à l’écran d’accueil</em> ou <em>Installer l’application</em>.</li>
+                  <li><strong>iPhone et iPad (Safari)&nbsp;:</strong> touchez le bouton Partager, puis <em>Sur l’écran d’accueil</em>.</li>
+                  <li><strong>Ordinateur (Chrome, Edge)&nbsp;:</strong> cliquez sur l’icône d’installation à droite de la barre d’adresse.</li>
+                </ul>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Se déplacer dans l’app</summary>
+              <div class="guide-answer">
+                <p>Sur téléphone, les boutons en haut de l’écran d’accueil ouvrent ce guide et les réglages.
+                  Sur ordinateur, utilisez la barre de navigation en haut. Les petits boutons <strong>?</strong> à côté
+                  de certaines options ouvrent le sujet correspondant de ce guide.</p>
+                <p>Le bouton retour du téléphone ou du navigateur ferme les options de session, les réglages et ce guide.
+                  Pendant une session, il demande confirmation avant de quitter&nbsp;: vous ne perdez jamais une session par erreur.</p>
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <section class="guide-section" id="guide-words">
+          <h2 class="guide-section-title">Choisir les mots</h2>
+          <div class="guide-card">
+            <details class="guide-item" id="guide-topic-levels">
+              <summary>Les niveaux HSK</summary>
+              <div class="guide-answer">
+                <p>Chaque niveau ajoute de nouveaux mots aux précédents&nbsp;: HSK&nbsp;1 et 2 ont 150&nbsp;mots chacun, HSK&nbsp;3 en a 299,
+                  HSK&nbsp;4 en a 601, HSK&nbsp;5 en a 1&nbsp;300 et HSK&nbsp;6 en a 2&nbsp;500.</p>
+                <p>Dès que vous maîtrisez des mots d’un niveau, sa tuile en affiche le nombre, avec une barre de progression.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Mode combo&nbsp;: mélanger plusieurs niveaux</summary>
+              <div class="guide-answer">
+                <p>Appuyez sur <strong>⊕ Mode combo</strong> sous les niveaux et cochez les niveaux à mélanger, par exemple HSK&nbsp;1 + 2.
+                  Chaque carte affiche alors son niveau dans un petit badge. Appuyez de nouveau sur Mode combo pour revenir à un seul niveau.</p>
+              </div>
+            </details>
+            <details class="guide-item" id="guide-topic-order">
+              <summary>Ordre des mots&nbsp;: aléatoire, A→Z ou Z→A</summary>
+              <div class="guide-answer">
+                <p><strong>Aléatoire</strong> pioche des mots n’importe où dans le niveau, avec un nouveau mélange à chaque fois.
+                  <strong>A→Z Pinyin</strong> et <strong>Z→A Pinyin</strong> suivent l’ordre alphabétique du pinyin,
+                  pour parcourir un niveau du début à la fin.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Mélanger l’affichage</summary>
+              <div class="guide-answer">
+                <p>Avec A→Z ou Z→A, les mots sont choisis dans l’ordre, mais vous pouvez quand même les voir dans le désordre&nbsp;:
+                  activez <strong>Mélanger l’affichage</strong>. Par exemple, les 25 premiers mots du HSK&nbsp;3, mélangés,
+                  pour ne pas deviner un mot grâce au précédent.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Nombre de mots par session</summary>
+              <div class="guide-answer">
+                <p>Choisissez 10, 25, 50 ou tous les mots du niveau, ou tapez n’importe quel nombre de 1 à 9&nbsp;999 dans
+                  <strong>Nombre personnalisé</strong>. Si le niveau a moins de mots, la session les prend simplement tous.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Étudier une plage de mots (par exemple de 26 à 50)</summary>
+              <div class="guide-answer">
+                <p>Avec A→Z ou Z→A, remplissez <strong>Du mot</strong> et <strong>Au mot</strong> pour étudier une tranche précise de la liste.
+                  C’est pratique pour apprendre un niveau par lots&nbsp;: les mots 1–25 aujourd’hui, 26–50 demain, et ainsi de suite.
+                  La plage remplace le nombre de mots choisi au-dessus.</p>
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <section class="guide-section" id="guide-modes">
+          <h2 class="guide-section-title">Modes de carte</h2>
+          <div class="guide-card">
+            <details class="guide-item">
+              <summary>Hanzi → Pinyin</summary>
+              <div class="guide-answer">
+                <p>La carte ne montre que les caractères. Retrouvez la lecture du mot et son sens, puis retournez la carte pour vérifier.
+                  C’est le mode par défaut, et le meilleur pour apprendre à lire.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Pinyin → Hanzi</summary>
+              <div class="guide-answer">
+                <p>La carte montre le pinyin et le sens. Retrouvez les caractères, puis retournez la carte pour vérifier.
+                  Idéal pour s’entraîner à écrire&nbsp;: tracez les caractères du doigt ou sur papier avant de retourner la carte.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Taper le pinyin</summary>
+              <div class="guide-answer">
+                <p>La carte montre les caractères et le sens (certains mots ont les mêmes caractères). Tapez le pinyin,
+                  puis appuyez sur <kbd>Entrée</kbd> ou <strong>Vérifier</strong>. La carte se retourne et vous dit comment vous vous en êtes sorti&nbsp;:</p>
+                <ul>
+                  <li><strong>✓ Correct</strong>&nbsp;: <strong>Je sais</strong> est suggéré.</li>
+                  <li><strong>✗ Bonnes syllabes, mauvais tons</strong> ou <strong>✗ Pas tout à fait</strong>&nbsp;: <strong>À revoir</strong> est suggéré.</li>
+                </ul>
+                <p>Appuyez de nouveau sur <kbd>Entrée</kbd> pour accepter la suggestion et passer à la suite, ou choisissez l’autre bouton,
+                  par exemple après une faute de frappe.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Taper le pinyin et les tons</summary>
+              <div class="guide-answer">
+                <p>Les tons sont obligatoires. Écrivez-les avec les accents ou avec un chiffre après chaque syllabe&nbsp;:</p>
+                <ul>
+                  <li><strong>nǐ hǎo</strong> et <strong>ni3 hao3</strong> sont tous les deux justes.</li>
+                  <li>Pour le ton neutre, n’écrivez rien, ou <strong>5</strong> ou <strong>0</strong>&nbsp;: <strong>ma</strong>, <strong>ma5</strong>.</li>
+                  <li>Tapez <strong>ü</strong> comme <strong>v</strong> ou <strong>u:</strong>, par exemple <strong>lv4</strong> pour lǜ.</li>
+                  <li>Les espaces, apostrophes, tirets et majuscules ne comptent pas&nbsp;: <strong>Xi3huan5</strong> est accepté.</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <section class="guide-section" id="guide-session">
+          <h2 class="guide-section-title">Pendant une session</h2>
+          <div class="guide-card">
+            <details class="guide-item">
+              <summary>Retourner et noter une carte</summary>
+              <div class="guide-answer">
+                <p>Touchez ou cliquez sur la carte pour la retourner. Une fois la réponse affichée, notez-vous&nbsp;:
+                  <strong>✓ Je sais</strong> si vous connaissiez le mot, <strong>✗ À revoir</strong> sinon.
+                  Noter une carte passe à la suivante.</p>
+                <p>Le compteur en haut indique où vous en êtes. Sur ordinateur, le panneau de droite compte aussi
+                  les mots notés de chaque façon.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Gestes sur téléphone</summary>
+              <div class="guide-answer">
+                <p>Faites glisser la carte vers la <strong>droite</strong> pour Je sais, vers la <strong>gauche</strong> pour À revoir. Un simple toucher la retourne.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Raccourcis clavier</summary>
+              <div class="guide-answer">
+                <dl class="guide-keys">
+                  <div><dt><kbd>Espace</kbd></dt><dd>Retourner la carte</dd></div>
+                  <div><dt><kbd>K</kbd></dt><dd>Je sais</dd></div>
+                  <div><dt><kbd>U</kbd></dt><dd>À revoir</dd></div>
+                  <div><dt><kbd>←</kbd> <kbd>→</kbd></dt><dd>Carte précédente / suivante</dd></div>
+                  <div><dt><kbd>Z</kbd></dt><dd>Annuler la dernière note</dd></div>
+                  <div><dt><kbd>P</kbd></dt><dd>Écouter le mot</dd></div>
+                  <div><dt><kbd>Entrée</kbd></dt><dd>Vérifier la réponse (mode saisie)</dd></div>
+                </dl>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Passer une carte ou revenir en arrière</summary>
+              <div class="guide-answer">
+                <p><strong>← Précédent</strong> et <strong>Suivant →</strong> passent d’une carte à l’autre sans la noter.
+                  Les mots passés ne sont pas enregistrés dans votre progression, et ils comptent comme «&nbsp;à revoir&nbsp;» dans les résultats.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Annuler une note</summary>
+              <div class="guide-answer">
+                <p>Mauvais bouton&nbsp;? <strong>↶ Annuler</strong> (ou <kbd>Z</kbd>) ramène la carte précédente,
+                  face réponse, et annule sa note, progression comprise. Vous pouvez annuler plusieurs fois de suite,
+                  même depuis l’écran de résultats.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Écouter la prononciation</summary>
+              <div class="guide-answer">
+                <p>Le bouton 🔊 de la carte lit le mot à voix haute, même hors ligne. Il utilise la voix chinoise de votre appareil,
+                  il n’apparaît donc que si l’une d’elles est installée. Pour en ajouter une, ajoutez le chinois (mandarin) dans les réglages
+                  de synthèse vocale ou de langue de votre téléphone ou ordinateur, puis rechargez l’app.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Couleurs des tons</summary>
+              <div class="guide-answer">
+                <p>Sur la face réponse, chaque syllabe et son caractère sont colorés selon le ton, pour vous aider à le retenir&nbsp;:</p>
+                <ul class="guide-tones">
+                  <li><span class="tone-1">mā</span> 1<sup>er</sup> ton, haut et plat&nbsp;: rouge</li>
+                  <li><span class="tone-2">má</span> 2<sup>e</sup> ton, montant&nbsp;: orange</li>
+                  <li><span class="tone-3">mǎ</span> 3<sup>e</sup> ton, descendant puis montant&nbsp;: vert</li>
+                  <li><span class="tone-4">mà</span> 4<sup>e</sup> ton, descendant&nbsp;: bleu</li>
+                  <li><span class="tone-5">ma</span> ton neutre&nbsp;: gris</li>
+                </ul>
+                <p>Les caractères du recto ne sont pas colorés, pour ne pas trahir les tons.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Quitter une session</summary>
+              <div class="guide-answer">
+                <p>Appuyez sur <strong>← Retour</strong> en haut à gauche et confirmez. Les cartes déjà notées sont enregistrées.</p>
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <section class="guide-section" id="guide-progress">
+          <h2 class="guide-section-title">Progression et révisions</h2>
+          <div class="guide-card">
+            <details class="guide-item">
+              <summary>Comment fonctionne la répétition espacée</summary>
+              <div class="guide-answer">
+                <p>Chaque mot noté reçoit une date de révision. Quand vous connaissez un mot le jour de sa révision, l’attente avant
+                  la suivante s’allonge&nbsp;: <strong>1, 2, 4, 8, puis 16 jours</strong>. Quand vous ne le connaissez pas, le mot repart de zéro
+                  et revient le jour même.</p>
+                <p>Ainsi, vous passez votre temps sur les mots difficiles, et les mots faciles reviennent juste assez souvent
+                  pour ne pas être oubliés. Cette méthode s’appelle le système Leitner.</p>
+              </div>
+            </details>
+            <details class="guide-item" id="guide-topic-stats">
+              <summary>Stats et série</summary>
+              <div class="guide-answer">
+                <p>Vos stats affichent votre <strong>série</strong>&nbsp;: le nombre de jours d’affilée où vous avez noté au moins une carte.
+                  Elle tient jusqu’à la fin de la journée, vous pouvez donc encore la prolonger le soir.
+                  Vous voyez aussi votre record, les cartes notées aujourd’hui, les mots vus au moins une fois et les mots maîtrisés.</p>
+                <p>Le graphique montre les cartes notées chaque jour sur les 30 derniers jours. La partie foncée de chaque barre correspond aux mots
+                  vus pour la première fois ce jour-là. Touchez ou survolez une barre pour voir ses chiffres.</p>
+                <p>Sur téléphone, ouvrez les stats depuis le lien de la carte de révision, sur l’écran d’accueil.
+                  Sur ordinateur, utilisez <strong>Stats</strong> dans la barre de navigation. Annuler une note la retire aussi des stats.</p>
+              </div>
+            </details>
+            <details class="guide-item" id="guide-topic-daily">
+              <summary>La révision du jour</summary>
+              <div class="guide-answer">
+                <p>Dès que vous avez noté un mot, une carte en haut de l’écran d’accueil indique combien de mots sont à réviser aujourd’hui.
+                  Appuyez sur <strong>Réviser</strong> pour les passer en revue, dans le désordre et tous niveaux confondus.
+                  Le mode de carte choisi dans les options de session s’applique toujours.</p>
+                <p>Quand il n’y a rien à réviser, la carte indique la date de la prochaine révision.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Pourquoi un mot n’a-t-il pas progressé&nbsp;?</summary>
+              <div class="guide-answer">
+                <p>Connaître un mot avant son jour de révision ne le fait pas progresser&nbsp;: c’est l’espacement qui fait retenir les mots.
+                  Il garde sa date de révision. «&nbsp;À revoir&nbsp;», en revanche, compte toujours.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Les mots maîtrisés</summary>
+              <div class="guide-answer">
+                <p>Un mot est maîtrisé quand son attente atteint 8 jours, c’est-à-dire après l’avoir su 4 fois, à chaque fois le jour de sa révision.
+                  Les tuiles de niveau de l’écran d’accueil indiquent combien de mots de chaque niveau vous maîtrisez.
+                  Si vous oubliez plus tard un mot maîtrisé, il repart de zéro.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>L’écran de résultats</summary>
+              <div class="guide-answer">
+                <p>À la fin d’une session, vous voyez votre score et combien de mots passent à une attente plus longue. De là&nbsp;:</p>
+                <ul>
+                  <li><strong>Revoir les mots ratés</strong> lance une session avec les mots que vous n’aviez pas, mots passés compris.</li>
+                  <li><strong>Recommencer la session</strong> rejoue les mêmes mots.</li>
+                  <li><strong>Nouvelle configuration</strong> revient à l’écran d’accueil.</li>
+                </ul>
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <section class="guide-section" id="guide-data">
+          <h2 class="guide-section-title">Réglages et données</h2>
+          <div class="guide-card">
+            <details class="guide-item" id="guide-topic-language">
+              <summary>Langue de l’app</summary>
+              <div class="guide-answer">
+                <p>L’app suit la langue de votre appareil&nbsp;: français ou anglais (l’anglais pour toute autre langue).
+                  Pour en choisir une autre, allez dans <strong>Réglages</strong>, rubrique <strong>Langue</strong>.</p>
+                <p>Le sens des mots sur les cartes est pour l’instant en anglais, quelle que soit la langue choisie.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Mode sombre</summary>
+              <div class="guide-answer">
+                <p>Dans <strong>Réglages</strong>, choisissez <strong>Clair</strong>, <strong>Sombre</strong> ou <strong>Système</strong>
+                  pour suivre votre appareil, ce qui est le choix par défaut.</p>
+              </div>
+            </details>
+            <details class="guide-item" id="guide-topic-sound">
+              <summary>Sons et vibrations</summary>
+              <div class="guide-answer">
+                <p>De petits sons accompagnent le retournement d’une carte, la note d’un mot, un mot maîtrisé et la fin d’une session.
+                  Sur Android, le téléphone vibre aussi légèrement. Désactivez les deux dans <strong>Réglages</strong>, rubrique <strong>Sons et vibrations</strong>.</p>
+                <p>Sur iPhone, les sons suivent le bouton silencieux, et la vibration n’est pas disponible pour les apps web.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Vos choix sont mémorisés</summary>
+              <div class="guide-answer">
+                <p>Le niveau et les options de session sont conservés pour votre prochaine visite.
+                  <strong>Réinitialiser les réglages</strong>, dans Réglages, remet ces choix, le thème, les sons et la langue par défaut, sans toucher à votre progression.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Où est enregistrée ma progression&nbsp;?</summary>
+              <div class="guide-answer">
+                <p>Uniquement sur cet appareil, dans ce navigateur&nbsp;: il n’y a pas de compte et rien n’est envoyé nulle part.
+                  Cela veut aussi dire que votre progression n’est pas partagée entre votre téléphone et votre ordinateur, ni entre deux navigateurs,
+                  et qu’effacer les données du navigateur pour ce site la supprime.
+                  Pour la mettre à l’abri ou la déplacer, utilisez un fichier de sauvegarde (voir ci-dessous).</p>
+              </div>
+            </details>
+            <details class="guide-item" id="guide-topic-backup">
+              <summary>Sauvegarder votre progression ou la passer sur un autre appareil</summary>
+              <div class="guide-answer">
+                <ol>
+                  <li>Dans <strong>Réglages</strong>, appuyez sur <strong>Exporter la progression</strong>&nbsp;: un petit fichier est enregistré dans vos téléchargements.
+                    Il contient les mots notés et vos stats, mais pas vos réglages.</li>
+                  <li>Si besoin, envoyez le fichier sur votre autre appareil, par exemple par e-mail ou avec un stockage en ligne.</li>
+                  <li>Sur cet appareil, appuyez sur <strong>Importer une progression</strong> dans Réglages et choisissez le fichier.</li>
+                </ol>
+                <p>L’import remplace la progression et les stats de cet appareil&nbsp;: rien n’est fusionné.
+                  Exportez de temps en temps, pour toujours avoir une copie récente sous la main.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Repartir de zéro</summary>
+              <div class="guide-answer">
+                <p><strong>Réinitialiser la progression</strong>, dans Réglages, oublie toutes les notes&nbsp;: tous les mots redeviennent nouveaux,
+                  et vos stats et votre série sont effacées. Impossible à annuler.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>Utiliser l’app hors ligne</summary>
+              <div class="guide-answer">
+                <p>Après votre première visite, l’app et les six niveaux sont enregistrés sur votre appareil&nbsp;: tout marche
+                  sans connexion internet, installée ou non. Les mises à jour se téléchargent d’elles-mêmes quand vous êtes de nouveau en ligne.</p>
+              </div>
+            </details>
+            <details class="guide-item">
+              <summary>D’où viennent les mots&nbsp;?</summary>
+              <div class="guide-answer">
+                <p>Les listes de mots sont les listes officielles du HSK&nbsp;2.0, et les sens viennent du dictionnaire libre CC-CEDICT (en anglais),
+                  via le projet open source hanyu-shuiping-kaoshi. Un mot peut avoir plusieurs sens&nbsp;: la carte en affiche jusqu’à trois.</p>
+              </div>
+            </details>
+          </div>
+        </section>
+
+        <div class="guide-empty" id="guide-empty" hidden>
+          <p class="guide-empty-title">Aucun résultat</p>
+          <p>Essayez d’autres mots, comme «&nbsp;tons&nbsp;», «&nbsp;révision&nbsp;» ou «&nbsp;hors ligne&nbsp;».</p>
+        </div>
+      </div>
+    </template>
   </div>
 
   <!-- ======= LOADING SCREEN ======= -->
   <div id="loading-screen" class="screen">
     <div class="spinner"></div>
-    <div class="loading-text">Loading vocabulary…</div>
+    <div class="loading-text" data-i18n="loading.text">Loading vocabulary…</div>
   </div>
 
   <!-- ======= FLASHCARD SCREEN ======= -->
   <div id="flashcard-screen" class="screen">
     <div class="fc-topbar">
       <div class="fc-topbar-actions">
-        <button class="btn-back" id="btn-quit">← Back</button>
-        <button class="btn-back" id="btn-undo" aria-label="Undo last rating" disabled>↶ Undo</button>
+        <button class="btn-back" id="btn-quit" data-i18n="common.back">← Back</button>
+        <button class="btn-back" id="btn-undo" aria-label="Undo last rating" data-i18n-aria-label="session.undoAria" disabled><span data-i18n="session.undo">↶ Undo</span></button>
       </div>
       <div class="fc-counter">
         <strong id="fc-current">1</strong> / <span id="fc-total">25</span>
@@ -807,7 +1234,7 @@
     </div>
 
     <div class="card-scene">
-      <div class="flashcard" id="flashcard" role="button" tabindex="0" aria-label="Click to flip card">
+      <div class="flashcard" id="flashcard" role="button" tabindex="0" aria-label="Click to flip card" data-i18n-aria-label="session.flipAria">
 
         <!-- Front -->
         <div class="card-face card-front-face">
@@ -816,15 +1243,15 @@
           <div class="hanzi" id="hanzi-front"></div>
           <div class="pinyin" id="pinyin-front"></div>
           <div class="translation" id="translation-front"></div>
-          <button class="btn-listen" type="button" aria-label="Listen to pronunciation" hidden>
+          <button class="btn-listen" type="button" aria-label="Listen to pronunciation" data-i18n-aria-label="session.listenAria" hidden>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/>
             </svg>
           </button>
           <div class="front-hint">
             <div class="hint-dot"></div>
-            <span class="hint-text-pointer">Click to reveal</span>
-            <span class="hint-text-touch">Tap to reveal</span>
+            <span class="hint-text-pointer" data-i18n="session.clickReveal">Click to reveal</span>
+            <span class="hint-text-touch" data-i18n="session.tapReveal">Tap to reveal</span>
           </div>
         </div>
 
@@ -835,7 +1262,7 @@
           <div class="hanzi" id="hanzi-back"></div>
           <div class="pinyin" id="pinyin-back"></div>
           <div class="translation" id="translation-back"></div>
-          <button class="btn-listen" type="button" aria-label="Listen to pronunciation" hidden>
+          <button class="btn-listen" type="button" aria-label="Listen to pronunciation" data-i18n-aria-label="session.listenAria" hidden>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M19 5a10 10 0 0 1 0 14"/>
             </svg>
@@ -847,53 +1274,53 @@
 
     <form class="answer-row" id="answer-form" hidden>
       <input class="answer-input" id="answer-input" type="text" placeholder="Pinyin: nǐ hǎo or ni3 hao3"
-             aria-label="Pinyin with tones" autocomplete="off" autocapitalize="off" autocorrect="off"
+             aria-label="Pinyin with tones" data-i18n-placeholder="session.answerPlaceholder" data-i18n-aria-label="session.answerAria" autocomplete="off" autocapitalize="off" autocorrect="off"
              spellcheck="false" enterkeyhint="done">
-      <button class="btn-check" type="submit">Check</button>
+      <button class="btn-check" type="submit" data-i18n="session.check">Check</button>
       <p class="answer-feedback" id="answer-feedback" role="status"></p>
     </form>
 
     <div class="assess-row" id="assess-row">
-      <button class="btn-assess btn-review" id="btn-review">✗ Review again</button>
-      <button class="btn-assess btn-know"   id="btn-know">✓ Got it</button>
+      <button class="btn-assess btn-review" id="btn-review" data-i18n="session.reviewAgain">✗ Review again</button>
+      <button class="btn-assess btn-know"   id="btn-know" data-i18n="session.gotIt">✓ Got it</button>
     </div>
 
     <div class="nav-row">
-      <button class="btn-nav" id="btn-prev">← Previous</button>
+      <button class="btn-nav" id="btn-prev" data-i18n="session.prev">← Previous</button>
       <button class="btn-nav" id="btn-next">Next →</button>
     </div>
 
     <div class="kbd-hint">
-      <kbd>Space</kbd> flip &nbsp;
-      <kbd>←</kbd> <kbd>→</kbd> navigate &nbsp;
-      <kbd>K</kbd> got it &nbsp;
-      <kbd>U</kbd> review again &nbsp;
-      <kbd>Z</kbd> undo
-      <span class="kbd-listen" hidden>&nbsp; <kbd>P</kbd> listen</span>
+      <kbd data-i18n="key.space">Space</kbd> <span data-i18n="hint.flip">flip</span> &nbsp;
+      <kbd>←</kbd> <kbd>→</kbd> <span data-i18n="hint.navigate">navigate</span> &nbsp;
+      <kbd>K</kbd> <span data-i18n="hint.gotIt">got it</span> &nbsp;
+      <kbd>U</kbd> <span data-i18n="hint.reviewAgain">review again</span> &nbsp;
+      <kbd>Z</kbd> <span data-i18n="hint.undo">undo</span>
+      <span class="kbd-listen" hidden>&nbsp; <kbd>P</kbd> <span data-i18n="hint.listen">listen</span></span>
     </div>
     <div class="touch-hint">
-      <span>← review again</span>
-      <span>tap to flip</span>
-      <span>got it →</span>
+      <span data-i18n="touch.reviewAgain">← review again</span>
+      <span data-i18n="touch.flip">tap to flip</span>
+      <span data-i18n="touch.gotIt">got it →</span>
     </div>
 
     <!-- Desktop only: session progress and every shortcut, always in view -->
-    <aside class="session-panel" aria-label="Session progress">
-      <div class="section-label">This session</div>
+    <aside class="session-panel" aria-label="Session progress" data-i18n-aria-label="panel.aria">
+      <div class="section-label" data-i18n="panel.title">This session</div>
       <dl class="session-stats">
-        <div class="s-known"><dt>✓ Got it</dt><dd id="sp-known">0</dd></div>
-        <div class="s-review"><dt>✗ Review again</dt><dd id="sp-review">0</dd></div>
-        <div><dt>Not rated yet</dt><dd id="sp-left">0</dd></div>
+        <div class="s-known"><dt data-i18n="session.gotIt">✓ Got it</dt><dd id="sp-known">0</dd></div>
+        <div class="s-review"><dt data-i18n="session.reviewAgain">✗ Review again</dt><dd id="sp-review">0</dd></div>
+        <div><dt data-i18n="panel.left">Not rated yet</dt><dd id="sp-left">0</dd></div>
       </dl>
-      <div class="section-label">Keyboard</div>
+      <div class="section-label" data-i18n="panel.keyboard">Keyboard</div>
       <dl class="session-keys">
-        <div><dt><kbd>Space</kbd></dt><dd>Flip the card</dd></div>
-        <div class="kbd-type-mode"><dt><kbd>Enter</kbd></dt><dd>Check your answer</dd></div>
-        <div><dt><kbd>K</kbd></dt><dd>Got it</dd></div>
-        <div><dt><kbd>U</kbd></dt><dd>Review again</dd></div>
-        <div><dt><kbd>←</kbd> <kbd>→</kbd></dt><dd>Previous / next</dd></div>
-        <div><dt><kbd>Z</kbd></dt><dd>Undo</dd></div>
-        <div class="kbd-listen" hidden><dt><kbd>P</kbd></dt><dd>Listen</dd></div>
+        <div><dt><kbd data-i18n="key.space">Space</kbd></dt><dd data-i18n="panel.flip">Flip the card</dd></div>
+        <div class="kbd-type-mode"><dt><kbd data-i18n="key.enter">Enter</kbd></dt><dd data-i18n="panel.check">Check your answer</dd></div>
+        <div><dt><kbd>K</kbd></dt><dd data-i18n="panel.gotIt">Got it</dd></div>
+        <div><dt><kbd>U</kbd></dt><dd data-i18n="panel.reviewAgain">Review again</dd></div>
+        <div><dt><kbd>←</kbd> <kbd>→</kbd></dt><dd data-i18n="panel.prevNext">Previous / next</dd></div>
+        <div><dt><kbd>Z</kbd></dt><dd data-i18n="panel.undo">Undo</dd></div>
+        <div class="kbd-listen" hidden><dt><kbd>P</kbd></dt><dd data-i18n="panel.listen">Listen</dd></div>
       </dl>
     </aside>
   </div>
@@ -903,7 +1330,7 @@
     <div class="app-header" style="margin-bottom:20px">
       <div class="logo-badge">汉</div>
       <div>
-        <div class="app-title">Session complete</div>
+        <div class="app-title" data-i18n="results.title">Session complete</div>
         <div class="app-subtitle" id="results-sub-header"></div>
       </div>
     </div>
@@ -916,15 +1343,15 @@
       <div class="stats-grid">
         <div class="stat-box">
           <div class="stat-num" id="r-total">0</div>
-          <div class="stat-lbl">Reviewed</div>
+          <div class="stat-lbl" data-i18n="results.reviewed">Reviewed</div>
         </div>
         <div class="stat-box s-known">
           <div class="stat-num" id="r-known">0</div>
-          <div class="stat-lbl">Got it</div>
+          <div class="stat-lbl" data-i18n="panel.gotIt">Got it</div>
         </div>
         <div class="stat-box s-review">
           <div class="stat-num" id="r-review">0</div>
-          <div class="stat-lbl">To review</div>
+          <div class="stat-lbl" data-i18n="results.toReview">To review</div>
         </div>
       </div>
 
@@ -932,12 +1359,12 @@
         <div class="score-fill" id="score-fill" style="width:0%"></div>
       </div>
       <p class="results-promoted" id="r-promoted" hidden></p>
-      <button class="btn-link results-undo" id="btn-undo-results" hidden>↶ Undo last rating</button>
+      <button class="btn-link results-undo" id="btn-undo-results" hidden data-i18n="results.undo">↶ Undo last rating</button>
 
       <div class="results-actions">
-        <button class="btn-primary"   id="btn-retry-unknown">🔄 Review missed words</button>
-        <button class="btn-primary"   id="btn-restart">↺ Restart this session</button>
-        <button class="btn-secondary" id="btn-new-config">← New configuration</button>
+        <button class="btn-primary"   id="btn-retry-unknown" data-i18n="results.retry">🔄 Review missed words</button>
+        <button class="btn-primary"   id="btn-restart" data-i18n="results.restart">↺ Restart this session</button>
+        <button class="btn-secondary" id="btn-new-config" data-i18n="results.newConfig">← New configuration</button>
       </div>
     </div>
   </div>
@@ -947,11 +1374,11 @@
 <!-- ======= QUIT DIALOG ======= -->
 <div class="dialog-backdrop" id="quit-dialog" aria-modal="true" role="dialog" aria-labelledby="quit-dialog-title">
   <div class="dialog-card">
-    <p class="dialog-title" id="quit-dialog-title">Quit this session?</p>
-    <p class="dialog-body">Cards you've already rated are saved.</p>
+    <p class="dialog-title" id="quit-dialog-title" data-i18n="quit.title">Quit this session?</p>
+    <p class="dialog-body" data-i18n="quit.body">Cards you've already rated are saved.</p>
     <div class="dialog-actions">
-      <button class="dialog-btn-cancel" id="quit-cancel">Keep going</button>
-      <button class="dialog-btn-confirm" id="quit-confirm">Quit</button>
+      <button class="dialog-btn-cancel" id="quit-cancel" data-i18n="quit.cancel">Keep going</button>
+      <button class="dialog-btn-confirm" id="quit-confirm" data-i18n="quit.confirm">Quit</button>
     </div>
   </div>
 </div>
@@ -959,11 +1386,11 @@
 <!-- ======= RESET PROGRESS DIALOG ======= -->
 <div class="dialog-backdrop" id="reset-dialog" aria-modal="true" role="dialog" aria-labelledby="reset-dialog-title">
   <div class="dialog-card">
-    <p class="dialog-title" id="reset-dialog-title">Reset all progress?</p>
-    <p class="dialog-body">Every word goes back to new and your stats are cleared. This can't be undone.</p>
+    <p class="dialog-title" id="reset-dialog-title" data-i18n="reset.title">Reset all progress?</p>
+    <p class="dialog-body" data-i18n="reset.body">Every word goes back to new and your stats are cleared. This can't be undone.</p>
     <div class="dialog-actions">
-      <button class="dialog-btn-cancel">Cancel</button>
-      <button class="dialog-btn-confirm">Reset</button>
+      <button class="dialog-btn-cancel" data-i18n="common.cancel">Cancel</button>
+      <button class="dialog-btn-confirm" data-i18n="reset.confirm">Reset</button>
     </div>
   </div>
 </div>
@@ -971,11 +1398,11 @@
 <!-- ======= IMPORT DIALOG ======= -->
 <div class="dialog-backdrop" id="import-dialog" aria-modal="true" role="dialog" aria-labelledby="import-dialog-title" aria-describedby="import-dialog-body">
   <div class="dialog-card">
-    <p class="dialog-title" id="import-dialog-title">Replace your progress?</p>
+    <p class="dialog-title" id="import-dialog-title" data-i18n="import.title">Replace your progress?</p>
     <p class="dialog-body" id="import-dialog-body"></p>
     <div class="dialog-actions">
-      <button class="dialog-btn-cancel">Cancel</button>
-      <button class="dialog-btn-confirm">Import</button>
+      <button class="dialog-btn-cancel" data-i18n="common.cancel">Cancel</button>
+      <button class="dialog-btn-confirm" data-i18n="import.confirm">Import</button>
     </div>
   </div>
 </div>

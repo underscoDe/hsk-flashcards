@@ -2,6 +2,7 @@ import { cfg, LEVEL_COUNTS } from './state.js';
 import { readStorage, writeStorage } from './utils.js';
 import { getThemePreference, setThemePreference } from './theme.js';
 import { getSoundPreference, setSoundPreference, playSound } from './sound.js';
+import { getLanguagePreference, setLanguagePreference, t } from './i18n.js';
 import { getDueEntries, getDaysUntilNextReview, getMasteredByLevel, hasProgress } from './progress.js';
 import { initSheet } from './sheet.js';
 import { statsLinkText } from './stats.js';
@@ -40,6 +41,9 @@ export function initSetup() {
         setSoundPreference(value);
         playSound('known'); // a sample, silent when turned off
       }
+      if (group === 'language') {
+        setLanguagePreference(value);
+      }
     });
   });
 
@@ -49,6 +53,7 @@ export function initSetup() {
     selectOption('theme', 'system');
     markActive('sound', 'on');
     setSoundPreference('on');
+    selectOption('language', 'auto');
     renderOptionsSummary();
   });
 
@@ -80,15 +85,15 @@ export function initSetup() {
     const toOk   = !isNaN(to)   && to   >= 1;
 
     if (fromOk && toOk && from > to) {
-      rangeHint.textContent = '"From" must be less than or equal to "To".';
+      rangeHint.textContent = t('range.invalid');
       rangeHint.style.color = 'var(--error)';
       countSection.classList.remove('count-overridden');
     } else if (fromOk && toOk) {
-      rangeHint.textContent = `Words ${from}–${to} selected (${to - from + 1} words). Count above is overridden.`;
+      rangeHint.textContent = t('range.selected', { from, to, words: t('common.words', { count: to - from + 1 }) });
       rangeHint.style.color = 'var(--primary)';
       countSection.classList.add('count-overridden');
     } else {
-      rangeHint.textContent = 'Fill both fields to override the count above.';
+      rangeHint.textContent = t('options.rangeHint');
       rangeHint.style.color = '';
       countSection.classList.remove('count-overridden');
     }
@@ -99,28 +104,36 @@ export function initSetup() {
 
   markActive('theme', getThemePreference());
   markActive('sound', getSoundPreference());
+  markActive('language', getLanguagePreference());
   const saved = readStorage(SETTINGS_KEY);
   if (saved && typeof saved === 'object') applySetupState(saved);
   renderOptionsSummary();
+
+  // Texts written here follow the language too
+  document.addEventListener('hsk:language-change', () => {
+    updateRangeState();
+    renderOptionsSummary();
+    renderProgressSummary();
+  });
 }
 
 const CARD_MODE_LABELS = {
-  'hanzi-first':  'Hanzi → Pinyin',
-  'pinyin-first': 'Pinyin → Hanzi',
-  'type-pinyin':  'Type pinyin',
+  'hanzi-first':  'mode.hanziFirst',
+  'pinyin-first': 'mode.pinyinFirst',
+  'type-pinyin':  'mode.typePinyin',
 };
-const ORDER_LABELS = { random: 'Random', asc: 'A→Z', desc: 'Z→A' };
+const ORDER_LABELS = { asc: 'A→Z', desc: 'Z→A' };
 
 /** One line under "Session options", e.g. "Type pinyin · A→Z · 25 words". */
 function renderOptionsSummary() {
   readSetupConfig();
   const { cardMode, order, presentationShuffle, rangeFrom, rangeTo, count } = cfg;
-  const words = rangeFrom && rangeTo && rangeFrom <= rangeTo ? `Words ${rangeFrom}–${rangeTo}`
-    : isFinite(count) ? `${count} words`
-    : 'All words';
+  const words = rangeFrom && rangeTo && rangeFrom <= rangeTo ? t('summary.range', { from: rangeFrom, to: rangeTo })
+    : isFinite(count) ? t('common.words', { count })
+    : t('summary.all');
   document.getElementById('options-summary').textContent = [
-    CARD_MODE_LABELS[cardMode],
-    ORDER_LABELS[order] + (presentationShuffle ? ', shuffled' : ''),
+    t(CARD_MODE_LABELS[cardMode]),
+    (ORDER_LABELS[order] ?? t('order.random')) + (presentationShuffle ? t('summary.shuffled') : ''),
     words,
   ].join(' · ');
 }
@@ -202,7 +215,7 @@ function renderDailyReview() {
   const dueCount = getDueEntries().length;
   document.getElementById('btn-review-today').hidden = dueCount === 0;
   document.getElementById('review-text').textContent = dueCount > 0
-    ? `${dueCount} word${dueCount > 1 ? 's' : ''} to review today`
+    ? t('review.due', { count: dueCount })
     : nextReviewText(getDaysUntilNextReview());
 }
 
@@ -212,15 +225,21 @@ function renderLevelProgress() {
     const level = btn.dataset.value;
     const total = LEVEL_COUNTS[level];
     const count = mastered[level] ?? 0;
-    btn.querySelector('.level-count').textContent = count ? `${count}/${total} mastered` : `${total} words`;
+    btn.querySelector('.level-count').textContent = count
+      ? t('level.mastered', { count, total })
+      : t('common.words', { count: total });
     btn.querySelector('.level-progress').hidden = count === 0;
     btn.querySelector('.level-progress-fill').style.width = `${(count / total) * 100}%`;
+  });
+  document.querySelectorAll('.combo-item').forEach(item => {
+    const total = LEVEL_COUNTS[item.querySelector('.combo-check').value];
+    item.querySelector('.combo-label small').textContent = t('common.words', { count: total });
   });
 }
 
 function nextReviewText(days) {
-  if (days === 1) return '✓ All caught up — next review tomorrow';
-  return `✓ All caught up — next review in ${days} days`;
+  if (days === 1) return t('review.tomorrow');
+  return t('review.inDays', { count: days });
 }
 
 function updateShuffleRow(order) {
@@ -239,7 +258,7 @@ function updateRangeRow(order) {
     row.classList.remove('visible');
     document.getElementById('range-from').value = '';
     document.getElementById('range-to').value   = '';
-    document.getElementById('range-hint').textContent = 'Fill both fields to override the count above.';
+    document.getElementById('range-hint').textContent = t('options.rangeHint');
     document.getElementById('range-hint').style.color = '';
     document.getElementById('count-section').classList.remove('count-overridden');
   } else {

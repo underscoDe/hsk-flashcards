@@ -12,6 +12,8 @@ export default defineConfig({
     trace: 'retain-on-failure',
     // The service worker would serve cached files around page.route(); offline.spec.js turns it on
     serviceWorkers: 'block',
+    // The app follows the device language: tests run in English unless they set another one
+    locale: 'en-US',
   },
   projects: [
     {

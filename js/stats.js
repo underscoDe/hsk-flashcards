@@ -1,5 +1,6 @@
 import { getRecentDays, getStreaks } from './activity.js';
 import { countRatedWords, getMasteredByLevel } from './progress.js';
+import { t, formatDate } from './i18n.js';
 
 const CHART_DAYS = 30;
 
@@ -18,7 +19,7 @@ export function renderStats() {
 /** Text of the stats link in the home review card. */
 export function statsLinkText() {
   const { current } = getStreaks();
-  return current > 0 ? `🔥 ${current}-day streak · Stats ›` : 'See your stats ›';
+  return current > 0 ? t('stats.streakLink', { count: current }) : t('stats.link');
 }
 
 function renderStreak({ current, best }, hasStudiedToday) {
@@ -28,9 +29,9 @@ function renderStreak({ current, best }, hasStudiedToday) {
 }
 
 function streakMessage(current, hasStudiedToday) {
-  if (current === 0) return 'Rate a card today to start a streak';
-  if (!hasStudiedToday) return 'Rate a card today to keep it going';
-  return 'Current streak, keep it up!';
+  if (current === 0) return t('streak.start');
+  if (!hasStudiedToday) return t('streak.keep');
+  return t('streak.going');
 }
 
 /** One bar per day; the darker bottom part is the new words. Tapping a bar shows its numbers. */
@@ -58,15 +59,15 @@ function renderChart(days) {
   });
 
   document.getElementById('activity-chart').replaceChildren(...bars);
-  document.getElementById('chart-start').textContent = formatDate(days[0].date);
+  document.getElementById('chart-start').textContent = formatDay(days[0].date);
   selectDay(bars.at(-1), bars.at(-1).getAttribute('aria-label'));
 
   const reviewed   = sum(days.map(day => day.reviewed));
   const newWords   = sum(days.map(day => day.new));
   const activeDays = days.filter(day => day.reviewed > 0).length;
   document.getElementById('chart-summary').textContent = reviewed
-    ? `${cardsText(reviewed)} over ${daysText(activeDays)}, ${newWords} of them new words.`
-    : 'No cards rated in the last 30 days yet.';
+    ? t('chart.summary', { cards: cardsText(reviewed), days: daysText(activeDays), count: newWords })
+    : t('chart.empty');
 }
 
 function selectDay(column, detail) {
@@ -76,23 +77,23 @@ function selectDay(column, detail) {
 }
 
 function dayDetail(day, isToday) {
-  const label = isToday ? 'Today' : formatDate(day.date);
-  if (!day.reviewed) return `${label}: no cards`;
-  return `${label}: ${cardsText(day.reviewed)}, ${day.new} new`;
+  const label = isToday ? t('stats.todayAxis') : formatDay(day.date);
+  if (!day.reviewed) return t('chart.noCards', { label });
+  return t('chart.day', { label, cards: cardsText(day.reviewed), count: day.new });
 }
 
-// '2026-10-21' → 'Oct 21'
-function formatDate(key) {
+// '2026-10-21' → 'Oct 21' (or '21 oct.' in French)
+function formatDay(key) {
   const [year, month, day] = key.split('-').map(Number);
-  return new Date(year, month - 1, day).toLocaleDateString('en', { month: 'short', day: 'numeric' });
+  return formatDate(new Date(year, month - 1, day));
 }
 
 function cardsText(count) {
-  return `${count} card${count === 1 ? '' : 's'}`;
+  return t('common.cards', { count });
 }
 
 function daysText(count) {
-  return `${count} day${count === 1 ? '' : 's'}`;
+  return t('common.days', { count });
 }
 
 function sum(numbers) {

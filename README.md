@@ -22,6 +22,7 @@ A clean, mobile-friendly flashcard app for practicing Chinese vocabulary across 
 - **Pronunciation** — 🔊 button using the device's Chinese voice (hidden when none is installed)
 - **Tone colors** — pinyin and characters colored by tone on the back of the card
 - **Sounds and vibration** — short game-like sounds when flipping, rating, mastering a word and finishing a session, light vibrations on Android; can be turned off
+- **English and French** — the interface and the guide follow the device language, with a choice in Settings (word meanings stay in English for now)
 - **Dark mode** — System / Light / Dark, follows the system setting by default
 - **Remembers your settings** — level, card mode, order, count and range are restored on the next visit, with a one-click reset to defaults (progress is kept)
 - **Session results** — score, missed words, retry missed words only
@@ -72,9 +73,10 @@ npm run test:all       # both
 
 - **Unit tests** (`__tests__/unit/`) cover the pure logic: Leitner boxes and due dates, daily activity and streaks (with a fake clock),
   backup files (export, rejected files, invalid entries skipped on import),
+  translations (device language, plural forms, every text and guide topic present in both languages),
   tone detection, translation cleaning, pinyin answer checking, guide search matching, and a check of all 5,000 words (unique ids, one syllable per
   character, no raw dictionary notation).
-- **Browser tests** (`__tests__/e2e/`) drive the app like a user: sessions, undo, typing mode, the guide search, stats and streaks, backup export and import, sounds and vibrations (with a fake audio output), spaced repetition over
+- **Browser tests** (`__tests__/e2e/`) drive the app like a user: sessions, undo, typing mode, the guide search, stats and streaks, backup export and import, the French interface and the language setting, sounds and vibrations (with a fake audio output), spaced repetition over
   simulated days, remembered settings, theme, tone colors, pronunciation (with a fake voice) and offline mode.
 - They use the installed Google Chrome. Without it, run `npx playwright install chromium` and
   `PW_CHANNEL=chromium npm run test:e2e`.
@@ -105,7 +107,9 @@ js/
   state.js          Shared state (cfg, session, cache)
   setup.js          Setup screen interactions
   flashcard.js      Card rendering, flip, swipe, keyboard
-  guide.js          Guide search (filter and highlight)
+  guide.js          Guide in the current language, search (filter and highlight)
+  i18n.js           Interface language (auto / English / French), translations
+  locales/          French texts, and the English ones written by the scripts
   navigation.js     Back button handling for pages, sheet and sessions
   sheet.js          Bottom sheet (session options)
   sound.js          Sounds (Web Audio) and vibrations, on/off preference

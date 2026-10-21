@@ -4,6 +4,7 @@ import { recordActivity, removeActivity } from './activity.js';
 import { getTone, checkPinyin, showScreen } from './utils.js';
 import { initSpeech, speak } from './speech.js';
 import { playSound } from './sound.js';
+import { t } from './i18n.js';
 
 export function renderCard() {
   const word = session.words[session.currentIndex];
@@ -40,7 +41,7 @@ export function renderCard() {
 
   document.getElementById('btn-prev').disabled    = idx === 0;
   document.getElementById('btn-undo').disabled    = session.history.length === 0;
-  document.getElementById('btn-next').textContent = idx === tot - 1 ? 'Finish ✓' : 'Next →';
+  document.getElementById('btn-next').textContent = t(idx === tot - 1 ? 'session.finish' : 'session.next');
 
   setFlipped(false);
 }
@@ -77,9 +78,9 @@ function resetAnswer(isTyping) {
 }
 
 const ANSWER_FEEDBACK = {
-  correct: '✓ Correct',
-  tones:   '✗ Right syllables, wrong tones',
-  wrong:   '✗ Not quite',
+  correct: 'feedback.correct',
+  tones:   'feedback.tones',
+  wrong:   'feedback.wrong',
 };
 
 /** Typing mode: checks the typed pinyin, reveals the card and suggests a rating. */
@@ -92,7 +93,7 @@ function checkAnswer() {
 
   input.readOnly = true;
   input.classList.add(isCorrect ? 'is-correct' : 'is-wrong');
-  document.getElementById('answer-feedback').textContent = ANSWER_FEEDBACK[result];
+  document.getElementById('answer-feedback').textContent = t(ANSWER_FEEDBACK[result]);
   playSound(isCorrect ? 'correct' : 'wrong');
   setFlipped(true);
 
@@ -125,9 +126,9 @@ export function updateStatusBadge(id) {
   ];
 
   if (session.known.has(id)) {
-    els.forEach(el => { el.textContent = '✓ Got it'; el.className = 'card-status known-badge'; });
+    els.forEach(el => { el.textContent = t('session.gotIt'); el.className = 'card-status known-badge'; });
   } else if (session.unknown.has(id)) {
-    els.forEach(el => { el.textContent = '✗ Review'; el.className = 'card-status unknown-badge'; });
+    els.forEach(el => { el.textContent = t('badge.review'); el.className = 'card-status unknown-badge'; });
   } else {
     els.forEach(el => { el.textContent = ''; el.className = 'card-status'; });
   }

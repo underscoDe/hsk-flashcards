@@ -1,24 +1,20 @@
 import { foldForSearch, findMatches } from './utils.js';
+import { getLanguage, t } from './i18n.js';
 
-// The guide is plain HTML (index.html). Searching keeps the topics that contain
-// every typed word, opens them and highlights the words; accents don't matter.
+// The guide is plain HTML (index.html), one <template> per language. Searching keeps
+// the topics that contain every typed word, opens them and highlights the words;
+// accents don't matter.
 
 let topics = [];
 
 export function initGuide() {
   const input = document.getElementById('guide-search');
-  topics = [...document.querySelectorAll('.guide-item')].map(el => ({
-    el,
-    text: foldForSearch(el.textContent),
-  }));
-
   input.addEventListener('input', () => search(input.value));
 
   // Section links scroll instead of using #anchors, which would add history entries
-  document.querySelectorAll('.guide-toc-link').forEach(link => {
-    link.addEventListener('click', () => {
-      document.getElementById(link.dataset.target).scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
+  document.getElementById('guide-layout').addEventListener('click', e => {
+    const link = e.target.closest('.guide-toc-link');
+    if (link) document.getElementById(link.dataset.target).scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 
   // "/" jumps to the search field, as on many help sites
@@ -28,6 +24,20 @@ export function initGuide() {
     e.preventDefault();
     input.focus();
   });
+
+  renderGuide();
+  document.addEventListener('hsk:language-change', renderGuide);
+}
+
+/** Shows the guide in the current language, ready to search. */
+function renderGuide() {
+  const guide = document.getElementById(`guide-${getLanguage()}`).content.cloneNode(true);
+  document.getElementById('guide-layout').replaceChildren(guide);
+  topics = [...document.querySelectorAll('#guide-layout .guide-item')].map(el => ({
+    el,
+    text: foldForSearch(el.textContent),
+  }));
+  search(document.getElementById('guide-search').value);
 }
 
 /** Empties the search and closes every topic, for a fresh guide each time it opens. */
@@ -73,7 +83,7 @@ function search(query) {
   document.getElementById('guide-screen').classList.toggle('is-searching', isSearching);
   document.getElementById('guide-empty').hidden = !isSearching || found > 0;
   document.getElementById('guide-status').textContent =
-    isSearching && found ? `${found} topic${found > 1 ? 's' : ''} found` : '';
+    isSearching && found ? t('guide.found', { count: found }) : '';
 }
 
 /** Wraps the matching parts of every text in `el` in <mark>. */

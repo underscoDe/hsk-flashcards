@@ -8,6 +8,7 @@ import { resetActivity } from './activity.js';
 import { createBackup, parseBackup, restoreBackup } from './backup.js';
 import { renderStats } from './stats.js';
 import { initTheme } from './theme.js';
+import { initI18n, t, formatDate } from './i18n.js';
 import { preloadSounds } from './sound.js';
 import { initNavigation, openView, closeView } from './navigation.js';
 import { initGuide, resetGuide, showGuideTopic } from './guide.js';
@@ -36,7 +37,7 @@ async function startSession(getWords) {
   } catch (err) {
     console.error(err);
     closeView();
-    showMessage('Couldn’t load the words', 'Please check your internet connection and try again.');
+    showMessage(t('error.loadTitle'), t('error.loadBody'));
   }
 }
 
@@ -141,25 +142,26 @@ async function handleImportFile(e) {
 
   pendingBackup = parseBackup(await file.text());
   if (!pendingBackup) {
-    showMessage('Not a backup file', 'Choose a file saved with Export progress in this app.');
+    showMessage(t('backup.notTitle'), t('backup.notBody'));
     return;
   }
-  const date = pendingBackup.exportedAt?.toLocaleDateString('en', { month: 'short', day: 'numeric', year: 'numeric' });
-  document.getElementById('import-dialog-body').textContent =
-    `This backup${date ? ` from ${date}` : ''} has ${wordsText(pendingBackup.wordCount)}. ` +
-    'It replaces the progress and stats on this device.';
+  const { exportedAt, wordCount } = pendingBackup;
+  const words = wordsText(wordCount);
+  document.getElementById('import-dialog-body').textContent = exportedAt
+    ? t('backup.confirm', { words, date: formatDate(exportedAt, { month: 'short', day: 'numeric', year: 'numeric' }) })
+    : t('backup.confirmNoDate', { words });
   document.getElementById('import-dialog').classList.add('visible');
 }
 
 function importBackup() {
   restoreBackup(pendingBackup);
   renderProgressSummary();
-  showMessage('Progress imported', `${wordsText(pendingBackup.wordCount)} and your stats are back.`);
+  showMessage(t('backup.doneTitle'), t('backup.doneBody', { words: wordsText(pendingBackup.wordCount) }));
   pendingBackup = null;
 }
 
 function wordsText(count) {
-  return `${count} word${count === 1 ? '' : 's'}`;
+  return t('common.words', { count });
 }
 
 function isShown(screenId) {
@@ -214,6 +216,7 @@ function initKeyboard() {
 function init() {
   document.getElementById('footer-year').textContent = new Date().getFullYear();
   initTheme();
+  initI18n();
   initNavigation();
   initSetup();
   initFlashcard();
