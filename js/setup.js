@@ -3,6 +3,7 @@ import { readStorage, writeStorage } from './utils.js';
 import { getThemePreference, setThemePreference } from './theme.js';
 import { getDueEntries, getDaysUntilNextReview, getMasteredByLevel, hasProgress } from './progress.js';
 import { initSheet } from './sheet.js';
+import { statsLinkText } from './stats.js';
 
 export function initSetup() {
   document.querySelectorAll('button[data-group]').forEach(btn => {
@@ -186,6 +187,8 @@ function renderDailyReview() {
   section.hidden = !hasProgress();
   document.getElementById('btn-reset-progress').disabled = section.hidden;
   if (section.hidden) return;
+
+  document.getElementById('btn-open-stats').textContent = statsLinkText();
 
   const dueCount = getDueEntries().length;
   document.getElementById('btn-review-today').hidden = dueCount === 0;

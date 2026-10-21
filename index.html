@@ -34,13 +34,14 @@
 <body>
 <div class="app">
 
-  <!-- Desktop navigation; phones use the guide and settings buttons in the home header -->
+  <!-- Desktop navigation; phones use the home header buttons and the review card (stats) -->
   <nav class="site-nav" aria-label="Main">
     <div class="site-nav-brand">
       <span class="logo-badge">汉</span>
       HSK Flashcards
     </div>
     <button class="site-nav-link" id="nav-home">Home</button>
+    <button class="site-nav-link" id="nav-stats">Stats</button>
     <button class="site-nav-link" id="nav-guide">Guide</button>
     <button class="site-nav-link" id="nav-settings">Settings</button>
   </nav>
@@ -67,10 +68,13 @@
 
     <!-- Daily review (shown once at least one word has been rated) -->
     <div class="review-card" id="review-section" hidden>
-      <p class="review-text">
-        <span id="review-text"></span>
-        <button class="btn-help" data-guide="guide-topic-daily" aria-label="How the daily review works">?</button>
-      </p>
+      <div class="review-info">
+        <p class="review-text">
+          <span id="review-text"></span>
+          <button class="btn-help" data-guide="guide-topic-daily" aria-label="How the daily review works">?</button>
+        </p>
+        <button class="btn-stats-link" id="btn-open-stats"></button>
+      </div>
       <button class="btn-review-today" id="btn-review-today">Review now</button>
     </div>
 
@@ -294,7 +298,7 @@
         </button>
         <button class="settings-row settings-row-danger" id="btn-reset-progress">
           <span class="settings-row-title">Reset progress</span>
-          <span class="settings-row-desc">Forget which words you know. This can’t be undone.</span>
+          <span class="settings-row-desc">Forget which words you know and clear your stats. This can’t be undone.</span>
         </button>
       </div>
 
@@ -305,6 +309,59 @@
           Your progress stays on this device.</p>
         <p>© <span id="footer-year"></span>
           <a href="https://www.linkedin.com/in/arsene-awounou/" target="_blank" rel="noopener">Arsène Awounou</a></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======= STATS SCREEN ======= -->
+  <div id="stats-screen" class="screen">
+    <div class="page-header">
+      <button class="btn-back" id="btn-close-stats">← Back</button>
+      <h1 class="page-title">Stats</h1>
+    </div>
+
+    <div class="streak-card">
+      <div class="streak-flame" aria-hidden="true">🔥</div>
+      <div class="streak-main">
+        <div class="streak-count" id="streak-current"></div>
+        <div class="streak-text" id="streak-text"></div>
+      </div>
+      <div class="streak-best">
+        <span class="streak-best-num" id="streak-best">0</span>
+        <span class="streak-best-label">Best</span>
+      </div>
+    </div>
+
+    <div class="setup-card">
+      <div class="setup-section">
+        <div class="stats-grid stats-totals">
+          <div class="stat-box">
+            <div class="stat-num" id="st-today">0</div>
+            <div class="stat-lbl">Cards today</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num" id="st-seen">0</div>
+            <div class="stat-lbl">Words seen</div>
+          </div>
+          <div class="stat-box s-known">
+            <div class="stat-num" id="st-mastered">0</div>
+            <div class="stat-lbl">Mastered</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="setup-section">
+        <div class="section-label">Last 30 days
+          <button class="btn-help" data-guide="guide-topic-stats" aria-label="About stats and streaks">?</button>
+        </div>
+        <div class="chart" id="activity-chart" role="group" aria-label="Cards rated per day"></div>
+        <div class="chart-axis"><span id="chart-start"></span><span>Today</span></div>
+        <p class="chart-detail" id="chart-detail" role="status"></p>
+        <div class="chart-legend">
+          <span class="legend-seen">Seen before</span>
+          <span class="legend-new">New words</span>
+        </div>
+        <p class="chart-summary" id="chart-summary"></p>
       </div>
     </div>
   </div>
@@ -576,6 +633,18 @@
                   not to be forgotten. This method is known as the Leitner system.</p>
               </div>
             </details>
+            <details class="guide-item" id="guide-topic-stats">
+              <summary>Stats and streak</summary>
+              <div class="guide-answer">
+                <p>Your stats show your <strong>streak</strong>: the number of days in a row you rated at least one card.
+                  It stays alive until the end of the day, so you can still keep it going in the evening.
+                  You also see your best streak, the cards rated today, the words seen at least once and the mastered words.</p>
+                <p>The chart shows the cards rated each day over the last 30 days. The darker part of each bar is the words
+                  you saw for the first time that day. Tap or hover a bar to see its numbers.</p>
+                <p>On a phone, open the stats from the link in the review card of the home screen.
+                  On a computer, use <strong>Stats</strong> in the navigation bar. Undoing a rating also takes it out of the stats.</p>
+              </div>
+            </details>
             <details class="guide-item" id="guide-topic-daily">
               <summary>The daily review</summary>
               <div class="guide-answer">
@@ -642,8 +711,8 @@
             <details class="guide-item">
               <summary>Start over from zero</summary>
               <div class="guide-answer">
-                <p><strong>Reset progress</strong> in Settings forgets every rating: all words become new again.
-                  This can’t be undone.</p>
+                <p><strong>Reset progress</strong> in Settings forgets every rating: all words become new again,
+                  and your stats and streak are cleared. This can’t be undone.</p>
               </div>
             </details>
             <details class="guide-item">
@@ -847,7 +916,7 @@
 <div class="dialog-backdrop" id="reset-dialog" aria-modal="true" role="dialog" aria-labelledby="reset-dialog-title">
   <div class="dialog-card">
     <p class="dialog-title" id="reset-dialog-title">Reset all progress?</p>
-    <p class="dialog-body">Every word goes back to new. This can't be undone.</p>
+    <p class="dialog-body">Every word goes back to new and your stats are cleared. This can't be undone.</p>
     <div class="dialog-actions">
       <button class="dialog-btn-cancel">Cancel</button>
       <button class="dialog-btn-confirm">Reset</button>

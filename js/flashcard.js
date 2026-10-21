@@ -1,5 +1,6 @@
 import { session, cfg } from './state.js';
 import { recordAnswer, getEntry, restoreEntry } from './progress.js';
+import { recordActivity, removeActivity } from './activity.js';
 import { getTone, checkPinyin, showScreen } from './utils.js';
 import { initSpeech, speak } from './speech.js';
 
@@ -139,6 +140,7 @@ export function setFlipped(flipped) {
 export function markAndAdvance(verdict) {
   const word = session.words[session.currentIndex];
   const { id } = word;
+  const entry = getEntry(id);
 
   // Snapshot before rating, so undo can put everything back exactly
   session.history.push({
@@ -147,7 +149,8 @@ export function markAndAdvance(verdict) {
     wasKnown:    session.known.has(id),
     wasUnknown:  session.unknown.has(id),
     wasPromoted: session.promoted.has(id),
-    progress:    getEntry(id),
+    progress:    entry,
+    day:         recordActivity(entry === undefined),
   });
 
   if (verdict === 'known') {
@@ -180,6 +183,7 @@ export function undoLastRating() {
   setMembership(session.unknown,  id, last.wasUnknown);
   setMembership(session.promoted, id, last.wasPromoted);
   restoreEntry(id, last.progress);
+  removeActivity(last.day, last.progress === undefined);
 
   session.currentIndex = last.index;
   showScreen('flashcard-screen'); // undo also works from the results screen

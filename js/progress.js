@@ -63,6 +63,11 @@ export function getMasteredByLevel() {
     .reduce((acc, entry) => ({ ...acc, [entry.level]: (acc[entry.level] ?? 0) + 1 }), {});
 }
 
+/** Number of different words rated at least once. */
+export function countRatedWords() {
+  return Object.keys(progress).length;
+}
+
 export function hasProgress() {
   return Object.keys(progress).length > 0;
 }

@@ -4,6 +4,8 @@ import { initSetup, readSetupConfig, saveSetupState, renderProgressSummary } fro
 import { initFlashcard, renderCard, setFlipped, markAndAdvance, speakCurrentWord, undoLastRating } from './flashcard.js';
 import { showResults } from './results.js';
 import { getDueEntries, resetProgress } from './progress.js';
+import { resetActivity } from './activity.js';
+import { renderStats } from './stats.js';
 import { initTheme } from './theme.js';
 import { initNavigation, openView, closeView } from './navigation.js';
 import { initGuide, resetGuide, showGuideTopic } from './guide.js';
@@ -79,7 +81,7 @@ function showSetup() {
 
 // Pages over the home screen: switching between them (desktop navigation)
 // replaces the page, so back still returns home in one step
-const PAGES = ['settings-screen', 'guide-screen'];
+const PAGES = ['settings-screen', 'guide-screen', 'stats-screen'];
 
 function openPage(screenId) {
   if (isShown(screenId)) return;
@@ -90,6 +92,13 @@ function openPage(screenId) {
 
 function openSettings() {
   openPage('settings-screen');
+}
+
+function openStats() {
+  if (isShown('stats-screen')) return;
+  renderStats();
+  openPage('stats-screen');
+  window.scrollTo(0, 0);
 }
 
 /** Opens the guide, at a topic or section when `topicId` is given. */
@@ -195,6 +204,9 @@ function init() {
   document.getElementById('btn-open-guide').addEventListener('click', () => openGuide());
   document.getElementById('btn-close-guide').addEventListener('click', closeView);
   document.getElementById('nav-guide').addEventListener('click', () => openGuide());
+  document.getElementById('btn-open-stats').addEventListener('click', openStats);
+  document.getElementById('btn-close-stats').addEventListener('click', closeView);
+  document.getElementById('nav-stats').addEventListener('click', openStats);
   document.querySelectorAll('.btn-help').forEach(btn => {
     btn.addEventListener('click', () => handleHelpClick(btn.dataset.guide));
   });
@@ -205,6 +217,7 @@ function init() {
   initDialog('quit-dialog', document.getElementById('btn-quit'), closeView);
   initDialog('reset-dialog', document.getElementById('btn-reset-progress'), () => {
     resetProgress();
+    resetActivity();
     renderProgressSummary();
   });
 

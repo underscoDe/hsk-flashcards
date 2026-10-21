@@ -24,6 +24,7 @@ A clean, mobile-friendly flashcard app for practicing Chinese vocabulary across 
 - **Dark mode** — System / Light / Dark, follows the system setting by default
 - **Remembers your settings** — level, card mode, order, count and range are restored on the next visit, with a one-click reset to defaults (progress is kept)
 - **Session results** — score, missed words, retry missed words only
+- **Stats** — day streak (best streak too), cards rated today, words seen and mastered, and a 30-day chart of cards rated per day with the new words in each
 - **Spaced repetition** — progress saved on the device (Leitner boxes: 1, 2, 4, 8, 16 days), daily review of due words, mastered words per level
 - **Offline** — installable PWA, all levels available without a connection
 
@@ -66,10 +67,10 @@ npm run test:e2e       # browser tests (Playwright) against the real app
 npm run test:all       # both
 ```
 
-- **Unit tests** (`__tests__/unit/`) cover the pure logic: Leitner boxes and due dates (with a fake clock),
+- **Unit tests** (`__tests__/unit/`) cover the pure logic: Leitner boxes and due dates, daily activity and streaks (with a fake clock),
   tone detection, translation cleaning, pinyin answer checking, guide search matching, and a check of all 5,000 words (unique ids, one syllable per
   character, no raw dictionary notation).
-- **Browser tests** (`__tests__/e2e/`) drive the app like a user: sessions, undo, typing mode, the guide search, spaced repetition over
+- **Browser tests** (`__tests__/e2e/`) drive the app like a user: sessions, undo, typing mode, the guide search, stats and streaks, spaced repetition over
   simulated days, remembered settings, theme, tone colors, pronunciation (with a fake voice) and offline mode.
 - They use the installed Google Chrome. Without it, run `npx playwright install chromium` and
   `PW_CHANNEL=chromium npm run test:e2e`.
@@ -94,6 +95,7 @@ index.html          Main markup
 css/
   styles.css        Design system (Lumina HSK)
 js/
+  activity.js       Daily activity log (cards rated, new words, streaks) for the stats
   app.js            Orchestration, session start
   state.js          Shared state (cfg, session, cache)
   setup.js          Setup screen interactions
@@ -103,6 +105,7 @@ js/
   sheet.js          Bottom sheet (session options)
   results.js        Results screen
   speech.js         Pronunciation (Web Speech API)
+  stats.js          Stats page (streak, totals, 30-day chart)
   theme.js          Light / dark theme preference
   progress.js       Spaced repetition (Leitner boxes) saved in localStorage
   utils.js          Data helpers (rawToWords, sortWords, shuffle), pinyin check, search
